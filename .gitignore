@@ -1,0 +1,23 @@
+
+### VS Code ###
+.vscode/
+
+### PlatformIO ###
+.pio/
+Backups/
+blob_storage/
+Cache/
+CachedData/
+CachedExtensions/
+Code Cache/
+GPUCache/
+logs/
+User/
+
+*.sock
+*.json
+*.yml
+
+Cookies*
+Network Persistent State
+machineid
