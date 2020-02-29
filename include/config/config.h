@@ -3,6 +3,9 @@
 
 #include "UTFT.h"
 
+
+namespace cfg
+{
 namespace display
 {
     const uint8_t DISPLAY_MODEL = CTE32_R2;
@@ -20,5 +23,6 @@ namespace touchscreen
     const uint8_t DOUT_PIN = 3;
     const uint8_t IRQ_PIN = 2;
 } 
+}
 
 #endif // CONFIG_H

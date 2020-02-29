@@ -5,8 +5,8 @@
 
 #include "config/config.h"
 
-UTFT screen(display::DISPLAY_MODEL, display::RS_PIN, display::WR_PIN, display::CS_PIN, display::RST_PIN);
-URTouch touch(touchscreen::TCLK_PIN, touchscreen::TCS_PIN, touchscreen::TDIN_PIN, touchscreen::DOUT_PIN, touchscreen::IRQ_PIN);
+UTFT screen(cfg::display::DISPLAY_MODEL, cfg::display::RS_PIN, cfg::display::WR_PIN, cfg::display::CS_PIN, cfg::display::RST_PIN);
+URTouch touch(cfg::touchscreen::TCLK_PIN, cfg::touchscreen::TCS_PIN, cfg::touchscreen::TDIN_PIN, cfg::touchscreen::DOUT_PIN, cfg::touchscreen::IRQ_PIN);
 
 extern uint8_t SmallFont[];
 
