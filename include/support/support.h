@@ -23,7 +23,13 @@ namespace supp
     public:
         Pair()
         : mKey()
-        , mValue {}
+        , mValue() 
+        {}
+
+        Pair(Key key, Value value)
+        : mKey(key)
+        , mValue(value)
+        {}
 
         void setKey(Key newKey)
         {
@@ -50,7 +56,7 @@ namespace supp
         Value mValue;
     };
 
-    
+
 }
 
 #endif // SUPPORT_H
