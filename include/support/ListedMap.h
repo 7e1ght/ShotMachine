@@ -10,6 +10,7 @@ public:
     ListedMap()
     : mHead(nullptr)
     , mTail(nullptr)
+    , mNodeCounter(0)
     {}
 
     ~ListedMap() 
@@ -25,7 +26,10 @@ public:
         }
     }
 
-    void emplace(Key key, Value value);
+    void emplace(const Key& key, const Value& value);
+    void remove(const Key& key, const Value& value);
+
+    uint16_t size() { return mNodeCounter; } 
 
 private:
 
@@ -44,10 +48,6 @@ private:
         , nextNode(nullptr) 
         {}
     };
-    
-    Node* mHead;
-    Node* mTail;
-
 
     void addNodeBack(const Node* newNode)
     {
@@ -62,10 +62,15 @@ private:
             mTail = newNode;
         }
     }
+
+    Node* mHead;
+    Node* mTail;
+    uint16_t mNodeCounter;
+
 };
 
 template<typename Key, typename Value>
-void ListedMap<Key, Value>::emplace(Key key, Value value)
+void ListedMap<Key, Value>::emplace(const Key& key, const Value& value)
 {
     Node* newNode = new Node(key, value);  
 
@@ -77,6 +82,22 @@ void ListedMap<Key, Value>::emplace(Key key, Value value)
     {
         Serial.println("ListedMap::emplace(): newNode is nullptr.");
     }
+
+    ++mNodeCounter;
 }
 
+template<typename Key, typename Value>
+void ListedMap<Key, Value>::remove(const Key& key, const Value& value)
+{
+    supp::Pair<Key, Value> tPair(key, value);
+    
+    Node* currentNode = mHead;
+    Node* prevNode = nullptr;
+
+    while(nullptr != currentNode)
+    {
+        
+    } 
+
+}
 #endif // LISTED_MAP_H
