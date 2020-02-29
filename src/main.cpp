@@ -21,6 +21,7 @@ void setup()
   touch.InitTouch();
   touch.setPrecision(PREC_MEDIUM);
 
+  
 }
 
 void loop()
