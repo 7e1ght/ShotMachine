@@ -41,21 +41,31 @@ namespace supp
             mValue = newValue;
         }
 
-        Key getKey()
+        const Key& getKey() const
         {
             return mKey;
         }
 
-        Value getValue()
+        const Value& getValue() const
         {
             return mValue;
         }
+
+        Key& getKey()
+        {
+            return mKey;
+        }
+
+        Value& getValue()
+        {
+            return mValue;
+        }
+
 
     private:
         Key mKey;
         Value mValue;
     };
-
 
 }
 

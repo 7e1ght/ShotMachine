@@ -3,135 +3,177 @@
 
 #include <support/support.h>
 
-template<typename Key, typename Value>
-class ListedMap
+namespace supp
 {
-public:
-    using PairType = supp::Pair<Key, Value>;
-
-    ListedMap()
-    : mHead(nullptr)
-    , mTail(nullptr)
-    , mNodeCounter(0)
-    {}
-
-    ~ListedMap() 
+    template<typename Key, typename Value>
+    class ListedMap
     {
-        if(nullptr != mHead)
-        {
-            delete mHead;
-        }
+    public:
+        using PairType = supp::Pair<Key, Value>;
 
-        if(nullptr != mTail)
-        {
-            delete mTail;
-        }
-    }
-
-    void emplace(const Key& key, const Value& value) const;
-    void remove(const Key& key, const Value& value) const;
-    PairType& get(const Key& key, const Value& Value) const;
-
-    uint16_t size() const { return mNodeCounter; } 
-
-private:
-
-    struct Node
-    {
-        PairType pair;
-        Node* nextNode;
-
-        Node()
-        : pair()
-        , nextNode(nullptr) 
+        ListedMap()
+        : mHead(nullptr)
+        , mTail(nullptr)
+        , mNodeCounter(0)
         {}
 
-        Node(Key key, Value value)
-        : pair(key, value)
-        , nextNode(nullptr) 
-        {}
+        ~ListedMap() 
+        {
+            clear();
+        }
+
+        int16_t size() const { return mNodeCounter; } 
+
+        void emplace(const Key& key, const Value& value);
+        void remove(const Key& key);
+
+        const PairType* getPair(const Key& key) const;
+        PairType* getPair(const Key& key);
+
+        const Value& operator[](const Key& key) const;
+        Value& operator[](const Key& key);
+
+        void clear();
+    private:
+
+        struct Node
+        {
+            PairType pair;
+            Node* nextNode;
+
+            Node()
+            : pair()
+            , nextNode(nullptr) 
+            {}
+
+            Node(Key key, Value value)
+            : pair(key, value)
+            , nextNode(nullptr) 
+            {}
+        };
+
+        Node* mHead;
+        Node* mTail;
+        int16_t mNodeCounter;
+
     };
 
-    void addNodeBack(const Node* newNode) const
+    template<typename Key, typename Value>
+    void ListedMap<Key, Value>::emplace(const Key& key, const Value& value)
     {
-        if(nullptr == mHead)
+        Node* newNode = new Node(key, value);  
+
+        if(nullptr != newNode)
         {
-            mHead = newNode;
-            mTail = newNode;
+             if(nullptr == mHead)
+            {
+                mHead = newNode;
+                mTail = newNode;
+            }
+            else
+            {
+                mTail->nextNode = newNode;
+                mTail = newNode;
+            }
         }
         else
         {
-            mTail->nextNode = newNode;
-            mTail = newNode;
+            Serial.println("ListedMap::emplace(): newNode is nullptr.");
+        }
+
+        ++mNodeCounter;
+    }
+
+    template<typename Key, typename Value>
+    void ListedMap<Key, Value>::remove(const Key& key)
+    {
+        const Key tKey(key);
+        
+        Node* currentNode = mHead;
+        Node* prevNode = nullptr;
+
+        while(nullptr != currentNode)
+        {
+            if(tKey == currentNode->pair.getKey())
+            {
+                if(nullptr != prevNode)
+                {
+                    prevNode->nextNode = currentNode->nextNode;
+                }
+
+                delete currentNode;
+                --mNodeCounter;
+                break;
+            } 
+            else
+            {
+                prevNode = currentNode;
+                currentNode = currentNode->nextNode;
+            }
         }
     }
 
-    Node* mHead;
-    Node* mTail;
-    uint16_t mNodeCounter;
-
-};
-
-template<typename Key, typename Value>
-void ListedMap<Key, Value>::emplace(const Key& key, const Value& value) const
-{
-    Node* newNode = new Node(key, value);  
-
-    if(nullptr != newNode)
+    template<typename Key, typename Value>
+    const typename ListedMap<Key, Value>::PairType* ListedMap<Key, Value>::getPair(const Key& key) const
     {
-        addNodeBack(newNode);
-    }
-    else
-    {
-        Serial.println("ListedMap::emplace(): newNode is nullptr.");
-    }
+        const Key tKey = key;
 
-    ++mNodeCounter;
-}
+        Node* currentNode = mHead;
+        PairType* res = nullptr;
 
-// check below 
-
-template<typename Key, typename Value>
-void ListedMap<Key, Value>::remove(const Key& key, const Value& value) const
-{
-    const PairType tPair(key, value);
-    
-    Node* currentNode = mHead;
-    Node* prevNode = nullptr;
-
-    while(nullptr != currentNode)
-    {
-        if(tPair == currentNode->pair)
+        while (nullptr != currentNode)
         {
-            if(nullptr != prevNode)
+            if(tKey == currentNode->pair.getKey())
             {
-                prevNode->nextNode = currentNode->nextNode;
+                res = &currentNode->pair;
+                currentNode = currentNode->nextNode;
             }
+            else
+            {
+                currentNode = currentNode->nextNode;
+            }
+        }
 
+        return res;
+    }
+
+    template<typename Key, typename Value>
+    typename ListedMap<Key, Value>::PairType* ListedMap<Key, Value>::getPair(const Key& key)
+    {
+        return const_cast<PairType*>(
+            static_cast<const ListedMap<Key, Value>&>(*this).getPair(key)
+            );
+    }
+
+    template<typename Key, typename Value>
+    const Value& ListedMap<Key, Value>::operator[](const Key& key) const
+    {
+        return getPair(key)->getValue();
+    }
+
+    template<typename Key, typename Value>
+    Value& ListedMap<Key, Value>::operator[](const Key& key)
+    {
+        return getPair(key)->getValue();
+    }
+
+
+    template<typename Key, typename Value>
+    void ListedMap<Key, Value>::clear()
+    {
+        Node* currentNode = mHead;
+        Node* nextNode;
+
+        while (nullptr != currentNode)
+        {
+            nextNode = currentNode->nextNode;
             delete currentNode;
             --mNodeCounter;
-            break;
-        } 
-        else
-        {
-            prevNode = currentNode;
-            currentNode = currentNode->nextNode;
+            currentNode = nextNode;
         }
+
+        mHead = nullptr;
     }
-}
-
-template<typename Key, typename Value>
-ListedMap<Key, Value>::PairType& ListedMap<Key, Value>::get(const Key& key, const Value& value) const
-{
-    const PairType tPair(key, value);
-
-    Node* currentNode = mHead;
-
-    while (nullptr != mHead)
-    {
-        if(tPair == currentNode->pair);
-    }
-    
 }
 
 #endif // LISTED_MAP_H
