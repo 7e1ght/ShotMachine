@@ -1,16 +1,34 @@
 #ifndef LISTED_MAP_H
 #define LISTED_MAP_H
 
-#include <support/support.h>
+#include <support/support.hpp>
+#include <Arduino.h>
 
 namespace supp
 {
     template<typename Key, typename Value>
     class ListedMap
     {
-    public:
+    private:
         using PairType = supp::Pair<Key, Value>;
 
+        struct Node
+        {
+            PairType pair;
+            Node* nextNode;
+
+            Node()
+            : pair()
+            , nextNode(nullptr) 
+            {}
+
+            Node(Key key, Value value)
+            : pair(key, value)
+            , nextNode(nullptr) 
+            {}
+        };
+        
+    public:
         ListedMap()
         : mHead(nullptr)
         , mTail(nullptr)
@@ -30,33 +48,26 @@ namespace supp
         const PairType* getPair(const Key& key) const;
         PairType* getPair(const Key& key);
 
-        const Value& operator[](const Key& key) const;
-        Value& operator[](const Key& key);
-
         void clear();
+
+        void for_each( void (*func)(const PairType&) ) const;
     private:
-
-        struct Node
-        {
-            PairType pair;
-            Node* nextNode;
-
-            Node()
-            : pair()
-            , nextNode(nullptr) 
-            {}
-
-            Node(Key key, Value value)
-            : pair(key, value)
-            , nextNode(nullptr) 
-            {}
-        };
-
         Node* mHead;
         Node* mTail;
         int16_t mNodeCounter;
-
     };
+
+    template<typename Key, typename Value>
+    void ListedMap<Key, Value>::for_each( void (*func)(const PairType&) ) const
+    {
+        const Node* currentNode = mHead;
+
+        while(nullptr != currentNode)
+        {
+            func(currentNode->pair);
+            currentNode = currentNode->nextNode;
+        } 
+    }
 
     template<typename Key, typename Value>
     void ListedMap<Key, Value>::emplace(const Key& key, const Value& value)
@@ -89,8 +100,8 @@ namespace supp
     {
         const Key tKey(key);
         
-        Node* currentNode = mHead;
-        Node* prevNode = nullptr;
+        const Node* currentNode = mHead;
+        const Node* prevNode = nullptr;
 
         while(nullptr != currentNode)
         {
@@ -116,22 +127,17 @@ namespace supp
     template<typename Key, typename Value>
     const typename ListedMap<Key, Value>::PairType* ListedMap<Key, Value>::getPair(const Key& key) const
     {
-        const Key tKey = key;
-
-        Node* currentNode = mHead;
-        PairType* res = nullptr;
+        const Node* currentNode = mHead;
+        const PairType* res = nullptr;
 
         while (nullptr != currentNode)
         {
-            if(tKey == currentNode->pair.getKey())
+            if(key == currentNode->pair.getKey())
             {
                 res = &currentNode->pair;
-                currentNode = currentNode->nextNode;
             }
-            else
-            {
-                currentNode = currentNode->nextNode;
-            }
+
+            currentNode = currentNode->nextNode;
         }
 
         return res;
@@ -144,19 +150,6 @@ namespace supp
             static_cast<const ListedMap<Key, Value>&>(*this).getPair(key)
             );
     }
-
-    template<typename Key, typename Value>
-    const Value& ListedMap<Key, Value>::operator[](const Key& key) const
-    {
-        return getPair(key)->getValue();
-    }
-
-    template<typename Key, typename Value>
-    Value& ListedMap<Key, Value>::operator[](const Key& key)
-    {
-        return getPair(key)->getValue();
-    }
-
 
     template<typename Key, typename Value>
     void ListedMap<Key, Value>::clear()

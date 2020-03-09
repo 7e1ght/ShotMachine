@@ -1,29 +1,30 @@
 #include <Arduino.h>
 
-#include <UTFT.h>
-#include <URTouch.h>
+#include "config/config.hpp"
+#include "support/ListedMap.hpp"
 
-#include "config/config.h"
+#include "containers/EmptyContainer.hpp"
+#include "containers/TextContainer.hpp"
 
-UTFT screen(cfg::display::DISPLAY_MODEL, cfg::display::RS_PIN, cfg::display::WR_PIN, cfg::display::CS_PIN, cfg::display::RST_PIN);
-URTouch touch(cfg::touchscreen::TCLK_PIN, cfg::touchscreen::TCS_PIN, cfg::touchscreen::TDIN_PIN, cfg::touchscreen::DOUT_PIN, cfg::touchscreen::IRQ_PIN);
+#include "support/Screen.hpp"
+#include "support/TouchScreen.hpp"
 
-extern uint8_t SmallFont[];
+#include "support/debug.hpp"
+
+TextContainer* tc;
+EmptyContainer* ec;
 
 void setup()
 {
-  Serial.begin(9600);
+    Serial.begin(9600);
+    
+    tc = new TextContainer("Vlad", {50, 50}, supp::calcTextSize("Vlad"));
+    ec = new EmptyContainer({0, 0}, {cfg::display::SCREEN_WIDTH, cfg::display::SCREEN_HEIGHT});
 
-  screen.InitLCD();
-  screen.clrScr();
-  screen.setFont(SmallFont);
-
-  touch.InitTouch();
-  touch.setPrecision(PREC_MEDIUM);
-
-  
+    ec->addContainer(tc);
 }
 
 void loop()
 {
+    ec->draw();
 }
