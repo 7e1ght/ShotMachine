@@ -1,8 +1,9 @@
 #ifndef LISTED_MAP_H
 #define LISTED_MAP_H
 
-#include <support/support.hpp>
 #include <Arduino.h>
+
+#include "support/support.hpp"
 
 namespace supp
 {
@@ -50,7 +51,8 @@ namespace supp
 
         void clear();
 
-        void for_each( void (*func)(const PairType&) ) const;
+        template<typename T>
+        void for_each(T function) const;
     private:
         Node* mHead;
         Node* mTail;
@@ -58,7 +60,8 @@ namespace supp
     };
 
     template<typename Key, typename Value>
-    void ListedMap<Key, Value>::for_each( void (*func)(const PairType&) ) const
+    template <typename T>
+    void ListedMap<Key, Value>::for_each(T func) const
     {
         const Node* currentNode = mHead;
 

@@ -33,3 +33,25 @@ const supp::Size Screen::getFontSize() const noexcept
     
     return res;
 }
+
+void Screen::fillRect(
+        const supp::Point& upperLeft, 
+        const supp::Point& lowerRight, 
+        const supp::Color& color
+    )
+{
+    UTFT::setColor(color.red, color.green, color.blue);
+    UTFT::fillRect(upperLeft.x, upperLeft.y, lowerRight.x, lowerRight.y);
+}
+
+void Screen::print(
+        const String& text, 
+        const supp::Point& point,
+        const supp::Color& fgColor,
+        const supp::Color& bgColor
+    )
+{
+    UTFT::setColor(fgColor.red, fgColor.green, fgColor.blue);
+    UTFT::setBackColor(bgColor.red, bgColor.green, bgColor.blue);
+    UTFT::print(text.c_str(), point.x, point.y);
+}

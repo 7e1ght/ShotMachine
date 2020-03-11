@@ -26,6 +26,11 @@ namespace supp
         {
             return (x <= other.x && y <= other.y); 
         }
+
+        constexpr bool operator<=(const Point& other) const noexcept
+        {
+            return (x >= other.x && y >= other.y); 
+        }
     };
 
     struct Size
@@ -146,8 +151,10 @@ namespace supp
 
     const Size calcTextSize(const String& text) noexcept;
 
-    const Color DEFAULT_BG_COLOR = {0, 0, 0}; // Black
-    const Color DEFAULT_TEXT_COLOR = {255, 255, 255}; // White
+    const Color DEFAULT_BG_LIGHT_COLOR = {96, 125, 139};
+    const Color DEFAULT_BG_DARK_COLOR = {69, 90, 100};
+    const Color DEFAULT_TEXT_COLOR = {248, 248, 248};
     const Point NO_TOUCH = {-1, -1};
+    const uint64_t DEFAULT_TAP_DELAY = 1000;
 }
 #endif // SUPPORT_H

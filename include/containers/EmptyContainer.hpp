@@ -11,9 +11,13 @@ class EmptyContainer
 public:
     EmptyContainer(
         const supp::Point& point, 
-        const supp::Size& size
+        const supp::Size& size,
+        const supp::Color& color
         )
-    : IContainerBase(point, size) {}
+    : IContainerBase(point, size, color)
+    {}
+
+    void draw() const override;
 };
 
 #endif // EMPTY_CONTAINER_HPP
