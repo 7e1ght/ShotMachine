@@ -92,7 +92,23 @@ void IContainerBase::addContainer(IContainerBase* container, POSITION positionAl
             {container->getPosition().x + container->getSize().width, container->getPosition().y + container->getSize().height}
         );
 
-        mTouchMap.emplace(tRect, container);
+        bool isExist = false;
+        mTouchMap.for_each(
+            [&](const supp::Pair<Rectangle, const IContainerBase*>&  pair)
+            {
+                isExist = isExist || (pair.getValue() == container);
+            }
+        );
+
+        if(!isExist)
+        {
+            mTouchMap.emplace(tRect, container);
+        }
+        else
+        {
+            Serial.print("Container exist.");
+        }
+        
     }
 
 }

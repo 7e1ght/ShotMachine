@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <WString.h>
 #include <HardwareSerial.h>
+#include <UTFT.h>
 
 namespace supp
 {
@@ -157,12 +158,15 @@ namespace supp
         uint8_t blue;
     };
 
+
+    enum class FONT {SMALL, BIG};
+
     const Color DEFAULT_BG_LIGHT_COLOR = { 96, 125, 139 };
     const Color DEFAULT_BG_DARK_COLOR = { 69, 90, 100 };
     const Color DEFAULT_TEXT_COLOR = { 248, 248, 248 };
     const Point NO_TOUCH = { -1, -1 };
     const Point NO_POSITION = { -1, -1 };
-    const uint64_t DEFAULT_TAP_DELAY = 1000;
+    const uint64_t DEFAULT_TAP_DELAY = 500;
     const uint8_t NO_DEG = 0;
 }
 #endif // SUPPORT_H

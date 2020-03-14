@@ -13,17 +13,50 @@
 
 #include "support/debug.hpp"
 
+EmptyContainer* ec;
+ButtonContainer* minus;
+ButtonContainer* plus;
+TextContainer* number;
+
+int counter = 0;
 void setup()
 {
     Serial.begin(9600);
 
-    EmptyContainer ec(supp::Point(0, 0), supp::Size(cfg::display::SCREEN_WIDTH, cfg::display::SCREEN_HEIGHT), supp::DEFAULT_BG_DARK_COLOR);
-    ButtonContainer bc("x", [](){}, supp::NO_POSITION, supp::Size(100, 50), supp::DEFAULT_BG_LIGHT_COLOR);
+    ec = new EmptyContainer(supp::Point(50, 50), supp::Size(100, 100), supp::DEFAULT_BG_LIGHT_COLOR);
 
-    ec.addContainer(&bc, IContainerBase::POSITION_CENTER);
-    ec.draw();
+    number = new TextContainer("0", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, ec->getMainColor());
+
+    auto plusFunc = 
+    [=]()
+    {
+        int currentNumber = atoi(number->getText().c_str());
+        Serial.println(currentNumber);
+        number->setText( String(currentNumber+10) );
+    };
+
+    auto minusFunc = 
+    [=]()
+    {
+        int currentNumber = atoi(number->getText().c_str());
+        Serial.println(currentNumber);
+        number->setText( String(currentNumber-10) );
+    };
+
+    minus = new ButtonContainer("-", minusFunc, supp::NO_POSITION, supp::Size(25), ec->getMainColor());
+    plus = new ButtonContainer("+", plusFunc, supp::NO_POSITION, supp::Size(25), ec->getMainColor());
+
+    ec->addContainer(minus, IContainerBase::POSITION_LEFT);
+    ec->addContainer(number, IContainerBase::POSITION_CENTER);
+    ec->addContainer(plus, IContainerBase::POSITION_RIGHT);
+    
+    ec->draw();
 }
 
 void loop()
 {
+    supp::Point touchPoint = TouchScreen::getInstance().getTouch();
+    delay(100);
+    dbg::printPoint(touchPoint);
+    ec->handleTouch( touchPoint );
 }

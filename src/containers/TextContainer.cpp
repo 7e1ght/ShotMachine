@@ -14,6 +14,12 @@ void TextContainer::draw() const noexcept
             IContainerBase::getPosition(), 
             IContainerBase::getMainColor(), 
             mSecondaryColor, 
-            mDeg
+            mDeg,
         );
+}
+
+void TextContainer::setText(const String& text) noexcept
+{
+    mText = text;
+    draw();
 }

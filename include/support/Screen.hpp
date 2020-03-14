@@ -11,7 +11,8 @@ class Screen
 {
 private:
     Screen();
-    const bool isBigFont;
+    bool isBigFont;
+    void setFont(uint8_t* newFont);
 public:
     static Screen& getInstance();
 
@@ -20,7 +21,8 @@ public:
         const supp::Point& point,
         const supp::Color& bgColor,
         const supp::Color& fgColor,
-        const int deg
+        const int deg,
+        uint8_t* font
         );
 
     void fillRect(
@@ -34,6 +36,7 @@ public:
         const supp::Point& lowerRight,
         const supp::Color& fgColor
         );
+
 
     const supp::Size getFontSize() const noexcept;
 };

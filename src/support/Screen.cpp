@@ -1,7 +1,8 @@
 #include "support/Screen.hpp"
 #include "support/debug.hpp"
 
-extern uint8_t BigFont[]; // Do not forget change flag
+extern uint8_t SmallFont[];
+extern uint8_t BigFont[];
 
 Screen::Screen()
     : UTFT(cfg::display::DISPLAY_MODEL, cfg::display::RS_PIN, cfg::display::WR_PIN, cfg::display::CS_PIN, cfg::display::RST_PIN)
@@ -49,9 +50,11 @@ void Screen::print(
         const supp::Point& point,
         const supp::Color& fgColor,
         const supp::Color& bgColor,
-        const int deg
+        const int deg,
+        uint8_t* font
     )
 {
+    setFont(font);
     UTFT::setColor(fgColor.red, fgColor.green, fgColor.blue);
     UTFT::setBackColor(bgColor.red, bgColor.green, bgColor.blue);
     UTFT::print(text.c_str(), point.x, point.y, deg);
@@ -65,4 +68,13 @@ void Screen::fillRoundRect(
 {
     UTFT::setColor(fgColor.red, fgColor.green, fgColor.blue);
     UTFT::fillRoundRect(upperLeft.x, upperLeft.y, lowerRight.x, lowerRight.y);
+}
+
+void Screen::setFont(uint8_t* newFont)
+{
+    if(UTFT::getFont() != newFont)
+    {
+        UTFT::setFont(newFont);
+        isBigFont = !isBigFont;
+    }
 }

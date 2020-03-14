@@ -29,9 +29,11 @@ private:
     IInvoker* mInvoker;
 
     TextContainer mText;
+    mutable uint64_t mTimer;
 public: 
     void draw() const override;
-    void handleTouch(const supp::Point&) const override { mInvoker->invoke(); }
+    void handleTouch(const supp::Point&) const override;
+    void setPosition(const supp::Point& newPosition) override;
 
     template<typename FunctionType>
     ButtonContainer(const String& text, FunctionType function, const supp::Point& position, const supp::Size& size, const supp::Color& color);
@@ -42,7 +44,8 @@ public:
 template<typename FunctionType>
 ButtonContainer::ButtonContainer(const String& text, FunctionType function, const supp::Point& position, const supp::Size& size, const supp::Color& color) 
     : IContainerBase(position, size, color)
-    , mText(text, supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, color) 
+    , mText(text, supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, color)
+    , mTimer(0)
 {
     IContainerBase::addContainer(&mText, IContainerBase::POSITION_CENTER);
     mInvoker = new InvokerRelease<FunctionType>(function);

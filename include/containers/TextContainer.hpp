@@ -14,19 +14,21 @@ public:
         const supp::Point& position,
         const supp::Color& mainColor,
         const supp::Color& secondaryColor,
-        const int deg = 0
+        const int deg = 0,
+        const supp::FONT fontStyle = supp::FONT::SMALL
         )
     : IContainerBase(position, {Screen::getInstance().getFontSize().width * text.length(), Screen::getInstance().getFontSize().height}, mainColor)
     , mText(text)
     , mSecondaryColor(secondaryColor)
     , mDeg(deg)
+    , mFontStyle(fontStyle)
     {
     }
 
     void draw() const noexcept override;
     void handleTouch(const supp::Point& point) const noexcept override;
 
-    void setText(const String& text) noexcept { mText = text; }
+    void setText(const String& text) noexcept;
     const String& getText() const noexcept { return mText; }
 
     const supp::Color& getSecondaryColor() { return mSecondaryColor; }
@@ -41,6 +43,7 @@ private:
     supp::Color mSecondaryColor;
 
     int mDeg;
+    supp::FONT mFontStyle;
 };
 
 #endif // TEXT_CONTAINER_HPP

@@ -28,7 +28,7 @@ namespace supp
             , nextNode(nullptr) 
             {}
         };
-        
+
     public:
         ListedMap()
         : mHead(nullptr)

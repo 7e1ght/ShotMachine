@@ -51,13 +51,13 @@ public:
     virtual ~IContainerBase() = 0;
 
     const supp::Size& getSize() const { return mSize; } 
-    void setSize(supp::Size newSize) { mSize = newSize; }
+    virtual void setSize(supp::Size newSize) { mSize = newSize; }
 
     const supp::Point& getPosition() const { return mPosition; }
-    void setPosition(const supp::Point& newPosition) { mPosition = newPosition; }
+    virtual void setPosition(const supp::Point& newPosition) { mPosition = newPosition; }
 
     const supp::Color& getMainColor() const { return mMainColor; }
-    void setMainColor(const supp::Color& color) { mMainColor = color; }
+    virtual void setMainColor(const supp::Color& color) { mMainColor = color; }
 
     virtual void draw() const;
     virtual void handleTouch(const supp::Point& touchPoint) const;
