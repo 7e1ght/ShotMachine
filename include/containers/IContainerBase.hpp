@@ -34,7 +34,7 @@ public:
         POSITION_RIGHT,
         POSITION_BOTTOM,
         POSITION_LEFT,
-        POSITION_AUTO,
+        POSITION_CENTER,
         POSITION_RELATIVE,
         POSITION_ABSOLUTE
     };

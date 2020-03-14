@@ -48,10 +48,21 @@ void Screen::print(
         const String& text, 
         const supp::Point& point,
         const supp::Color& fgColor,
-        const supp::Color& bgColor
+        const supp::Color& bgColor,
+        const int deg
     )
 {
     UTFT::setColor(fgColor.red, fgColor.green, fgColor.blue);
     UTFT::setBackColor(bgColor.red, bgColor.green, bgColor.blue);
-    UTFT::print(text.c_str(), point.x, point.y);
+    UTFT::print(text.c_str(), point.x, point.y, deg);
+}
+
+void Screen::fillRoundRect(
+        const supp::Point& upperLeft,
+        const supp::Point& lowerRight,
+        const supp::Color& fgColor
+    )
+{
+    UTFT::setColor(fgColor.red, fgColor.green, fgColor.blue);
+    UTFT::fillRoundRect(upperLeft.x, upperLeft.y, lowerRight.x, lowerRight.y);
 }

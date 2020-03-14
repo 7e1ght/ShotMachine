@@ -3,6 +3,7 @@
 
 #include "support/support.hpp"
 #include "containers/IContainerBase.hpp"
+#include "support/Screen.hpp"
 
 class TextContainer
     : public IContainerBase
@@ -11,13 +12,14 @@ public:
     TextContainer(
         const String& text,
         const supp::Point& position,
-        const supp::Size& size, 
         const supp::Color& mainColor,
-        const supp::Color& secondaryColor
+        const supp::Color& secondaryColor,
+        const int deg = 0
         )
-    : IContainerBase(position, size, mainColor)
+    : IContainerBase(position, {Screen::getInstance().getFontSize().width * text.length(), Screen::getInstance().getFontSize().height}, mainColor)
     , mText(text)
     , mSecondaryColor(secondaryColor)
+    , mDeg(deg)
     {
     }
 
@@ -29,11 +31,16 @@ public:
 
     const supp::Color& getSecondaryColor() { return mSecondaryColor; }
     void setSecondaryColor(const supp::Color& secondaryColor) { mSecondaryColor = secondaryColor; }
+
+    const int getDeg() { return mDeg; }
+    void setDeg(const int newDeg) { mDeg = newDeg; }
 private:
     using IContainerBase::addContainer;
 
     String mText;
     supp::Color mSecondaryColor;
+
+    int mDeg;
 };
 
 #endif // TEXT_CONTAINER_HPP

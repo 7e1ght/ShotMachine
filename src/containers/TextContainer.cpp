@@ -13,6 +13,7 @@ void TextContainer::draw() const noexcept
             mText, 
             IContainerBase::getPosition(), 
             IContainerBase::getMainColor(), 
-            mSecondaryColor
+            mSecondaryColor, 
+            mDeg
         );
 }

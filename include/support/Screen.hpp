@@ -19,11 +19,18 @@ public:
         const String& text, 
         const supp::Point& point,
         const supp::Color& bgColor,
-        const supp::Color& fgColor
+        const supp::Color& fgColor,
+        const int deg
         );
 
     void fillRect(
         const supp::Point& upperLeft, 
+        const supp::Point& lowerRight,
+        const supp::Color& fgColor
+        );
+
+    void fillRoundRect(
+        const supp::Point& upperLeft,
         const supp::Point& lowerRight,
         const supp::Color& fgColor
         );
