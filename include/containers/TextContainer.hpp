@@ -14,15 +14,16 @@ public:
         const supp::Point& position,
         const supp::Color& mainColor,
         const supp::Color& secondaryColor,
-        const int deg = 0,
-        const supp::FONT fontStyle = supp::FONT::SMALL
+        const supp::FONT fontStyle = supp::FONT::SMALL,
+        const int deg = 0
         )
-    : IContainerBase(position, {Screen::getInstance().getFontSize().width * text.length(), Screen::getInstance().getFontSize().height}, mainColor)
+    : IContainerBase(position, calcTextSize(text), mainColor)
     , mText(text)
     , mSecondaryColor(secondaryColor)
     , mDeg(deg)
     , mFontStyle(fontStyle)
     {
+        dbg::printSize(IContainerBase::getSize());
     }
 
     void draw() const noexcept override;
@@ -36,6 +37,15 @@ public:
 
     const int getDeg() { return mDeg; }
     void setDeg(const int newDeg) { mDeg = newDeg; }
+
+    const supp::Size getFontSize() const noexcept { return mFontStyle == supp::FONT::BIG ? supp::Size(16, 16) : supp::Size(8, 12); }
+    void setFont(supp::FONT newFontStyle) noexcept;
+
+    void redraw() const noexcept;
+    supp::Size calcTextSize(const String& text) const noexcept 
+    { 
+        return supp::Size(getFontSize().width * text.length(), getFontSize().height);
+    }
 private:
     using IContainerBase::addContainer;
 

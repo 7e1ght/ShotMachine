@@ -22,8 +22,13 @@ TouchScreen& TouchScreen::getInstance()
 
 const supp::Point TouchScreen::getTouch()
 {
-    URTouch::read();
-    supp::Point touchPoint{URTouch::getX(), URTouch::getY()};
+    supp::Point touchPoint = supp::NO_TOUCH;
 
+    while (supp::NO_TOUCH == touchPoint)
+    {
+        URTouch::read();
+        touchPoint = supp::Point(URTouch::getX(), URTouch::getY());
+    }
+    
     return touchPoint;
 }

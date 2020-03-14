@@ -6,7 +6,6 @@ extern uint8_t BigFont[];
 
 Screen::Screen()
     : UTFT(cfg::display::DISPLAY_MODEL, cfg::display::RS_PIN, cfg::display::WR_PIN, cfg::display::CS_PIN, cfg::display::RST_PIN)
-    , isBigFont(true)
 {
     UTFT::InitLCD(PORTRAIT);
     UTFT::clrScr();
@@ -18,21 +17,6 @@ Screen& Screen::getInstance()
     static Screen instance;
 
     return instance; 
-}
-
-const supp::Size Screen::getFontSize() const noexcept
-{
-    supp::Size res;
-    if(true == isBigFont)
-    {
-        res = {16, 16};
-    }
-    else
-    {
-        res = {12, 8};
-    }
-    
-    return res;
 }
 
 void Screen::fillRect(
@@ -51,10 +35,12 @@ void Screen::print(
         const supp::Color& fgColor,
         const supp::Color& bgColor,
         const int deg,
-        uint8_t* font
+        const supp::FONT fontStyle
     )
 {
-    setFont(font);
+    UTFT::setFont(
+        fontStyle == supp::FONT::BIG ? BigFont : SmallFont
+    );
     UTFT::setColor(fgColor.red, fgColor.green, fgColor.blue);
     UTFT::setBackColor(bgColor.red, bgColor.green, bgColor.blue);
     UTFT::print(text.c_str(), point.x, point.y, deg);
@@ -68,13 +54,4 @@ void Screen::fillRoundRect(
 {
     UTFT::setColor(fgColor.red, fgColor.green, fgColor.blue);
     UTFT::fillRoundRect(upperLeft.x, upperLeft.y, lowerRight.x, lowerRight.y);
-}
-
-void Screen::setFont(uint8_t* newFont)
-{
-    if(UTFT::getFont() != newFont)
-    {
-        UTFT::setFont(newFont);
-        isBigFont = !isBigFont;
-    }
 }

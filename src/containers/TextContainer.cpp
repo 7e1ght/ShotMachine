@@ -15,11 +15,26 @@ void TextContainer::draw() const noexcept
             IContainerBase::getMainColor(), 
             mSecondaryColor, 
             mDeg,
+            mFontStyle
         );
+}
+
+void TextContainer::setFont(supp::FONT newFontStyle)
+{
+    mFontStyle = newFontStyle;
+    redraw();
+    IContainerBase::setSize( calcTextSize(mText) );
 }
 
 void TextContainer::setText(const String& text) noexcept
 {
     mText = text;
+    redraw();
+    IContainerBase::setSize( calcTextSize(mText) );
+}
+
+void TextContainer::redraw() const noexcept
+{
+    supp::overlap(IContainerBase::getPosition(), IContainerBase::getSize(), mSecondaryColor);
     draw();
 }

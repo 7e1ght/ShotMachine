@@ -8,6 +8,16 @@
 
 namespace supp
 {
+    struct Size
+    {
+        uint16_t width;
+        uint16_t height;
+
+        Size(uint16_t wh) : width(wh), height(wh) {}
+        Size(uint16_t w, uint16_t h) : width(w), height(h) {}
+        Size() = default;
+    };
+
     struct Point
     {
         int16_t x;
@@ -33,20 +43,16 @@ namespace supp
             return (x >= other.x && y >= other.y); 
         }
 
+        Point operator+(const Size& size)
+        {
+            return Point(x+size.width, y+size.height);
+        }
+
         Point(int16_t xy) : x(xy), y(xy) {}
         Point(int16_t x, int16_t y) : x(x), y(y) {} 
         Point() = default;
     };
 
-    struct Size
-    {
-        uint16_t width;
-        uint16_t height;
-
-        Size(uint16_t wh) : width(wh), height(wh) {}
-        Size(uint16_t w, uint16_t h) : width(w), height(h) {}
-        Size() = default;
-    };
 
     template<typename Key, typename Value>
     class Pair
@@ -158,6 +164,7 @@ namespace supp
         uint8_t blue;
     };
 
+    void overlap(const Point& position, const Size& size, const Color color);
 
     enum class FONT {SMALL, BIG};
 
