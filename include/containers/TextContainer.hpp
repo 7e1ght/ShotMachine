@@ -14,16 +14,16 @@ public:
         const supp::Point& position,
         const supp::Color& mainColor,
         const supp::Color& secondaryColor,
-        const supp::FONT fontStyle = supp::FONT::SMALL,
+        IContainerBase* parent = nullptr,
+        const supp::FONT fontStyle = supp::FONT::BIG,
         const int deg = 0
         )
-    : IContainerBase(position, calcTextSize(text), mainColor)
+    : IContainerBase(position, calcTextSize(text, fontStyle), mainColor, parent)
     , mText(text)
     , mSecondaryColor(secondaryColor)
     , mDeg(deg)
     , mFontStyle(fontStyle)
     {
-        dbg::printSize(IContainerBase::getSize());
     }
 
     void draw() const noexcept override;
@@ -38,14 +38,15 @@ public:
     const int getDeg() { return mDeg; }
     void setDeg(const int newDeg) { mDeg = newDeg; }
 
-    const supp::Size getFontSize() const noexcept { return mFontStyle == supp::FONT::BIG ? supp::Size(16, 16) : supp::Size(8, 12); }
+    static const supp::Size getFontSize(supp::FONT fontStyle) noexcept 
+    { 
+        return fontStyle == supp::FONT::BIG ? supp::Size(16, 16) : supp::Size(8, 12); 
+    }
+
+    const supp::FONT getFontStyle() const noexcept { return mFontStyle; };
     void setFont(supp::FONT newFontStyle) noexcept;
 
-    void redraw() const noexcept;
-    supp::Size calcTextSize(const String& text) const noexcept 
-    { 
-        return supp::Size(getFontSize().width * text.length(), getFontSize().height);
-    }
+    static const supp::Size calcTextSize(const String& text, supp::FONT fontStyle);
 private:
     using IContainerBase::addContainer;
 

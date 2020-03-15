@@ -48,6 +48,16 @@ namespace supp
             return Point(x+size.width, y+size.height);
         }
 
+        Point operator+(const Point& other)
+        {
+            return Point(x + other.x, y + other.y);
+        }
+
+        Point operator-(const Point& other)
+        {
+            return Point(x - other.x, y - other.y);
+        }
+
         Point(int16_t xy) : x(xy), y(xy) {}
         Point(int16_t x, int16_t y) : x(x), y(y) {} 
         Point() = default;

@@ -12,9 +12,10 @@ public:
     EmptyContainer(
         const supp::Point& point, 
         const supp::Size& size,
-        const supp::Color& color
+        const supp::Color& color, 
+        IContainerBase* parent = nullptr
         )
-    : IContainerBase(point, size, color)
+    : IContainerBase(point, size, color, parent)
     {}
 
     void draw() const override;

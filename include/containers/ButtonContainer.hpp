@@ -33,18 +33,25 @@ private:
 public: 
     void draw() const override;
     void handleTouch(const supp::Point&) const override;
-    void setPosition(const supp::Point& newPosition) override;
+
+    TextContainer& getText() {return mText; }
 
     template<typename FunctionType>
-    ButtonContainer(const String& text, FunctionType function, const supp::Point& position, const supp::Size& size, const supp::Color& color);
+    ButtonContainer(const String& text, FunctionType function, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
 
     ~ButtonContainer() { delete mInvoker; }
 };
 
 template<typename FunctionType>
-ButtonContainer::ButtonContainer(const String& text, FunctionType function, const supp::Point& position, const supp::Size& size, const supp::Color& color) 
-    : IContainerBase(position, size, color)
-    , mText(text, supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, color)
+ButtonContainer::ButtonContainer(const String& text, 
+            FunctionType function, 
+            const supp::Point& position, 
+            const supp::Size& size, 
+            const supp::Color& color, 
+            IContainerBase* parent
+        ) 
+    : IContainerBase(position, size, color, parent)
+    , mText(text, supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, color, this)
     , mTimer(0)
 {
     IContainerBase::addContainer(&mText, IContainerBase::POSITION_CENTER);

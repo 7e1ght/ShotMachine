@@ -22,19 +22,19 @@ void TextContainer::draw() const noexcept
 void TextContainer::setFont(supp::FONT newFontStyle)
 {
     mFontStyle = newFontStyle;
-    redraw();
-    IContainerBase::setSize( calcTextSize(mText) );
+
+    IContainerBase::setSize( calcTextSize(mText, mFontStyle) );   
 }
 
 void TextContainer::setText(const String& text) noexcept
 {
     mText = text;
-    redraw();
-    IContainerBase::setSize( calcTextSize(mText) );
+
+    IContainerBase::setSize( calcTextSize(mText, mFontStyle) );
 }
 
-void TextContainer::redraw() const noexcept
-{
-    supp::overlap(IContainerBase::getPosition(), IContainerBase::getSize(), mSecondaryColor);
-    draw();
+const supp::Size TextContainer::calcTextSize(const String& text, const supp::FONT fontStyle)
+{ 
+    supp::Size fontSize = getFontSize(fontStyle);
+    return supp::Size(fontSize.width * text.length(), fontSize.height); 
 }

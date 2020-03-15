@@ -13,6 +13,43 @@ void IContainerBase::draw() const
     mTouchMap.for_each(drawForAll);
 }
 
+void IContainerBase::redraw() noexcept
+{
+    mParent->addContainer(this, mPositionAlign);
+
+    supp::overlap(
+            mPosition, 
+            mSize, 
+            nullptr == mParent ? supp::Color{0, 0, 0} : mParent->mMainColor
+        );
+
+    draw();
+}
+
+void IContainerBase::setMainColor(const supp::Color& newColor) noexcept
+{
+    mMainColor = newColor;
+    redraw();
+}
+
+void IContainerBase::setParent(IContainerBase* newParent) noexcept
+{
+    mParent = newParent;
+    redraw();
+}
+
+void IContainerBase::setPosition(const supp::Point& newPosition) noexcept
+{
+    mPosition = newPosition;
+    redraw();
+}
+
+void IContainerBase::setSize(const supp::Size& newSize) noexcept
+{
+    mSize = newSize;
+    redraw();
+}
+
 void IContainerBase::handleTouch(const supp::Point& touchPoint) const
 {
     auto handleTouchOnce = 
@@ -28,59 +65,72 @@ void IContainerBase::handleTouch(const supp::Point& touchPoint) const
     mTouchMap.for_each(handleTouchOnce);
 }
 
+void IContainerBase::setPositionAlign(const IContainerBase::POSITION newAlignPosition) noexcept
+{
+    mPositionAlign = newAlignPosition;
+    redraw();
+}
+
 void IContainerBase::addContainer(IContainerBase* container, POSITION positionAlign)
 {
     if(nullptr != container)
     {
+        container->mParent = this;
+        container->mPositionAlign = positionAlign;
+
         switch (positionAlign)
         {
         case POSITION_TOP:
-            container->setSize(
-                { getSize().width, container->getSize().height }
+            container->mSize = supp::Size(
+                mSize.width, 
+                container->mSize.height
             );
-            container->setPosition(
-                getPosition()
-            );
+            container->mPosition = mPosition;
             break;
 
         case POSITION_RIGHT:
-            container->setSize(
-                { container->getSize().width, getSize().height }
+            container->mSize= supp::Size(
+                container->mSize.width, 
+                mSize.height 
             );
-            container->setPosition(
-                { getPosition().x + getSize().width- container->getSize().width, getPosition().y }
+            container->mPosition = supp::Point(
+                mPosition.x + getSize().width - container->mSize.width, 
+                mPosition.y
             );
             break;
 
         case POSITION_BOTTOM:
-            container->setSize(
-                { getSize().width, container->getSize().height }
+            container->mSize = supp::Size(
+                mSize.width, 
+                container->mSize.height
             );
-            container->setPosition(
-                { getPosition().x, getPosition().y + getSize().height - container->getSize().height }
+            container->mPosition = supp::Point(
+                mPosition.x, 
+                mPosition.y + mSize.height - container->mSize.height
             );
             break;
 
         case POSITION_LEFT:
-            container->setSize(
-                { container->getSize().width, getSize().height }
+            container->mSize = supp::Size(
+                container->mSize.width, 
+                mSize.height 
             );
-            container->setPosition(
-                { getPosition().x, getPosition().y }
+            container->mPosition = supp::Point(
+                mPosition.x, 
+                mPosition.y 
             );
             break;
         case POSITION_CENTER:
-            container->setPosition(
-                { 
-                    (getPosition().x + getSize().width/2) - container->getSize().width/2, 
-                    (getPosition().y + getSize().height/2) - container->getSize().height/2 
-                }
+            container->mPosition = supp::Point(
+                    (mPosition.x + mSize.width/2) - container->mSize.width/2, 
+                    (mPosition.y + mSize.height/2) - container->mSize.height/2
             );
         case POSITION_ABSOLUTE:
             break;
         case POSITION_RELATIVE:
-            container->setPosition(
-                { getPosition().x + container->getPosition().x, getPosition().y + container->getPosition().y }
+            container->mPosition = supp::Point(
+                mPosition.x + container->mPosition.x, 
+                mPosition.y + container->mPosition.y
             );
             break;
         default:
@@ -88,8 +138,8 @@ void IContainerBase::addContainer(IContainerBase* container, POSITION positionAl
         }
 
         Rectangle tRect(
-            container->getPosition(),
-            {container->getPosition().x + container->getSize().width, container->getPosition().y + container->getSize().height}
+            container->mPosition,
+            {container->mPosition.x + container->mSize.width, container->mPosition.y + container->mSize.height}
         );
 
         bool isExist = false;
@@ -104,11 +154,6 @@ void IContainerBase::addContainer(IContainerBase* container, POSITION positionAl
         {
             mTouchMap.emplace(tRect, container);
         }
-        else
-        {
-            Serial.print("Container exist.");
-        }
-        
     }
 
 }
