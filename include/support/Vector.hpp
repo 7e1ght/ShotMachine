@@ -4,10 +4,9 @@
 #include "support/support.hpp"
 #include "config/config.hpp"
 
-namespace vector
+namespace supp
 {
 
-}
 
 template<typename T>
 class Vector
@@ -27,50 +26,80 @@ private:
         }
     }
 public:
+    using value_type = T;
+
     Vector( uint8_t capacity = cfg::vector::DEFAULT_CAPACITY ) 
         : mCapacity(capacity)
         , mSize(0)
         , mItemArray(new T[mCapacity])
     {}
 
-    void push_back(T item);
-    uint8_t size() { return mSize; }
+    ~Vector() { delete[] mItemArray; }
+
     template<typename F>
     void for_each(F func);
+
+    void push_back(T item);
+    uint8_t size() { return mSize; }
+    uint8_t capacity() { return mCapacity; }
 };
 
 template<typename T>
 void Vector<T>::resize()
 {
-    const uint8_t mCapacity *= 2; 
-    T* newItemArray = new T[newSize];
+    mCapacity = static_cast<uint8_t>(mCapacity * 1.5f);
+    Serial.print("New capacity = ");
+    Serial.println(mCapacity);
 
-    copyOldItemsTo(newItemArray);
+    T* newItemArray = new T[mCapacity];
 
-    mSize = newSize;
-    delete[] mItemArray;
+    if(nullptr != newItemArray)
+    {
+        copyOldItemsTo(newItemArray);
 
-    mItemArray = newItemArray;
+        delete[] mItemArray;
+
+        mItemArray = newItemArray;
+    }
+    else
+    {
+        Serial.println("Vector<T>::resize(): new array = nullptr.");   
+    }
 }
 
 template<typename T>
 void Vector<T>::push_back(T item)
 {
-    if(mSize >= mCapacity)
+    if(nullptr != mItemArray)
     {
-        resize();
-    }
+        if(mSize >= mCapacity)
+        {
+            resize();
+        }
 
-    mItemArray[mSize++] = item;
+        mItemArray[mSize] = item;
+        Serial.println((int)*mItemArray[mSize]);
+
+        mSize++;
+    } 
+    else
+    {
+        Serial.println("Vector<T>::push_back(): new array = nullptr.");   
+    }
 }
 
 template<typename T>
 template<typename F>
 void Vector<T>::for_each(F func)
 {
-    
+    for(uint8_t i = 0; i < mSize; ++i)
+    {
+        func( mItemArray[i] );
+    }
 }
 
 
+
+}
 
 #endif // VECTOR_HPP
