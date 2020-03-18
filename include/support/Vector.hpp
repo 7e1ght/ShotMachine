@@ -48,8 +48,6 @@ template<typename T>
 void Vector<T>::resize()
 {
     mCapacity = static_cast<uint8_t>(mCapacity * 1.5f);
-    Serial.print("New capacity = ");
-    Serial.println(mCapacity);
 
     T* newItemArray = new T[mCapacity];
 
@@ -78,7 +76,6 @@ void Vector<T>::push_back(T item)
         }
 
         mItemArray[mSize] = item;
-        Serial.println((int)*mItemArray[mSize]);
 
         mSize++;
     } 
@@ -92,13 +89,8 @@ template<typename T>
 template<typename F>
 void Vector<T>::for_each(F func)
 {
-    for(uint8_t i = 0; i < mSize; ++i)
-    {
-        func( mItemArray[i] );
-    }
+    for(uint8_t i = 0; i < mSize && func( mItemArray[i] ); ++i);
 }
-
-
 
 }
 

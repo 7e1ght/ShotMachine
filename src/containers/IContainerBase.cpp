@@ -4,13 +4,15 @@
 
 void IContainerBase::draw() const
 {
-    auto drawForAll = 
-        [](const supp::Pair<Rectangle, const IContainerBase*>&  pair)
+    mContainers.for_each
+    (
+        [](BaseVector::value_type container)
         {
-            pair.getValue()->draw();
-        };
+            container->draw();
 
-    mTouchMap.for_each(drawForAll);
+            return true;
+        }
+    );
 }
 
 void IContainerBase::redraw() noexcept
@@ -46,23 +48,26 @@ void IContainerBase::setPosition(const supp::Point& newPosition) noexcept
 
 void IContainerBase::setSize(const supp::Size& newSize) noexcept
 {
-    mSize = newSize;
     redraw();
+    mSize = newSize;
 }
 
 void IContainerBase::handleTouch(const supp::Point& touchPoint) const
 {
-    auto handleTouchOnce = 
-        [=](const supp::Pair<Rectangle, const IContainerBase*>&  pair)
+    mContainers.for_each(
+        [&](BaseVector::value_type container)
         {
-            if(true == pair.getKey().isInside(touchPoint))
-            {
-                pair.getValue()->handleTouch(touchPoint);
-                pair.getKey();
-            }
-        };
+            bool noTouchable = true;
 
-    mTouchMap.for_each(handleTouchOnce);
+            if(true == container->isInside(touchPoint))
+            {
+                container->handleTouch(touchPoint);
+                noTouchable = false;
+            }
+
+            return noTouchable;
+        }
+    );
 }
 
 void IContainerBase::setPositionAlign(const IContainerBase::POSITION newAlignPosition) noexcept
@@ -137,23 +142,28 @@ void IContainerBase::addContainer(IContainerBase* container, POSITION positionAl
             Serial.print("IContainerBase: no such position.");
         }
 
-        Rectangle tRect(
-            container->mPosition,
-            {container->mPosition.x + container->mSize.width, container->mPosition.y + container->mSize.height}
-        );
-
         bool isExist = false;
-        mTouchMap.for_each(
-            [&](const supp::Pair<Rectangle, const IContainerBase*>&  pair)
+        mContainers.for_each(
+            [&isExist, container](const BaseVector::value_type vectorContainer)
             {
-                isExist = isExist || (pair.getValue() == container);
+                if(vectorContainer == container)
+                {
+                    isExist = true;
+                }
+
+                return !isExist;
             }
         );
 
         if(!isExist)
         {
-            mTouchMap.emplace(tRect, container);
+            mContainers.push_back(container);
         }
+        else
+        {
+            Serial.println("Exist.");
+        }
+        
     }
 
 }

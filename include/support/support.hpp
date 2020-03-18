@@ -63,6 +63,18 @@ namespace supp
         Point() = default;
     };
 
+    class Rectangle
+    {
+    private:
+        const Point upperLeft;
+        const Point lowerRight;
+
+    public:
+        bool isInside(const Point& point) const noexcept
+        { 
+            return ( upperLeft <= point && point <= lowerRight );  
+        }
+    };
 
     template<typename Key, typename Value>
     class Pair
