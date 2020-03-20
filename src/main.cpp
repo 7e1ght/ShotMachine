@@ -22,17 +22,6 @@ ButtonContainer* bottomButton;
 
 TextContainer* tc;
 
-using Vpint = supp::Vector<uint8_t*>;
-
-Vpint vpint;
-
-enum DIR
-{
-    UP,
-    DOWN
-};
-DIR curDir = UP;
-
 void setup()
 {
     Serial.begin(9600);
