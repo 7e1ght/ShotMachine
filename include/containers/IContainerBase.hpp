@@ -3,29 +3,17 @@
 
 #include "support/support.hpp"
 #include "support/ListedMap.hpp"
+#include "support/Vector.hpp"
 
 #include "support/debug.hpp"
 
 class IContainerBase
 {
+protected:
+    virtual void baseDraw() const noexcept = 0;
+    
 private:
-    class Rectangle
-    {
-    private:
-        const supp::Point upperLeft;
-        const supp::Point lowerRight;
-    public: 
-        Rectangle(const supp::Point& p1, 
-                  const supp::Point& p2) 
-            : upperLeft(p1)
-            , lowerRight(p2)
-        {}
-
-        bool isInside(const supp::Point& point)
-        {
-            return ( upperLeft >= point && point >= lowerRight );
-        }
-    };
+    using BaseVector = supp::Vector<IContainerBase*>;
 
     IContainerBase* mParent;
     
@@ -44,7 +32,6 @@ public:
     IContainerBase(const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent)
     : mPosition(position)
     , mSize(size)
-    , mTouchMap()
     , mMainColor(color)
     , mParent(parent)
     , mPositionAlign(POSITION_ABSOLUTE)
@@ -68,17 +55,30 @@ public:
 
     POSITION getPositionAlign() const noexcept { return mPositionAlign; }
 
+    bool isInside(const supp::Point& point) const noexcept
+    {
+        return ( mPosition <= point && point <= mPosition + mSize );  
+    }
+
     void setPositionAlign(const POSITION newPositionAlign) noexcept;
 
-    virtual void draw() const;
-    virtual void redraw() noexcept;
+    void draw() const;
     virtual void handleTouch(const supp::Point& touchPoint) const;
 private:
+    void overlapThis() const noexcept 
+    {
+        supp::overlap(
+            mPosition,
+            mSize,
+            nullptr == mParent ? supp::Color{0, 0, 0} : mParent->mMainColor
+        );
+    }
+
     supp::Point mPosition;
     supp::Size mSize;
     supp::Color mMainColor;
     POSITION mPositionAlign;
-    supp::ListedMap<Rectangle, const IContainerBase*> mTouchMap;
+    BaseVector mContainers; 
 };
 
 #endif // I_CONTAINER_BASE_H

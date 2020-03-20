@@ -26,12 +26,13 @@ private:
         InvokerRelease(FunctionType function) : mFunction(function) {}
     };
 
+    void baseDraw() const noexcept override;
+
     IInvoker* mInvoker;
 
     TextContainer mText;
     mutable uint64_t mTimer;
 public: 
-    void draw() const override;
     void handleTouch(const supp::Point&) const override;
 
     TextContainer& getText() {return mText; }

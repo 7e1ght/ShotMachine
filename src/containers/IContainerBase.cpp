@@ -4,71 +4,78 @@
 
 void IContainerBase::draw() const
 {
-    auto drawForAll = 
-        [](const supp::Pair<Rectangle, const IContainerBase*>&  pair)
-        {
-            pair.getValue()->draw();
-        };
+    if(nullptr != mParent)
+    {
+        mParent->addContainer(const_cast<IContainerBase*>(this), mPositionAlign);
+    }
 
-    mTouchMap.for_each(drawForAll);
+    baseDraw();
 }
 
-void IContainerBase::redraw() noexcept
+void IContainerBase::baseDraw() const noexcept
 {
-    mParent->addContainer(this, mPositionAlign);
+    mContainers.for_each
+    (
+        [](BaseVector::value_type container)
+        {
+            container->draw();
 
-    supp::overlap(
-            mPosition, 
-            mSize, 
-            nullptr == mParent ? supp::Color{0, 0, 0} : mParent->mMainColor
-        );
-
-    draw();
+            return true;
+        }
+    );
 }
 
 void IContainerBase::setMainColor(const supp::Color& newColor) noexcept
 {
+    overlapThis();
     mMainColor = newColor;
-    redraw();
+    draw();
 }
 
 void IContainerBase::setParent(IContainerBase* newParent) noexcept
 {
+    overlapThis();
     mParent = newParent;
-    redraw();
+    draw();
 }
 
 void IContainerBase::setPosition(const supp::Point& newPosition) noexcept
 {
+    overlapThis();
     mPosition = newPosition;
-    redraw();
+    draw();
 }
 
 void IContainerBase::setSize(const supp::Size& newSize) noexcept
 {
+    overlapThis();
     mSize = newSize;
-    redraw();
+    draw();
 }
 
 void IContainerBase::handleTouch(const supp::Point& touchPoint) const
 {
-    auto handleTouchOnce = 
-        [=](const supp::Pair<Rectangle, const IContainerBase*>&  pair)
+    mContainers.for_each(
+        [&](BaseVector::value_type container)
         {
-            if(true == pair.getKey().isInside(touchPoint))
-            {
-                pair.getValue()->handleTouch(touchPoint);
-                pair.getKey();
-            }
-        };
+            bool noTouchable = true;
 
-    mTouchMap.for_each(handleTouchOnce);
+            if(true == container->isInside(touchPoint))
+            {
+                container->handleTouch(touchPoint);
+                noTouchable = false;
+            }
+
+            return noTouchable;
+        }
+    );
 }
 
 void IContainerBase::setPositionAlign(const IContainerBase::POSITION newAlignPosition) noexcept
 {
+    overlapThis();
     mPositionAlign = newAlignPosition;
-    redraw();
+    draw();
 }
 
 void IContainerBase::addContainer(IContainerBase* container, POSITION positionAlign)
@@ -137,23 +144,28 @@ void IContainerBase::addContainer(IContainerBase* container, POSITION positionAl
             Serial.print("IContainerBase: no such position.");
         }
 
-        Rectangle tRect(
-            container->mPosition,
-            {container->mPosition.x + container->mSize.width, container->mPosition.y + container->mSize.height}
-        );
-
         bool isExist = false;
-        mTouchMap.for_each(
-            [&](const supp::Pair<Rectangle, const IContainerBase*>&  pair)
+        mContainers.for_each(
+            [&isExist, container](const BaseVector::value_type vectorContainer)
             {
-                isExist = isExist || (pair.getValue() == container);
+                if(vectorContainer == container)
+                {
+                    isExist = true;
+                }
+
+                return !isExist;
             }
         );
 
         if(!isExist)
         {
-            mTouchMap.emplace(tRect, container);
+            mContainers.push_back(container);
         }
+        else
+        {
+            Serial.println("Exist.");
+        }
+        
     }
 
 }

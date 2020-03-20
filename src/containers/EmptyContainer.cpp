@@ -2,7 +2,7 @@
 
 #include "support/Screen.hpp"
 
-void EmptyContainer::draw() const
+void EmptyContainer::baseDraw() const noexcept
 {
     Screen::getInstance().fillRect(
         {IContainerBase::getPosition().x, IContainerBase::getPosition().y},
@@ -10,5 +10,5 @@ void EmptyContainer::draw() const
         IContainerBase::getMainColor()  
     );
     
-    IContainerBase::draw();
+    IContainerBase::baseDraw();
 }
