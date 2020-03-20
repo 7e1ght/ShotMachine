@@ -7,7 +7,7 @@ void TextContainer::handleTouch(const supp::Point& point) const noexcept
 {  
 }
 
-void TextContainer::draw() const noexcept
+void TextContainer::baseDraw() const noexcept
 {
     Screen::getInstance().print(
             mText, 

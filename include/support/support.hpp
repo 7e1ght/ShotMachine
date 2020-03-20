@@ -35,12 +35,12 @@ namespace supp
 
         bool operator>=(const Point& other) const noexcept
         {
-            return (x <= other.x && y <= other.y); 
+            return (x >= other.x && y >= other.y); 
         }
 
         bool operator<=(const Point& other) const noexcept
         {
-            return (x >= other.x && y >= other.y); 
+            return (x <= other.x && y <= other.y); 
         }
 
         Point operator+(const Size& size)

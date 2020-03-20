@@ -9,6 +9,9 @@
 
 class IContainerBase
 {
+protected:
+    virtual void baseDraw() const noexcept = 0;
+    
 private:
     using BaseVector = supp::Vector<IContainerBase*>;
 
@@ -59,10 +62,18 @@ public:
 
     void setPositionAlign(const POSITION newPositionAlign) noexcept;
 
-    virtual void draw() const;
-    virtual void redraw() noexcept;
+    void draw() const;
     virtual void handleTouch(const supp::Point& touchPoint) const;
 private:
+    void overlapThis() const noexcept 
+    {
+        supp::overlap(
+            mPosition,
+            mSize,
+            nullptr == mParent ? supp::Color{0, 0, 0} : mParent->mMainColor
+        );
+    }
+
     supp::Point mPosition;
     supp::Size mSize;
     supp::Color mMainColor;

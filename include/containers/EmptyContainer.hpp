@@ -8,6 +8,8 @@
 class EmptyContainer
     : public IContainerBase
 {
+private:
+    void baseDraw() const noexcept override;
 public:
     EmptyContainer(
         const supp::Point& point, 
@@ -17,8 +19,6 @@ public:
         )
     : IContainerBase(point, size, color, parent)
     {}
-
-    void draw() const override;
 };
 
 #endif // EMPTY_CONTAINER_HPP

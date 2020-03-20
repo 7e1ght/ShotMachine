@@ -25,8 +25,7 @@ public:
     , mFontStyle(fontStyle)
     {
     }
-
-    void draw() const noexcept override;
+    
     void handleTouch(const supp::Point& point) const noexcept override;
 
     void setText(const String& text) noexcept;
@@ -49,6 +48,8 @@ public:
     static const supp::Size calcTextSize(const String& text, supp::FONT fontStyle);
 private:
     using IContainerBase::addContainer;
+
+    void baseDraw() const noexcept override;
 
     String mText;
     supp::Color mSecondaryColor;

@@ -4,6 +4,16 @@
 
 void IContainerBase::draw() const
 {
+    if(nullptr != mParent)
+    {
+        mParent->addContainer(const_cast<IContainerBase*>(this), mPositionAlign);
+    }
+
+    baseDraw();
+}
+
+void IContainerBase::baseDraw() const noexcept
+{
     mContainers.for_each
     (
         [](BaseVector::value_type container)
@@ -15,41 +25,32 @@ void IContainerBase::draw() const
     );
 }
 
-void IContainerBase::redraw() noexcept
-{
-    mParent->addContainer(this, mPositionAlign);
-
-    supp::overlap(
-            mPosition, 
-            mSize, 
-            nullptr == mParent ? supp::Color{0, 0, 0} : mParent->mMainColor
-        );
-
-    draw();
-}
-
 void IContainerBase::setMainColor(const supp::Color& newColor) noexcept
 {
+    overlapThis();
     mMainColor = newColor;
-    redraw();
+    draw();
 }
 
 void IContainerBase::setParent(IContainerBase* newParent) noexcept
 {
+    overlapThis();
     mParent = newParent;
-    redraw();
+    draw();
 }
 
 void IContainerBase::setPosition(const supp::Point& newPosition) noexcept
 {
+    overlapThis();
     mPosition = newPosition;
-    redraw();
+    draw();
 }
 
 void IContainerBase::setSize(const supp::Size& newSize) noexcept
 {
-    redraw();
+    overlapThis();
     mSize = newSize;
+    draw();
 }
 
 void IContainerBase::handleTouch(const supp::Point& touchPoint) const
@@ -72,8 +73,9 @@ void IContainerBase::handleTouch(const supp::Point& touchPoint) const
 
 void IContainerBase::setPositionAlign(const IContainerBase::POSITION newAlignPosition) noexcept
 {
+    overlapThis();
     mPositionAlign = newAlignPosition;
-    redraw();
+    draw();
 }
 
 void IContainerBase::addContainer(IContainerBase* container, POSITION positionAlign)

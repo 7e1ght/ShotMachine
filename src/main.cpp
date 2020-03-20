@@ -26,22 +26,22 @@ using Vpint = supp::Vector<uint8_t*>;
 
 Vpint vpint;
 
+enum DIR
+{
+    UP,
+    DOWN
+};
+DIR curDir = UP;
+
 void setup()
 {
     Serial.begin(9600);
-
-    tc = new TextContainer("Vlad", {50, 50}, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_DARK_COLOR);
-
-    tc->draw();
+    
 }
 
 void loop()
 {
-    // supp::Point touchPoint = TouchScreen::getInstance().getTouch();
-    // dbg::printPoint(touchPoint);
-    // ec->handleTouch(touchPoint);
-
-    delay(2000);
-    tc->setText("lox");
-    
+    supp::Point touchPoint = TouchScreen::getInstance().getTouch();
+    dbg::printPoint(touchPoint);
+    ec->handleTouch(touchPoint);
 }

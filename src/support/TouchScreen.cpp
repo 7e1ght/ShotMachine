@@ -24,11 +24,11 @@ const supp::Point TouchScreen::getTouch()
 {
     supp::Point touchPoint = supp::NO_TOUCH;
 
-    while (supp::NO_TOUCH == touchPoint)
-    {
+    // while (supp::NO_TOUCH == touchPoint)
+    // {
         URTouch::read();
         touchPoint = supp::Point(URTouch::getX(), URTouch::getY());
-    }
+    // }
     
     return touchPoint;
 }
