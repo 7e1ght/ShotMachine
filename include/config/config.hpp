@@ -28,6 +28,11 @@ namespace touchscreen
     const uint8_t IRQ_PIN = 2;
 }
 
+namespace vector
+{
+    const uint8_t DEFAULT_CAPACITY = 5;
+}
+
 }
 
 #endif // CONFIG_H
