@@ -3,7 +3,6 @@
 
 #include <UTFT.h>
 
-
 namespace cfg
 {
 
@@ -31,6 +30,11 @@ namespace touchscreen
 namespace vector
 {
     const uint8_t DEFAULT_CAPACITY = 5;
+}
+
+namespace UI
+{
+    const uint8_t DEFAULT_BAR_HEIGHT = 25;
 }
 
 }

@@ -7,7 +7,6 @@
 namespace supp
 {
 
-
 template<typename T>
 class Vector
 {
@@ -34,7 +33,7 @@ public:
         , mItemArray(new T[mCapacity])
     {}
 
-    ~Vector() { delete[] mItemArray; }
+    ~Vector();
 
     template<typename F>
     void for_each(F func);
@@ -90,6 +89,124 @@ template<typename F>
 void Vector<T>::for_each(F func)
 {
     for(uint8_t i = 0; i < mSize && func( mItemArray[i] ); ++i);
+}
+
+template<typename T>
+inline Vector<T>::~Vector()
+{
+    delete[] mItemArray;
+}
+
+
+
+
+
+
+
+
+
+
+template<typename T>
+class Vector<T*>
+{
+public:
+    using value_type = T*;
+
+    Vector( uint8_t capacity = cfg::vector::DEFAULT_CAPACITY ) 
+        : mCapacity(capacity)
+        , mSize(0)
+        , mItemArray(new T*[mCapacity])
+    {}
+
+    ~Vector();
+
+    template<typename F>
+    void for_each(F func);
+    void clear() noexcept;
+
+    void push_back(value_type item);
+    uint8_t size() { return mSize; }
+    uint8_t capacity() { return mCapacity; }
+private:
+    uint8_t mCapacity;
+    uint8_t mSize;
+
+    value_type* mItemArray;
+
+    void resize();
+    void copyOldItemsTo(value_type* newArray)
+    {
+        for(int i = 0; i < mSize; ++i)
+        {
+            newArray[i] = mItemArray[i];
+        }
+    }
+};
+
+template<typename T>
+void Vector<T*>::resize()
+{
+    mCapacity = static_cast<uint8_t>(mCapacity * 1.5f);
+
+    value_type* newItemArray = new T*[mCapacity];
+
+    if(nullptr != newItemArray)
+    {
+        copyOldItemsTo(newItemArray);
+
+        delete[] mItemArray;
+
+        mItemArray = newItemArray;
+    }
+    else
+    {
+        Serial.println("Vector<T>::resize(): new array = nullptr.");   
+    }
+}
+
+template<typename T>
+void Vector<T*>::push_back(T* item)
+{
+    if(nullptr != mItemArray)
+    {
+        if(mSize >= mCapacity)
+        {
+            resize();
+        }
+
+        mItemArray[mSize] = item;
+
+        mSize++;
+    } 
+    else
+    {
+        Serial.println("Vector<T>::push_back(): new array = nullptr.");   
+    }
+}
+
+template<typename T>
+template<typename F>
+void Vector<T*>::for_each(F func)
+{
+    for(uint8_t i = 0; i < mSize && func( mItemArray[i] ); ++i);
+}
+
+template<typename T>
+void Vector<T*>::clear() noexcept
+{
+    for(uint8_t i = 0; i < mSize; ++i)
+    {
+        delete mItemArray[i];
+    }
+
+    mSize = 0;
+}
+
+template<typename T>
+Vector<T*>::~Vector()
+{
+    clear();
+    delete mItemArray;
 }
 
 }

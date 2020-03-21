@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <WString.h>
 #include <HardwareSerial.h>
+
+#include "config/config.hpp"
+
 #include <UTFT.h>
 
 namespace supp
@@ -197,5 +200,6 @@ namespace supp
     const Point NO_POSITION = { -1, -1 };
     const uint64_t DEFAULT_TAP_DELAY = 500;
     const uint8_t NO_DEG = 0;
+    const Size FULLSCREEN = {cfg::display::SCREEN_WIDTH, cfg::display::SCREEN_HEIGHT};
 }
 #endif // SUPPORT_H

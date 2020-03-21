@@ -14,7 +14,9 @@ private:
 public:
     static TouchScreen& getInstance();
 
-    const supp::Point getTouch();
+    const supp::Point getTouch() const noexcept;
+    const supp::Point waitForTouch() const noexcept;
+    bool readyTouch() const noexcept { return getTouch() != supp::NO_TOUCH; } 
 };
 
 #endif // TOUCH_HPP

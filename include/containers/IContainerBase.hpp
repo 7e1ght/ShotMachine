@@ -39,6 +39,9 @@ public:
 
     void addContainer(IContainerBase* container, POSITION alingType = POSITION_RELATIVE);
 
+    void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION positionAlign) noexcept;
+    void IContainerBase::caclPositionSizeAlign(IContainerBase* container) noexcept;
+
     virtual ~IContainerBase() = 0;
 
     const supp::Size& getSize() const { return mSize; } 

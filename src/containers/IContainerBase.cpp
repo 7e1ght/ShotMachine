@@ -78,11 +78,10 @@ void IContainerBase::setPositionAlign(const IContainerBase::POSITION newAlignPos
     draw();
 }
 
-void IContainerBase::addContainer(IContainerBase* container, POSITION positionAlign)
+void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION positionAlign) noexcept
 {
     if(nullptr != container)
     {
-        container->mParent = this;
         container->mPositionAlign = positionAlign;
 
         switch (positionAlign)
@@ -143,6 +142,85 @@ void IContainerBase::addContainer(IContainerBase* container, POSITION positionAl
         default:
             Serial.print("IContainerBase: no such position.");
         }
+    }
+}
+
+void IContainerBase::caclPositionSizeAlign(IContainerBase* container) noexcept
+{
+   
+
+    if(nullptr != container)
+    {
+        POSITION positionAlign = container->getPositionAlign();
+
+        switch (positionAlign)
+        {
+        case POSITION_TOP:
+            container->mSize = supp::Size(
+                mSize.width, 
+                container->mSize.height
+            );
+            container->mPosition = mPosition;
+            break;
+
+        case POSITION_RIGHT:
+            container->mSize= supp::Size(
+                container->mSize.width, 
+                mSize.height 
+            );
+            container->mPosition = supp::Point(
+                mPosition.x + getSize().width - container->mSize.width, 
+                mPosition.y
+            );
+            break;
+
+        case POSITION_BOTTOM:
+            container->mSize = supp::Size(
+                mSize.width, 
+                container->mSize.height
+            );
+            container->mPosition = supp::Point(
+                mPosition.x, 
+                mPosition.y + mSize.height - container->mSize.height
+            );
+            break;
+
+        case POSITION_LEFT:
+            container->mSize = supp::Size(
+                container->mSize.width, 
+                mSize.height 
+            );
+            container->mPosition = supp::Point(
+                mPosition.x, 
+                mPosition.y 
+            );
+            break;
+        case POSITION_CENTER:
+            container->mPosition = supp::Point(
+                    (mPosition.x + mSize.width/2) - container->mSize.width/2, 
+                    (mPosition.y + mSize.height/2) - container->mSize.height/2
+            );
+        case POSITION_ABSOLUTE:
+            break;
+        case POSITION_RELATIVE:
+            container->mPosition = supp::Point(
+                mPosition.x + container->mPosition.x, 
+                mPosition.y + container->mPosition.y
+            );
+            break;
+        default:
+            Serial.print("IContainerBase: no such position.");
+        }
+    }
+}
+
+void IContainerBase::addContainer(IContainerBase* container, POSITION positionAlign) noexcept
+{
+    if(nullptr != container)
+    {
+        container->mParent = this;
+        
+        caclPositionSizeAlign(container, positionAlign);
 
         bool isExist = false;
         mContainers.for_each(
@@ -161,13 +239,7 @@ void IContainerBase::addContainer(IContainerBase* container, POSITION positionAl
         {
             mContainers.push_back(container);
         }
-        else
-        {
-            Serial.println("Exist.");
-        }
-        
     }
-
 }
 
 IContainerBase::~IContainerBase() {}

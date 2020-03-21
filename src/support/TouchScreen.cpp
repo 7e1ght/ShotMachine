@@ -20,15 +20,24 @@ TouchScreen& TouchScreen::getInstance()
     return instance;
 }
 
-const supp::Point TouchScreen::getTouch()
+const supp::Point TouchScreen::getTouch() const noexcept
 {
     supp::Point touchPoint = supp::NO_TOUCH;
 
-    // while (supp::NO_TOUCH == touchPoint)
-    // {
-        URTouch::read();
-        touchPoint = supp::Point(URTouch::getX(), URTouch::getY());
-    // }
+    URTouch::read();
+    touchPoint = supp::Point(URTouch::getX(), URTouch::getY());
+    
+    return touchPoint;
+}
+
+const supp::Point TouchScreen::waitForTouch() const noexcept
+{
+    supp::Point touchPoint = getTouch();
+
+    while (supp::NO_TOUCH == touchPoint)
+    {
+        touchPoint = getTouch();
+    }
     
     return touchPoint;
 }
