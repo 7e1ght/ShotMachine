@@ -151,7 +151,7 @@ void IContainerBase::caclPositionSizeAlign(IContainerBase* container) noexcept
 
     if(nullptr != container)
     {
-        POSITION positionAlign = container->getPositionAlign();
+        POSITION positionAlign = mPositionAlign;
 
         switch (positionAlign)
         {
