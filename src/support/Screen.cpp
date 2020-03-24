@@ -25,6 +25,7 @@ void Screen::fillRect(
         const supp::Color& color
     )
 {
+
     UTFT::setColor(color.red, color.green, color.blue);
     UTFT::fillRect(upperLeft.x, upperLeft.y, lowerRight.x, lowerRight.y);
 }
@@ -38,6 +39,7 @@ void Screen::print(
         const supp::FONT fontStyle
     )
 {
+
     UTFT::setFont(
         fontStyle == supp::FONT::BIG ? BigFont : SmallFont
     );
@@ -52,6 +54,7 @@ void Screen::fillRoundRect(
         const supp::Color& fgColor
     )
 {
+
     UTFT::setColor(fgColor.red, fgColor.green, fgColor.blue);
     UTFT::fillRoundRect(upperLeft.x, upperLeft.y, lowerRight.x, lowerRight.y);
 }

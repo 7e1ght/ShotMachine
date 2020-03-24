@@ -16,7 +16,6 @@ private:
     using BaseVector = supp::Vector<IContainerBase*>;
 
     IContainerBase* mParent;
-    
 public:
     enum POSITION
     {
@@ -65,6 +64,13 @@ public:
 
     void setPositionAlign(const POSITION newPositionAlign) noexcept;
 
+    void clear() const noexcept
+    {
+        mContainers.clear();
+
+        draw();
+    }
+
     void draw() const;
     virtual void handleTouch(const supp::Point& touchPoint) const;
 private:
@@ -77,6 +83,7 @@ private:
         );
     }
 
+    supp::Point mRelativePosition;
     supp::Point mPosition;
     supp::Size mSize;
     supp::Color mMainColor;

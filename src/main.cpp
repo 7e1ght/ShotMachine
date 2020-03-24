@@ -6,18 +6,19 @@
 #include "containers/EmptyContainer.hpp"
 #include "containers/TextContainer.hpp"
 #include "containers/ButtonContainer.hpp"
-#include "containers/test_func.hpp"
 
 #include "support/Screen.hpp"
 #include "support/TouchScreen.hpp"
 
 #include "support/debug.hpp"
 
-#include "Windows/TestWindow.hpp"
+#include "windows/TestWindow.hpp"
+#include "containers/TripleContainer.hpp"
 
 EmptyContainer* ec1;
 EmptyContainer* ec2;
 EmptyContainer* ec3;
+EmptyContainer* ec4;
 
 ButtonContainer* headerButton;
 ButtonContainer* centerButton;
@@ -26,45 +27,37 @@ ButtonContainer* bottomButton;
 TextContainer* tc1;
 TextContainer* tc2;
 
-TestWindow* tw;
-
-
-// mAllScreen( new EmptyContainer({0,0}, supp::FULLSCREEN, supp::DEFAULT_BG_LIGHT_COLOR) ),
-//     mUpperBar( new EmptyContainer(supp::NO_POSITION, {0, 25}, supp::DEFAULT_BG_DARK_COLOR) ),
-//     mLoweBar( new EmptyContainer(supp::NO_POSITION, {0, 25}, supp::DEFAULT_BG_DARK_COLOR) ),
-//     mUpperText( new TextContainer("Vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_DARK_COLOR) ),
-//     mLowerText( new TextContainer("Vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_DARK_COLOR) )
-
+TripleContainer* tc;
 
 void setup()
 {
     Serial.begin(9600);
 
-    ec1 = new EmptyContainer({0, 0}, supp::FULLSCREEN, supp::DEFAULT_BG_LIGHT_COLOR);
-    ec2 = new EmptyContainer(supp::NO_POSITION, {0, 25}, supp::DEFAULT_BG_DARK_COLOR);
-    ec3 = new EmptyContainer(supp::NO_POSITION, {0, 25}, supp::DEFAULT_BG_DARK_COLOR);
+    
+    tc = new TripleContainer({0, 100}, {240, 25}, supp::DEFAULT_BG_LIGHT_COLOR);
 
-    tc1 = new TextContainer("Vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_DARK_COLOR);
-    tc2 = new TextContainer("Vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_DARK_COLOR);
+    tc1 = new TextContainer( "Vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR );
+    headerButton = new ButtonContainer("x", [](){ Serial.println("Tap"); }, supp::NO_POSITION, {20, 20}, supp::DEFAULT_BG_LIGHT_COLOR);
 
-    ec2->addContainer(tc1, IContainerBase::POSITION_CENTER);
-    ec3->addContainer(tc2, IContainerBase::POSITION_CENTER);
+    ec1 = new EmptyContainer({50, 50}, {80, 50}, {255, 0, 0});
+    ec2 = new EmptyContainer(supp::NO_POSITION, {80, 25}, {0, 255, 0});
+    ec3 = new EmptyContainer(supp::NO_POSITION, {80, 25}, {0, 0, 255});
 
-    ec1->addContainer(ec2,IContainerBase::POSITION_TOP);
-    ec1->addContainer(ec3,IContainerBase::POSITION_BOTTOM);
+    ec4 = new EmptyContainer({0, 0}, supp::FULLSCREEN, supp::DEFAULT_BG_LIGHT_COLOR);
 
-    ec1->draw();
+    tc->setLeft(ec1);
+    tc->setMiddle(ec2);
+    tc->setRight(ec3);
 
-    // tw = new TestWindow();
-    // tw->drawAll();
+    ec4->addContainer(tc, IContainerBase::POSITION_CENTER);
+    ec4->draw();
 
+    delay(1000);
+    ec2->setMainColor({255, 255, 0});
 }
 
 void loop()
 {
-    if(TouchScreen::getInstance().readyTouch())
-    {
-        if( tc1->getText() == "Vlad" ) tc1->setText("No Vlad");
-        else tc1->setText("Vlad");
-    }
+    // supp::Point tp = TouchScreen::getInstance().getTouch();
+    // tc->handleTouch(tp);
 }
