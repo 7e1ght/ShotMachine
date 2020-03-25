@@ -127,20 +127,6 @@ public:
     void push_back(value_type item);
     uint8_t size() { return mSize; }
     uint8_t capacity() { return mCapacity; }
-private:
-    uint8_t mCapacity;
-    uint8_t mSize;
-
-    value_type* mItemArray;
-
-    void resize();
-    void copyOldItemsTo(value_type* newArray)
-    {
-        for(int i = 0; i < mSize; ++i)
-        {
-            newArray[i] = mItemArray[i];
-        }
-    }
 
     value_type operator[](const uint8_t index) const
     {
@@ -154,6 +140,20 @@ private:
             (
                 const_cast<const Vector<T*>* >(this)[index]
             );
+    }
+private:
+    uint8_t mCapacity;
+    uint8_t mSize;
+
+    value_type* mItemArray;
+
+    void resize();
+    void copyOldItemsTo(value_type* newArray)
+    {
+        for(int i = 0; i < mSize; ++i)
+        {
+            newArray[i] = mItemArray[i];
+        }
     }
 };
 
