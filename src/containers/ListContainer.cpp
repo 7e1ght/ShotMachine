@@ -32,5 +32,5 @@ void ListContainer::changeInsidePositionSize(Item* item)
 
 void ListContainer::addItem(IContainerBase* leftBlock, IContainerBase* middleBlock, IContainerBase* rightBlock)
 {
-    
+
 }
