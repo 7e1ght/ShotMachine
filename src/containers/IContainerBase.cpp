@@ -18,7 +18,10 @@ void IContainerBase::baseDraw() const noexcept
     (
         [](BaseVector::value_type container)
         {
-            container->draw();
+            if(nullptr != container)
+            {
+                container->draw();
+            }
 
             return true;
         }
@@ -60,12 +63,15 @@ void IContainerBase::handleTouch(const supp::Point& touchPoint) const
         {
             bool noTouchable = true;
 
-            if(true == container->isInside(touchPoint))
+            if(nullptr != container)
             {
-                container->handleTouch(touchPoint);
-                noTouchable = false;
+                if(true == container->isInside(touchPoint))
+                {
+                    container->handleTouch(touchPoint);
+                    noTouchable = false;
+                }
             }
-
+            
             return noTouchable;
         }
     );
