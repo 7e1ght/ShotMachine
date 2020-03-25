@@ -115,7 +115,7 @@ public:
     Vector( uint8_t capacity = cfg::vector::DEFAULT_CAPACITY ) 
         : mCapacity(capacity)
         , mSize(0)
-        , mItemArray(new T*[mCapacity])
+        , mItemArray(new value_type[mCapacity])
     {}
 
     ~Vector();
@@ -140,6 +140,11 @@ private:
         {
             newArray[i] = mItemArray[i];
         }
+    }
+
+    value_type operator[](const uint8_t index)
+    {
+        return mItemArray[index];
     }
 };
 
