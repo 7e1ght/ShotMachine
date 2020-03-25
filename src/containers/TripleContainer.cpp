@@ -31,7 +31,6 @@ void TripleContainer::setLeft(IContainerBase* left) const noexcept
 void TripleContainer::setMiddle(IContainerBase* middle) const noexcept
 {
     mMiddleBlock->clear();
-    middle->setSize( {10, 10} );
     mMiddleBlock->addContainer(middle, IContainerBase::POSITION_CENTER);
 }
 
