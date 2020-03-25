@@ -39,8 +39,8 @@ public:
     void for_each(F func);
 
     void push_back(T item);
-    uint8_t size() { return mSize; }
-    uint8_t capacity() { return mCapacity; }
+    uint8_t size() const noexcept { return mSize; }
+    uint8_t capacity() const noexcept { return mCapacity; }
 };
 
 template<typename T>
