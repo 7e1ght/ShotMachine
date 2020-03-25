@@ -142,9 +142,18 @@ private:
         }
     }
 
-    value_type operator[](const uint8_t index)
+    value_type operator[](const uint8_t index) const
     {
         return mItemArray[index];
+    }
+
+    value_type operator[](const uint8_t index)
+    {
+        return 
+            const_cast<value_type>
+            (
+                const_cast<const Vector<T*>* >(this)[index]
+            );
     }
 };
 
