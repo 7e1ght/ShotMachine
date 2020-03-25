@@ -10,7 +10,7 @@
 class IContainerBase
 {
 protected:
-    virtual void baseDraw() const noexcept = 0;
+    virtual void baseDraw() const noexcept;
     
 private:
     using BaseVector = supp::Vector<IContainerBase*>;
@@ -28,7 +28,7 @@ public:
         POSITION_ABSOLUTE
     };
 
-    IContainerBase(const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent)
+    IContainerBase(const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr)
     : mPosition(position)
     , mSize(size)
     , mMainColor(color)
@@ -64,12 +64,7 @@ public:
 
     void setPositionAlign(const POSITION newPositionAlign) noexcept;
 
-    void clear() const noexcept
-    {
-        mContainers.clear();
-
-        draw();
-    }
+    void clear() const noexcept;
 
     void draw() const;
     virtual void handleTouch(const supp::Point& touchPoint) const;

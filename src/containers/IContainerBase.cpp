@@ -134,7 +134,6 @@ void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION p
         case POSITION_ABSOLUTE:
             break;
         case POSITION_RELATIVE:
-
             container->mPosition = supp::Point(
                 mPosition.x + container->mPosition.x, 
                 mPosition.y + container->mPosition.y
@@ -152,6 +151,12 @@ void IContainerBase::caclPositionSizeAlign(IContainerBase* container) noexcept
     {
         caclPositionSizeAlign(container, mPositionAlign);
     }
+}
+
+void IContainerBase::clear() const noexcept
+{
+    mContainers.clear();
+    draw();
 }
 
 void IContainerBase::addContainer(IContainerBase* container, POSITION positionAlign) noexcept
