@@ -13,20 +13,23 @@ class ListContainer
     private:
         using Item = TripleContainer;
 
-        EmptyContainer mMainContainer;
-
-        supp::Vector<Item*> mDrawItems;
         supp::Vector<Item*> mItemBuffer;
 
-        void changeInsidePositionSize(Item* item);
+        Item* generateItem() noexcept;
+        void baseDraw() const noexcept override;
 
         const uint8_t mDrawItemCount;
         const uint8_t mItemHeight;
-    public:
-        void addItem(Item* newItem);
-        void addItem(IContainerBase* leftBlock, IContainerBase* middleBlock, IContainerBase* rightBlock);
 
-        ListContainer(const uint8_t drawItemCount, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent);
+        uint8_t mLowerIndex;
+        uint8_t mHighIndex;
+    public:
+        void addItem(IContainerBase* leftBlock, IContainerBase* middleBlock = nullptr, IContainerBase* rightBlock = nullptr);
+
+        void moveRangeUp() noexcept;
+        void moveRangeDown() noexcept;
+
+        ListContainer(const uint8_t drawItemCount, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
 };
 
 #endif // LIST_CONTAINER_HPP
