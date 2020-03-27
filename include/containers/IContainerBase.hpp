@@ -10,8 +10,7 @@
 class IContainerBase
 {
 protected:
-    virtual void baseDraw() const noexcept = 0;
-    
+    virtual void baseDraw() const noexcept;
 private:
     using BaseVector = supp::Vector<IContainerBase*>;
 

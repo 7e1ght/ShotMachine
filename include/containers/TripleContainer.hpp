@@ -12,7 +12,6 @@ class TripleContainer
         IContainerBase* mMiddleBlock;
         IContainerBase* mRightBlock;
 
-        virtual void baseDraw() const noexcept;
     public:
         TripleContainer(
             const supp::Point& point, 
