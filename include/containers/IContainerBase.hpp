@@ -39,7 +39,6 @@ public:
     void addContainer(IContainerBase* container, POSITION alingType = POSITION_RELATIVE);
 
     void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION positionAlign) noexcept;
-    void IContainerBase::caclPositionSizeAlign(IContainerBase* container) noexcept;
 
     virtual ~IContainerBase() = 0;
 
@@ -64,9 +63,9 @@ public:
 
     void setPositionAlign(const POSITION newPositionAlign) noexcept;
 
-    void clear() const noexcept;
+    void clear() noexcept;
 
-    void draw() const;
+    void draw();
     virtual void handleTouch(const supp::Point& touchPoint) const;
 private:
     void overlapThis() const noexcept 

@@ -2,11 +2,11 @@
 
 #include "support/debug.hpp"
 
-void IContainerBase::draw() const
+void IContainerBase::draw()
 {
     if(nullptr != mParent)
     {
-        mParent->addContainer(const_cast<IContainerBase*>(this), mPositionAlign);
+        mParent->addContainer(this, mPositionAlign);
     }
 
     baseDraw();
@@ -20,6 +20,7 @@ void IContainerBase::baseDraw() const noexcept
         {
             if(nullptr != container)
             {
+                Serial.println((int)container);
                 container->draw();
             }
 
@@ -151,15 +152,7 @@ void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION p
     }
 }
 
-void IContainerBase::caclPositionSizeAlign(IContainerBase* container) noexcept
-{
-    if(nullptr != container)
-    {
-        caclPositionSizeAlign(container, mPositionAlign);
-    }
-}
-
-void IContainerBase::clear() const noexcept
+void IContainerBase::clear() noexcept
 {
     mContainers.clear();
     draw();
