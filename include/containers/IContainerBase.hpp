@@ -11,6 +11,7 @@ class IContainerBase
 {
 protected:
     virtual void baseDraw() const noexcept;
+    
 private:
     using BaseVector = supp::Vector<IContainerBase*>;
 
@@ -27,7 +28,7 @@ public:
         POSITION_ABSOLUTE
     };
 
-    IContainerBase(const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent)
+    IContainerBase(const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr)
     : mPosition(position)
     , mSize(size)
     , mMainColor(color)
@@ -38,7 +39,6 @@ public:
     void addContainer(IContainerBase* container, POSITION alingType = POSITION_RELATIVE);
 
     void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION positionAlign) noexcept;
-    void IContainerBase::caclPositionSizeAlign(IContainerBase* container) noexcept;
 
     virtual ~IContainerBase() = 0;
 
@@ -63,14 +63,9 @@ public:
 
     void setPositionAlign(const POSITION newPositionAlign) noexcept;
 
-    void clear() const noexcept
-    {
-        mContainers.clear();
+    void clear() noexcept;
 
-        draw();
-    }
-
-    void draw() const;
+    void draw();
     virtual void handleTouch(const supp::Point& touchPoint) const;
 private:
     void overlapThis() const noexcept 
