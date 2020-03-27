@@ -13,7 +13,7 @@ void TextContainer::baseDraw() const noexcept
             mText, 
             IContainerBase::getPosition(), 
             IContainerBase::getMainColor(), 
-            mSecondaryColor, 
+            nullptr == IContainerBase::getParent() ? mSecondaryColor : IContainerBase::getParent()->getMainColor(), 
             mDeg,
             mFontStyle
         );

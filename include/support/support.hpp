@@ -19,6 +19,16 @@ namespace supp
         Size(uint16_t wh) : width(wh), height(wh) {}
         Size(uint16_t w, uint16_t h) : width(w), height(h) {}
         Size() = default;
+
+        const Size operator+(const Size& other)
+        {
+            return Size(width + other.width, height + other.height);
+        }
+
+        const Size operator-(const Size& other)
+        {
+            return Size(width - other.width, height - other.height);
+        }
     };
 
     struct Point
@@ -196,10 +206,17 @@ namespace supp
     const Color DEFAULT_BG_LIGHT_COLOR = { 96, 125, 139 };
     const Color DEFAULT_BG_DARK_COLOR = { 69, 90, 100 };
     const Color DEFAULT_TEXT_COLOR = { 248, 248, 248 };
+    
+    const Point START_SCREEN_POSITION = {0, 0};
+
+    const Color NO_COLOR = {0, 0, 0};
     const Point NO_TOUCH = { -1, -1 };
     const Point NO_POSITION = { -1, -1 };
+
     const uint64_t DEFAULT_TAP_DELAY = 500;
+    
     const uint8_t NO_DEG = 0;
+
     const Size FULLSCREEN = {cfg::display::SCREEN_WIDTH, cfg::display::SCREEN_HEIGHT};
 }
 #endif // SUPPORT_H
