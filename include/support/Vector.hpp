@@ -118,6 +118,8 @@ public:
         , mItemArray(new value_type[mCapacity])
     {}
 
+    Vector( const Vector<value_type>& other ) = delete;
+
     ~Vector();
 
     template<typename F>
@@ -135,11 +137,14 @@ public:
 
     value_type operator[](const uint8_t index)
     {
-            const_cast<T*>
+        return 
+            const_cast<value_type>
             (
-                (*const_cast< const Vector<value_type>* >(this))[index]
+                const_cast<const Vector<value_type>*>(this)->operator[](index)
             );
     }
+
+    Vector<value_type> operator=(const Vector<value_type>& other) = delete;
 private:
     uint8_t mCapacity;
     uint8_t mSize;
