@@ -40,11 +40,12 @@ void setup()
     // tc = new TripleContainer({0, 100}, {240, 25}, supp::DEFAULT_BG_LIGHT_COLOR);
 
     tc1 = new TextContainer( "Vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR );
+    tc1->setFont(supp::FONT::SMALL);
     // headerButton = new ButtonContainer("x", [](){ Serial.println("Tap"); }, supp::NO_POSITION, {20, 20}, supp::DEFAULT_BG_LIGHT_COLOR);
 
-    // ec1 = new EmptyContainer({50, 50}, {80, 50}, {255, 0, 0});
-    // ec2 = new EmptyContainer(supp::NO_POSITION, {80, 25}, {0, 255, 0});
-    // ec3 = new EmptyContainer(supp::NO_POSITION, {80, 25}, {0, 0, 255});
+    ec1 = new EmptyContainer(supp::NO_POSITION, {65, 25}, {255, 0, 0});
+    ec2 = new EmptyContainer(supp::NO_POSITION, {65, 25}, {0, 255, 0});
+    ec3 = new EmptyContainer(supp::NO_POSITION, {65, 25}, {0, 0, 255});
 
     // ec4 = new EmptyContainer({0, 0}, supp::FULLSCREEN, supp::DEFAULT_BG_LIGHT_COLOR);
 
@@ -58,7 +59,13 @@ void setup()
     // delay(1000);
     // ec2->setMainColor({255, 255, 0});
 
-    lc = new ListContainer(2, {0, 50}, {100, 100}, supp::DEFAULT_BG_LIGHT_COLOR);
+    // lc = new ListContainer(2, {0, 50}, {100, 100}, supp::DEFAULT_BG_LIGHT_COLOR);
+
+    // lc->addItem(tc1);
+
+    // lc->draw();
+
+    lc = new ListContainer(2, {0, 0}, {240, 100}, supp::DEFAULT_BG_DARK_COLOR);
 
     lc->addItem(tc1);
 

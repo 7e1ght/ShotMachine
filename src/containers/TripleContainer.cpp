@@ -19,18 +19,41 @@ TripleContainer::TripleContainer(
 
 void TripleContainer::setLeft(IContainerBase* left) const noexcept
 {
-    mLeftBlock->clear();
-    mLeftBlock->addContainer(left, IContainerBase::POSITION_CENTER);
+    if(nullptr != mLeftBlock)
+    {
+        mLeftBlock->clear();
+        mLeftBlock->addContainer(left, IContainerBase::POSITION_CENTER);
+    }
+    else
+    {
+        Serial.println("TripleContainer::setLeft(): nullptr");
+    }
+    
 }
 
 void TripleContainer::setMiddle(IContainerBase* middle) const noexcept
 {
-    mMiddleBlock->clear();
-    mMiddleBlock->addContainer(middle, IContainerBase::POSITION_CENTER);
+    if(nullptr != mMiddleBlock)
+    {
+        mMiddleBlock->clear();
+        mMiddleBlock->addContainer(middle, IContainerBase::POSITION_CENTER);
+    }
+    else
+    {
+        Serial.println("TripleContainer::setMiddle(): nullptr");
+    }
+    
 }
 
 void TripleContainer::setRight(IContainerBase* right) const noexcept
 {
-    mRightBlock->clear();
-    mRightBlock->addContainer(right, IContainerBase::POSITION_CENTER);
+    if(nullptr != mRightBlock)
+    {
+        mRightBlock->clear();
+        mRightBlock->addContainer(right, IContainerBase::POSITION_CENTER);
+    }
+    else
+    {
+        Serial.println("TripleContainer::setRight(): nullptr");
+    }
 }

@@ -14,19 +14,21 @@ void IContainerBase::draw()
 
 void IContainerBase::baseDraw() const noexcept
 {
-    mContainers.for_each
-    (
-        [](BaseVector::value_type container)
-        {
-            if(nullptr != container)
+    if(mContainers.size() != 0)
+    {
+        mContainers.for_each
+        (
+            [](BaseVector::value_type container)
             {
-                Serial.println((int)container);
-                container->draw();
-            }
+                if(nullptr != container)
+                {
+                    container->draw();
+                }
 
-            return true;
-        }
-    );
+                return true;
+            }
+        );
+    }
 }
 
 void IContainerBase::setMainColor(const supp::Color& newColor) noexcept
@@ -58,24 +60,27 @@ void IContainerBase::setSize(const supp::Size& newSize) noexcept
 }
 
 void IContainerBase::handleTouch(const supp::Point& touchPoint) const
-{
-    mContainers.for_each(
-        [&](BaseVector::value_type container)
-        {
-            bool noTouchable = true;
-
-            if(nullptr != container)
+{   
+    if(mContainers.size() != 0)
+    {
+        mContainers.for_each(
+            [&](BaseVector::value_type container)
             {
-                if(true == container->isInside(touchPoint))
+                bool noTouchable = true;
+
+                if(nullptr != container)
                 {
-                    container->handleTouch(touchPoint);
-                    noTouchable = false;
+                    if(true == container->isInside(touchPoint))
+                    {
+                        container->handleTouch(touchPoint);
+                        noTouchable = false;
+                    }
                 }
+                
+                return noTouchable;
             }
-            
-            return noTouchable;
-        }
-    );
+        );
+    }
 }
 
 void IContainerBase::setPositionAlign(const IContainerBase::POSITION newAlignPosition) noexcept

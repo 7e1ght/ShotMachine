@@ -27,9 +27,7 @@ TripleContainer* ListContainer::generateItem() noexcept
         IContainerBase::getSize().width,
         mItemHeight
     );
-    
-    // dbg::printPoint(tPosition);
-    // dbg::printSize(tSize);
+
     Item* tItem = new Item(tPosition, tSize, IContainerBase::getMainColor(), this); 
     return tItem;
 }
@@ -67,13 +65,10 @@ void ListContainer::moveRangeUp() noexcept
 void ListContainer::addItem(IContainerBase* leftBlock, IContainerBase* middleBlock, IContainerBase* rightBlock)
 {
     Item* tItem = generateItem();
-    Serial.println((int)tItem);
 
     tItem->setLeft(leftBlock);
     tItem->setMiddle(middleBlock);
     tItem->setRight(rightBlock);
 
     mItemBuffer.push_back(tItem);
-
-    delay(5000);
 }
