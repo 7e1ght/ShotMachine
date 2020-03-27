@@ -39,8 +39,8 @@ public:
     void for_each(F func);
 
     void push_back(T item);
-    uint8_t size() { return mSize; }
-    uint8_t capacity() { return mCapacity; }
+    uint8_t size() const noexcept { return mSize; }
+    uint8_t capacity() const noexcept { return mCapacity; }
 };
 
 template<typename T>
@@ -115,8 +115,10 @@ public:
     Vector( uint8_t capacity = cfg::vector::DEFAULT_CAPACITY ) 
         : mCapacity(capacity)
         , mSize(0)
-        , mItemArray(new T*[mCapacity])
+        , mItemArray(new value_type[mCapacity])
     {}
+
+    Vector( const Vector<value_type>& other ) = delete;
 
     ~Vector();
 
@@ -127,6 +129,22 @@ public:
     void push_back(value_type item);
     uint8_t size() { return mSize; }
     uint8_t capacity() { return mCapacity; }
+
+    const value_type operator[](const uint8_t index) const
+    {
+        return mItemArray[index];
+    }
+
+    value_type operator[](const uint8_t index)
+    {
+        return 
+            const_cast<value_type>
+            (
+                const_cast<const Vector<value_type>*>(this)->operator[](index)
+            );
+    }
+
+    Vector<value_type> operator=(const Vector<value_type>& other) = delete;
 private:
     uint8_t mCapacity;
     uint8_t mSize;
