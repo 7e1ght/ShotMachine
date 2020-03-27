@@ -74,6 +74,6 @@ void ListContainer::addItem(IContainerBase* leftBlock, IContainerBase* middleBlo
     tItem->setRight(rightBlock);
 
     mItemBuffer.push_back(tItem);
-    Serial.println((int)mItemBuffer[0]);
+
     delay(5000);
 }
