@@ -14,61 +14,47 @@ ListContainer::ListContainer(const uint8_t drawItemCount,
 {
 }
 
-TripleContainer* ListContainer::generateItem() noexcept
+void ListContainer::baseDraw() noexcept
 {
-    supp::Point tPosition
-    (
-        IContainerBase::getPosition().x,
-        IContainerBase::getPosition().y + (mItemBuffer.size() % mDrawItemCount) * mItemHeight
-    );
-
-    supp::Size tSize
-    (
-        IContainerBase::getSize().width,
-        mItemHeight
-    );
-
-    Item* tItem = new Item(tPosition, tSize, IContainerBase::getMainColor(), this); 
-    return tItem;
-}
-
-void ListContainer::baseDraw() const noexcept
-{
-    for(uint8_t i = mLowerIndex; i < mHighIndex; ++i)
+    for(uint8_t i = mLowerIndex; i < mHighIndex && i < mItemContainer.size(); ++i)
     {
-        if(nullptr != mItemBuffer[i])
+        if(nullptr != mItemContainer[i])
         {
-            mItemBuffer[i]->draw();
+            mItemContainer[i]->draw();
         }
     }
 }
 
+
+void ListContainer::addItem(Item* newItem)
+{
+    newItem->setParent(this);
+    newItem->setSize( { IContainerBase::getSize().width, mItemHeight} );
+    newItem->setStartPosition( {0, mItemContainer.size() * mItemHeight} );
+
+
+    mItemContainer.push_back(newItem);
+    IContainerBase::addContainer(newItem, IContainerBase::POSITION_RELATIVE);
+}
+
 void ListContainer::moveRangeDown() noexcept
 {
-    if(mItemBuffer.size() != mHighIndex)
+    if(mItemContainer.size() != mHighIndex)
     {
         ++mLowerIndex;
         ++mHighIndex;
+
+        scrollDown();
     }
 }
 
-void ListContainer::moveRangeUp() noexcept
+void ListContainer::scrollDown() noexcept
 {
-    if(0 != mLowerIndex)
+    for (uint8_t i = mLowerIndex; i < mItemContainer.size(); ++i)
     {
-        --mLowerIndex;
-        --mHighIndex;
+        if(nullptr != mItemContainer[i])
+        {
+            mItemContainer[i]->setStartPosition( {0,  mItemContainer[i]->getStartPosition().y - mItemHeight} );
+        }
     }
-}
-
-
-void ListContainer::addItem(IContainerBase* leftBlock, IContainerBase* middleBlock, IContainerBase* rightBlock)
-{
-    Item* tItem = generateItem();
-
-    tItem->setLeft(leftBlock);
-    tItem->setMiddle(middleBlock);
-    tItem->setRight(rightBlock);
-
-    mItemBuffer.push_back(tItem);
 }

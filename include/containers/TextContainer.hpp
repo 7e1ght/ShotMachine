@@ -49,7 +49,7 @@ public:
 private:
     using IContainerBase::addContainer;
 
-    void baseDraw() const noexcept override;
+    void baseDraw() noexcept override;
 
     String mText;
     supp::Color mSecondaryColor;

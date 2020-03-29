@@ -10,7 +10,7 @@
 class IContainerBase
 {
 protected:
-    virtual void baseDraw() const noexcept;
+    virtual void baseDraw() noexcept;
     
 private:
     using BaseVector = supp::Vector<IContainerBase*>;
@@ -30,6 +30,7 @@ public:
 
     IContainerBase(const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr)
     : mPosition(position)
+    , mStartPosition(position)
     , mSize(size)
     , mMainColor(color)
     , mParent(parent)
@@ -41,6 +42,9 @@ public:
     void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION positionAlign) noexcept;
 
     virtual ~IContainerBase() = 0;
+
+    const supp::Point getStartPosition() const { return mStartPosition; }
+    virtual void setStartPosition(const supp::Point& newStartPosition) noexcept;
 
     const supp::Size& getSize() const { return mSize; } 
     virtual void setSize(const supp::Size& newSize) noexcept;
@@ -79,6 +83,7 @@ private:
 
     supp::Point mRelativePosition;
     supp::Point mPosition;
+    supp::Point mStartPosition;
     supp::Size mSize;
     supp::Color mMainColor;
     POSITION mPositionAlign;

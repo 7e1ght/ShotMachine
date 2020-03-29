@@ -10,26 +10,24 @@
 class ListContainer
     : public IContainerBase
 {
-    private:
-        using Item = TripleContainer;
+public:
+    using Item = TripleContainer;
 
-        supp::Vector<Item*> mItemBuffer;
+    ListContainer(const uint8_t drawItemCount, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
 
-        Item* generateItem() noexcept;
-        void baseDraw() const noexcept override;
+    void addItem(Item* newItem) noexcept;
+    void moveRangeDown() noexcept;
+    void scrollDown() noexcept;
+private:
+    supp::Vector<Item*> mItemContainer;
 
-        const uint8_t mDrawItemCount;
-        const uint8_t mItemHeight;
+    void baseDraw() noexcept override;
 
-        uint8_t mLowerIndex;
-        uint8_t mHighIndex;
-    public:
-        void addItem(IContainerBase* leftBlock, IContainerBase* middleBlock = nullptr, IContainerBase* rightBlock = nullptr);
+    const uint8_t mDrawItemCount;
+    const uint8_t mItemHeight;
 
-        void moveRangeUp() noexcept;
-        void moveRangeDown() noexcept;
-
-        ListContainer(const uint8_t drawItemCount, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
+    uint8_t mLowerIndex;
+    uint8_t mHighIndex;
 };
 
 #endif // LIST_CONTAINER_HPP

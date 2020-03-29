@@ -26,7 +26,7 @@ private:
         InvokerRelease(FunctionType function) : mFunction(function) {}
     };
 
-    void baseDraw() const noexcept override;
+    void baseDraw() noexcept override;
 
     IInvoker* mInvoker;
 

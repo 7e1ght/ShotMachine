@@ -12,7 +12,7 @@ void IContainerBase::draw()
     baseDraw();
 }
 
-void IContainerBase::baseDraw() const noexcept
+void IContainerBase::baseDraw() noexcept
 {
     if(mContainers.size() != 0)
     {
@@ -35,28 +35,30 @@ void IContainerBase::setMainColor(const supp::Color& newColor) noexcept
 {
     overlapThis();
     mMainColor = newColor;
-    draw();
 }
 
 void IContainerBase::setParent(IContainerBase* newParent) noexcept
 {
     overlapThis();
     mParent = newParent;
-    draw();
 }
 
 void IContainerBase::setPosition(const supp::Point& newPosition) noexcept
 {
     overlapThis();
     mPosition = newPosition;
-    draw();
 }
+
+void IContainerBase::setStartPosition(const supp::Point& newStartPosition) noexcept
+{
+    overlapThis();
+    mStartPosition = newStartPosition;
+} 
 
 void IContainerBase::setSize(const supp::Size& newSize) noexcept
 {
     overlapThis();
     mSize = newSize;
-    draw();
 }
 
 void IContainerBase::handleTouch(const supp::Point& touchPoint) const
@@ -87,7 +89,6 @@ void IContainerBase::setPositionAlign(const IContainerBase::POSITION newAlignPos
 {
     overlapThis();
     mPositionAlign = newAlignPosition;
-    draw();
 }
 
 void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION positionAlign) noexcept
@@ -95,6 +96,7 @@ void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION p
     if(nullptr != container)
     {
         container->mPositionAlign = positionAlign;
+
 
         switch (positionAlign)
         {
@@ -147,8 +149,8 @@ void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION p
             break;
         case POSITION_RELATIVE:
             container->mPosition = supp::Point(
-                mPosition.x + container->mPosition.x, 
-                mPosition.y + container->mPosition.y
+                mPosition.x + container->mStartPosition.x, 
+                mPosition.y + container->mStartPosition.y
             );
             break;
         default:
@@ -160,7 +162,6 @@ void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION p
 void IContainerBase::clear() noexcept
 {
     mContainers.clear();
-    draw();
 }
 
 void IContainerBase::addContainer(IContainerBase* container, POSITION positionAlign) noexcept

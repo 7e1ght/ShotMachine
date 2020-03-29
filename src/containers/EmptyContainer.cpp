@@ -2,7 +2,7 @@
 
 #include "support/Screen.hpp"
 
-void EmptyContainer::baseDraw() const noexcept
+void EmptyContainer::baseDraw() noexcept
 {
     Screen::getInstance().fillRect(
         {IContainerBase::getPosition().x, IContainerBase::getPosition().y},

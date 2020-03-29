@@ -9,7 +9,7 @@ class EmptyContainer
     : public IContainerBase
 {
 private:
-    void baseDraw() const noexcept override;
+    void baseDraw() noexcept override;
 public:
     EmptyContainer(
         const supp::Point& point, 
