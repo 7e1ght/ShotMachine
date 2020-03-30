@@ -16,8 +16,12 @@ public:
     ListContainer(const uint8_t drawItemCount, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
 
     void addItem(Item* newItem) noexcept;
+
     void moveRangeDown() noexcept;
+    void moveRangeUp() noexcept;
+
     void scrollDown() noexcept;
+    void scrollUp() noexcept;
 private:
     supp::Vector<Item*> mItemContainer;
 

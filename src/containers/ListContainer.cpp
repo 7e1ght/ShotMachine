@@ -48,6 +48,28 @@ void ListContainer::moveRangeDown() noexcept
     }
 }
 
+void ListContainer::moveRangeUp() noexcept
+{
+    if( 0 != mLowerIndex)
+    {
+        --mLowerIndex;
+        --mHighIndex;
+
+        scrollUp();
+    }
+}
+
+void ListContainer::scrollUp() noexcept
+{   
+    for (uint8_t i = mHighIndex; 0 < i; --i)
+    {
+        if(nullptr != mItemContainer[i])
+        {
+            mItemContainer[i]->setStartPosition( {0,  mItemContainer[i]->getStartPosition().y + mItemHeight} );
+        }
+    }
+}
+
 void ListContainer::scrollDown() noexcept
 {
     for (uint8_t i = mLowerIndex; i < mItemContainer.size(); ++i)

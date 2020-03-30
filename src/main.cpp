@@ -72,20 +72,30 @@ void setup()
     lc->addItem(item4);
     lc->addItem(item5);
     lc->addItem(item2);
+
+    lc->draw();
     
     delay(2000);
     lc->setPosition({0, 200});
-
-    delay(2000);
-    lc->moveRangeDown();
-
-    delay(2000);
-    lc->moveRangeDown();
-
-    lc->moveRangeDown();
-    lc->moveRangeDown();
-
     lc->draw();
+
+    delay(2000);
+    lc->moveRangeDown();
+    lc->draw();
+
+    delay(2000);
+    lc->moveRangeUp();
+    lc->draw();
+
+    delay(2000);
+    lc->moveRangeUp();
+    lc->draw();
+
+    delay(2000);
+    lc->moveRangeUp();
+    lc->draw();
+
+
 
     // delay(2000);
     // lc->moveRangeDown();
