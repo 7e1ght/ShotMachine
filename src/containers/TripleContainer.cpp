@@ -17,6 +17,17 @@ TripleContainer::TripleContainer(
     IContainerBase::addContainer( mRightBlock, IContainerBase::POSITION_RIGHT );
 }
 
+void TripleContainer::setSize( const supp::Size& newSize) noexcept
+{
+    supp::Size tSize = { newSize.width/3, newSize.height };
+
+    mLeftBlock->setSize( tSize );
+    mMiddleBlock->setSize( tSize );
+    mRightBlock->setSize( tSize);
+
+    IContainerBase::setSize(newSize);
+}
+
 void TripleContainer::setLeft(IContainerBase* left) const noexcept
 {
     if(nullptr != mLeftBlock)

@@ -45,57 +45,27 @@ void setup()
 
     tc1 = new TextContainer( "Vlad", {0, 0}, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR );
 
-    ec1 = new EmptyContainer(supp::NO_POSITION, {65, 30}, {255, 0, 0});
+    ec1 = new EmptyContainer({0, 50}, {240, 100}, {255, 0, 0});
     ec2 = new EmptyContainer(supp::NO_POSITION, {65, 30}, {0, 255, 0});
     ec3 = new EmptyContainer(supp::NO_POSITION, {65, 30}, {0, 0, 255});
 
     ec4 = new EmptyContainer(supp::Point(0), supp::FULLSCREEN, supp::DEFAULT_BG_LIGHT_COLOR);
     ec4->draw();
 
-    lc = new ListContainer(2, {0, 50}, {240, 100}, ec4->getMainColor());
+    lc = new ListContainer(2, {0, 100}, {240, 100}, ec4->getMainColor());
 
     tc = new TripleContainer({0, 100}, {240, 50}, supp::DEFAULT_BG_LIGHT_COLOR);
 
     headerButton = new ButtonContainer("x", [](){ Serial.println("Vlad"); }, supp::NO_POSITION, {65, 30}, supp::DEFAULT_BG_DARK_COLOR);
 
-    item1 = new ListContainer::Item({0, 0}, {240, 50}, supp::DEFAULT_BG_DARK_COLOR);
-    item2 = new ListContainer::Item({0, 50}, {240, 50}, {255, 255, 0});
-    item3 = new ListContainer::Item({0, 100}, {240, 50}, {255, 0, 0});
-    item4 = new ListContainer::Item({0, 150}, {240, 50}, {0, 255, 0});
-    item5 = new ListContainer::Item({0, 50}, {240, 50}, {0, 0, 255});
+    item1 = new ListContainer::Item({0, 0}, {0, 0}, supp::DEFAULT_BG_DARK_COLOR);
+    item2 = new ListContainer::Item({0, 0}, {0, 0}, {255, 255, 0});
+    item3 = new ListContainer::Item({0, 0}, {0, 0}, {255, 0, 0});
+    item4 = new ListContainer::Item({0, 0}, {0, 0}, {0, 255, 0});
+    item5 = new ListContainer::Item({0, 0}, {0, 0}, {0, 0, 255});
 
     // item1->draw();
     // item2->draw();
-    ec4->addContainer(lc, IContainerBase::POSITION_ABSOLUTE);
-
-    lc->addItem(item3);
-    lc->addItem(item4);
-    lc->addItem(item5);
-    lc->addItem(item2);
-
-    lc->draw();
-    
-    delay(2000);
-    lc->setPosition({0, 200});
-    lc->draw();
-
-    delay(2000);
-    lc->moveRangeDown();
-    lc->draw();
-
-    delay(2000);
-    lc->moveRangeUp();
-    lc->draw();
-
-    delay(2000);
-    lc->moveRangeUp();
-    lc->draw();
-
-    delay(2000);
-    lc->moveRangeUp();
-    lc->draw();
-
-
 
     // delay(2000);
     // lc->moveRangeDown();
@@ -114,24 +84,29 @@ void setup()
     // item5->draw();
 
     // lc->addItem(item1);
-    // lc->addItem(item2);
-    // lc->addItem(item3);
-    // lc->addItem(item4);
-    // lc->addItem(item5);
+    lc->addItem(item2);
+    lc->addItem(item3);
+    lc->addItem(item4);
+    lc->addItem(item5);
 
-    // lc->draw();
+    lc->draw();
 
-    // delay(2000);
-    // lc->moveRangeDown();
+    delay(1000);
+    lc->moveRangeDown();
+    lc->moveRangeDown();
+    lc->moveRangeDown();
+    lc->moveRangeDown();
+    lc->moveRangeDown();
+    lc->draw();    
+    
+    delay(2000);
+    lc->moveRangeUp();
+    lc->draw();
 
-    // delay(2000);
-    // lc->moveRangeDown();
+    delay(2000);
+    lc->moveRangeUp();
+    lc->draw();
 
-    // delay(2000);
-    // lc->moveRangeDown();
-
-    // delay(2000);
-    // lc->moveRangeDown();
 }
 
 void loop()

@@ -16,6 +16,7 @@ public:
     ListContainer(const uint8_t drawItemCount, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
 
     void addItem(Item* newItem) noexcept;
+    void addItem(IContainerBase* left, IContainerBase* middle = nullptr, IContainerBase* right = nullptr);
 
     void moveRangeDown() noexcept;
     void moveRangeUp() noexcept;
