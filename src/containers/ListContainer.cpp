@@ -20,10 +20,6 @@ void ListContainer::baseDraw() noexcept
     {
         if(nullptr != mItemContainer[i])
         {
-            Serial.println();
-            dbg::printPoint( mItemContainer[i]->getPosition() );
-            dbg::printPoint( mItemContainer[i]->getPosition() + mItemContainer[i]->getSize() );
-
             mItemContainer[i]->draw();
         }
     }
@@ -35,11 +31,7 @@ void ListContainer::addItem(Item* newItem) noexcept
     newItem->setParent(this);
     newItem->setSize( { IContainerBase::getSize().width, mItemHeight} );
 
-    dbg::printSize(newItem->getSize());
-
     newItem->setStartPosition( {0, mItemContainer.size() * mItemHeight} );
-
-    dbg::printPoint(newItem->getStartPosition());
 
     mItemContainer.push_back(newItem);
     IContainerBase::addContainer(newItem, IContainerBase::POSITION_RELATIVE);
@@ -58,8 +50,8 @@ void ListContainer::addItem(IContainerBase* left, IContainerBase* middle, IConta
     tItem->setMiddle(middle);    
     tItem->setRight(right);
 
-    IContainerBase::addContainer(tItem);
     mItemContainer.push_back(tItem);    
+    IContainerBase::addContainer(tItem, IContainerBase::POSITION_RELATIVE);
 }
 
 void ListContainer::moveRangeDown() noexcept
@@ -86,7 +78,7 @@ void ListContainer::moveRangeUp() noexcept
 
 void ListContainer::scrollUp() noexcept
 {   
-    for (uint8_t i = mItemContainer.size()-1; 0 < i; --i)
+    for (int8_t i = mItemContainer.size()-1; 0 <= i; --i)
     {
         if(nullptr != mItemContainer[i])
         {
@@ -97,7 +89,7 @@ void ListContainer::scrollUp() noexcept
 
 void ListContainer::scrollDown() noexcept
 {
-    for (uint8_t i = mLowerIndex; i < mItemContainer.size(); ++i)
+    for (uint8_t i = 0; i < mItemContainer.size(); ++i)
     {
         if(nullptr != mItemContainer[i])
         {
