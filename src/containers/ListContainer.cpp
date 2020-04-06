@@ -30,6 +30,8 @@ void ListContainer::addItem(Item* newItem) noexcept
 {
     newItem->setParent(this);
     newItem->setSize( { IContainerBase::getSize().width, mItemHeight} );
+    dbg::printColor( IContainerBase::getMainColor() );
+    newItem->setMainColor( IContainerBase::getMainColor() );
 
     newItem->setStartPosition( {0, mItemContainer.size() * mItemHeight} );
 
@@ -40,18 +42,16 @@ void ListContainer::addItem(Item* newItem) noexcept
 void ListContainer::addItem(IContainerBase* left, IContainerBase* middle, IContainerBase* right) noexcept
 {
     Item* tItem = new Item( 
-            {0, mItemContainer.size() * mItemHeight}, 
-            {IContainerBase::getSize().width, mItemHeight},
-            IContainerBase::getMainColor(),
-            this
+            supp::NO_POSITION, 
+            supp::NO_SIZE,
+            IContainerBase::getMainColor()
         );
+    
+    addItem(tItem);
 
     tItem->setLeft(left);    
     tItem->setMiddle(middle);    
     tItem->setRight(right);
-
-    mItemContainer.push_back(tItem);    
-    IContainerBase::addContainer(tItem, IContainerBase::POSITION_RELATIVE);
 }
 
 void ListContainer::moveRangeDown() noexcept

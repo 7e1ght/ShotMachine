@@ -212,6 +212,7 @@ namespace supp
     const Color NO_COLOR = {0, 0, 0};
     const Point NO_TOUCH = { -1, -1 };
     const Point NO_POSITION = { -1, -1 };
+    const Size NO_SIZE = { 0, 0 };
 
     const uint64_t DEFAULT_TAP_DELAY = 500;
     

@@ -12,7 +12,7 @@ void TextContainer::baseDraw() noexcept
     Screen::getInstance().print(
             mText, 
             IContainerBase::getPosition(), 
-            IContainerBase::getMainColor(), 
+            IContainerBase::getMainColor(),
             nullptr == IContainerBase::getParent() ? mSecondaryColor : IContainerBase::getParent()->getMainColor(), 
             mDeg,
             mFontStyle

@@ -16,72 +16,105 @@
 #include "containers/TripleContainer.hpp"
 #include "containers/ListContainer.hpp"
 
-EmptyContainer* ec1;
-EmptyContainer* ec2;
-EmptyContainer* ec3;
-EmptyContainer* ec4;
+EmptyContainer* mainLayout;
 
-ButtonContainer* headerButton;
-ButtonContainer* centerButton;
-ButtonContainer* bottomButton;
+TripleContainer* upperBar;
+TripleContainer* lowerBar;
 
-TextContainer* tc1;
-TextContainer* tc2;
+EmptyContainer* contentLayout;
 
-TripleContainer* tc;
+ListContainer* cocktailContent;
 
-ListContainer* lc;
+EmptyContainer* buttonLayout;
 
-
-ListContainer::Item* item1;
-ListContainer::Item* item2;
-ListContainer::Item* item3;
-ListContainer::Item* item4;
-ListContainer::Item* item5;
+ButtonContainer* createTemplate;
+ButtonContainer* toQueu;
+ButtonContainer* coock;
 
 void setup()
 {
     Serial.begin(9600);
 
-    tc1 = new TextContainer( "Vlad", {0, 0}, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR );
+    mainLayout = new EmptyContainer(supp::Point(0), supp::FULLSCREEN, supp::DEFAULT_BG_LIGHT_COLOR);
 
-    ec1 = new EmptyContainer({0, 50}, {240, 100}, {255, 0, 0});
-    ec2 = new EmptyContainer(supp::NO_POSITION, {65, 30}, {0, 255, 0});
-    ec3 = new EmptyContainer(supp::NO_POSITION, {65, 30}, {0, 0, 255});
+    upperBar = new TripleContainer(supp::NO_POSITION, {0, 25}, supp::DEFAULT_BG_DARK_COLOR);
+    upperBar->setLeft( new TextContainer("<", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR));
+    upperBar->setMiddle( new TextContainer("Slot8", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR));
+    upperBar->setRight( new TextContainer(">", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR));
 
-    ec4 = new EmptyContainer(supp::Point(0), supp::FULLSCREEN, supp::DEFAULT_BG_LIGHT_COLOR);
+    lowerBar = new TripleContainer(supp::NO_POSITION, {0, 25}, supp::DEFAULT_BG_DARK_COLOR);
+    lowerBar->setLeft( new TextContainer("<", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR));
+    lowerBar->setMiddle( new TextContainer("Slot8", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR));
+    lowerBar->setRight( new TextContainer(">", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR));
 
-    lc = new ListContainer(4, {0, 100}, {240, 240}, ec4->getMainColor());
+    contentLayout = new EmptyContainer({0, 25}, {220, cfg::display::SCREEN_HEIGHT-70}, supp::DEFAULT_BG_LIGHT_COLOR);
 
-    headerButton = new ButtonContainer("<", [](){ lc->moveRangeUp(); lc->draw(); }, supp::NO_POSITION, {17, 17}, supp::DEFAULT_BG_LIGHT_COLOR);
-    bottomButton = new ButtonContainer(">", [](){ lc->moveRangeDown(); lc->draw(); }, supp::NO_POSITION, {17, 17}, supp::DEFAULT_BG_LIGHT_COLOR);
-    centerButton = new ButtonContainer("*", [](){ Serial.println("Vladdddddddddddddddd"); }, supp::NO_POSITION, {17, 17}, supp::DEFAULT_BG_LIGHT_COLOR);
+    cocktailContent = new ListContainer(8, supp::NO_POSITION, {220, 155}, mainLayout->getMainColor());
+    cocktailContent->addItem(
+        new TextContainer("vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor())
+    );
+    cocktailContent->addItem(
+        new TextContainer("vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor()),
+        nullptr,
+        new TextContainer("200", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor())
+    );
+    cocktailContent->addItem(
+        new TextContainer("vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor()),
+        nullptr,
+        new TextContainer("200", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor())
+    );
+    cocktailContent->addItem(
+        new TextContainer("vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor()),
+        nullptr,
+        new TextContainer("200", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor())
+    );
+    cocktailContent->addItem(
+        new TextContainer("vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor()),
+        nullptr,
+        new TextContainer("200", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor())
+    );
+    cocktailContent->addItem(
+        new TextContainer("vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor()),
+        nullptr,
+        new TextContainer("200", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor())
+    );
+    cocktailContent->addItem(
+        new TextContainer("vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor()),
+        nullptr,
+        new TextContainer("200", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor())
+    );
+    cocktailContent->addItem(
+        new TextContainer("vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor()),
+        nullptr,
+        new TextContainer("200", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor())
+    );
 
-    tc = new TripleContainer({0, 100}, {240, 50}, supp::DEFAULT_BG_LIGHT_COLOR);
+    buttonLayout = new EmptyContainer(supp::NO_POSITION, {220, 95}, mainLayout->getMainColor());
 
-    tc->setLeft(headerButton);
-    tc->setRight(bottomButton);
+    createTemplate = new ButtonContainer("New template", [](){ Serial.println("New template"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
+    toQueu = new ButtonContainer("To queu", [](){ Serial.println("To queu"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
+    coock = new ButtonContainer("Coock", [](){ Serial.println("Coock"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
 
-    item1 = new ListContainer::Item({0, 0}, {0, 0}, supp::DEFAULT_BG_DARK_COLOR);
-    item2 = new ListContainer::Item({0, 0}, {0, 0}, {255, 255, 0});
-    item3 = new ListContainer::Item({0, 0}, {0, 0}, {255, 0, 0});
-    item4 = new ListContainer::Item({0, 0}, {0, 0}, {0, 255, 0});
-    item5 = new ListContainer::Item({0, 0}, {0, 0}, {0, 0, 255});
 
-    lc->addItem(item2);
-    lc->addItem(item3);
-    lc->addItem(item4);
-    lc->addItem(item5);
-    lc->addItem(nullptr, centerButton);
 
-    ec4->addContainer(lc, IContainerBase::POSITION_CENTER);
-    ec4->addContainer(tc, IContainerBase::POSITION_TOP);
-    ec4->draw();
+
+    mainLayout->addContainer(upperBar, IContainerBase::POSITION_TOP);
+    mainLayout->addContainer(lowerBar, IContainerBase::POSITION_BOTTOM);
+    mainLayout->addContainer(contentLayout, IContainerBase::POSITION_CENTER);
+
+    contentLayout->addContainer(cocktailContent, IContainerBase::POSITION_TOP);
+    contentLayout->addContainer(buttonLayout, IContainerBase::POSITION_BOTTOM);
+
+    buttonLayout->addContainer(createTemplate, IContainerBase::POSITION_TOP);
+    buttonLayout->addContainer(toQueu, IContainerBase::POSITION_CENTER);
+    buttonLayout->addContainer(coock, IContainerBase::POSITION_BOTTOM);
+
+    mainLayout->draw();
 }
 
 void loop()
 {
-    supp::Point tp = TouchScreen::getInstance().getTouch();
-    dbg::printPoint(tp);
-    ec4->handleTouch(tp);
+    supp::Point p = TouchScreen::getInstance().getTouch();
+    dbg::printPoint(p);
+    mainLayout->handleTouch(p);
 }

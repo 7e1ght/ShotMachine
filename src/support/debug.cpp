@@ -21,3 +21,14 @@ void dbg::printSize(const supp::Size& size) noexcept
     Serial.print("height = ");
     Serial.println(size.height);
 }
+
+void dbg::printColor(const supp::Color& color) noexcept
+{   
+    Serial.print("{");
+    Serial.print((int)color.red);
+    Serial.print(", ");
+    Serial.print((int)color.green);
+    Serial.print(", ");
+    Serial.print((int)color.blue);
+    Serial.println("}");
+}
