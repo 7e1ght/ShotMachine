@@ -16,21 +16,6 @@
 #include "containers/TripleContainer.hpp"
 #include "containers/ListContainer.hpp"
 
-EmptyContainer* mainLayout;
-
-TripleContainer* upperBar;
-TripleContainer* lowerBar;
-
-EmptyContainer* contentLayout;
-
-ListContainer* cocktailContent;
-
-EmptyContainer* buttonLayout;
-
-ButtonContainer* createTemplate;
-ButtonContainer* toQueu;
-ButtonContainer* coock;
-
 void setup()
 {
     Serial.begin(9600);

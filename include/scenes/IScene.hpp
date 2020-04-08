@@ -12,8 +12,7 @@ public:
     };
 
 
-    SCENE_ID doLoop(supp::Point touchPoint);
-
+    virtual SCENE_ID doLoop(supp::Point touchPoint) = 0;
 };
 
 #endif // I_SCENE_HPP
