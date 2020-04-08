@@ -7,3 +7,8 @@ MainScene::SCENE_ID MainScene::doLoop(supp::Point touchPoint)
     return returnSceneId;
 }
 
+MainScene::MainScene()
+{
+    initElements();
+    addElements();
+}

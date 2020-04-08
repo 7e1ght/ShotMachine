@@ -219,5 +219,8 @@ namespace supp
     const uint8_t NO_DEG = 0;
 
     const Size FULLSCREEN = {cfg::display::SCREEN_WIDTH, cfg::display::SCREEN_HEIGHT};
+
+    const uint16_t DEFAULT_ELEMENT_HEIGHT = 25;
 }
+
 #endif // SUPPORT_H
