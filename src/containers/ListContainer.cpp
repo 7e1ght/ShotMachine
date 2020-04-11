@@ -56,7 +56,7 @@ void ListContainer::addItem(IContainerBase* left, IContainerBase* middle, IConta
 
 void ListContainer::moveRangeDown() noexcept
 {
-    if(mItemContainer.size() != mHighIndex)
+    if(mItemContainer.size() > mHighIndex)
     {
         ++mLowerIndex;
         ++mHighIndex;
