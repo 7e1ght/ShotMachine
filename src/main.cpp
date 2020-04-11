@@ -74,7 +74,7 @@ void setup()
     lc->addItem(item5);
     lc->addItem(nullptr, centerButton);
 
-    ec4->addContainer(lc, IContainerBase::POSITION_CENTER);
+    ec4->addContainer(lc, IContainerBase::POSITION_RELATIVE);
     ec4->addContainer(tc, IContainerBase::POSITION_TOP);
     ec4->draw();
 }
