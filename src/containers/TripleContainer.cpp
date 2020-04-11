@@ -23,6 +23,7 @@ TripleContainer::TripleContainer(
 void TripleContainer::setSize( const supp::Size& newSize) noexcept
 {
     IContainerBase::setSize(newSize);
+    // resizeContent();
 }
 
 void TripleContainer::setLeft(IContainerBase* left) const noexcept

@@ -33,8 +33,10 @@ Counter::Counter(int step, supp::Point point, supp::Size size, supp::Color color
         }
     };
 
-    TripleContainer::setLeft( new ButtonContainer("-", lowCount, supp::NO_POSITION, {16, 16}, color) );
+    TripleContainer::setLeft(new ButtonContainer("-", lowCount, supp::NO_POSITION, {16, 16}, color));
+
     TripleContainer::setMiddle( val );
     TripleContainer::setMiddleWidth( size.width-16*2 );
+
     TripleContainer::setRight( new ButtonContainer("+", upCount, supp::NO_POSITION, {16, 16}, color) );
 }

@@ -43,9 +43,9 @@ inline void TripleContainer::resizeContent() noexcept
 {
     supp::Size tSize = { IContainerBase::getSize().width/3, IContainerBase::getSize().height };
 
-    mLeftBlock->setSize( tSize );
-    mMiddleBlock->setSize( tSize );
-    mRightBlock->setSize( tSize );
+    mLeftBlockSize = tSize;
+    mMiddleBlockSize = tSize;
+    mRightBlockSize = tSize;
 }
 
 #endif // TRIPLE_CONTAINER_HPP

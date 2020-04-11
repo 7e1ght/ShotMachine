@@ -35,12 +35,15 @@ void setup()
 {   
   Serial.begin(9600);
 
-  // currentScene = new NewTemplate();
+  currentScene = new NewTemplate();
 
-  // currentScene->renderScene();
-  lc = new ListContainer(8, {0, 20}, {240, 200}, supp::DEFAULT_BG_LIGHT_COLOR);
-  lc->addItem(new TextContainer("+", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_DARK_COLOR));
-  lc->draw();
+  currentScene->renderScene();
+  // tc = new TripleContainer({0, 50}, {240, 25}, supp::DEFAULT_BG_LIGHT_COLOR);
+  // tc->setMiddleWidth(0);
+  // tc->setLeft(new TextContainer("vladdd", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_LIGHT_COLOR));
+  // tc->setRight(new TextContainer("vladdd", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_LIGHT_COLOR));
+
+  // tc->draw();
 }
 
 void loop()
@@ -49,5 +52,6 @@ void loop()
   dbg::printPoint(p);
 
   // mainLayout->handleTouch(p);
+  currentScene->doLoop(p);
 }
 

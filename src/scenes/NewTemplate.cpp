@@ -6,3 +6,17 @@ NewTemplate::NewTemplate()
     initElements();
     addElements();
 }
+
+NewTemplate::~NewTemplate()
+{
+    delete mUpperBar;
+    delete mMaxGlassCapacityWrapper;
+    delete mMaxGlassCapacity;
+    delete mLiquidList;
+    delete mViewButton;
+    delete mOkButton;
+    delete mButtonLayout;
+    delete mButtonWrapper;
+    delete mButtonAndListWrapper;
+    delete mContentLayout;
+}
