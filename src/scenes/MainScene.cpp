@@ -3,7 +3,6 @@
 MainScene::MainScene()
 : IScene(IScene::SCENE_ID::MAIN)
 {
-    initCallbacks();
     initElements();
     addElements();
 }
@@ -30,11 +29,6 @@ void MainScene::initElements() noexcept
     createTemplate = new ButtonContainer("New template", [](){ Serial.println("New template"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
     toQueu = new ButtonContainer("To queu", [](){ Serial.println("To queu"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
     coock = new ButtonContainer("Coock", [](){ Serial.println("Coock"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
-}
-
-void MainScene::initCallbacks() noexcept
-{
-
 }
 
 void MainScene::addElements() noexcept

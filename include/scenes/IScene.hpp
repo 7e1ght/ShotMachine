@@ -10,6 +10,8 @@ public:
     enum class SCENE_ID
     {
         MAIN,
+        NEW_TEMPLATE,
+        
         NO_SCENE
     };
 

@@ -16,6 +16,7 @@
 #include "containers/ListContainer.hpp"
 
 #include "scenes/MainScene.hpp"
+#include "scenes/NewTemplate.hpp"
 #include "support/Counter.hpp"
 
 
@@ -28,20 +29,18 @@ TripleContainer* tc;
 Counter* c;
 TextContainer* textC;
 
+ListContainer* lc;
+
 void setup()
 {   
   Serial.begin(9600);
 
-  mainLayout = new EmptyContainer({0, 0}, supp::FULLSCREEN, {255, 0, 0});
+  // currentScene = new NewTemplate();
 
-  tc = new TripleContainer({0, 50}, {240, 25}, supp::DEFAULT_BG_LIGHT_COLOR);
-  tc->setLeft( new TextContainer("Vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor()) );
-  c = new Counter(10, {0, 100}, {80, 25}, tc->getMainColor());
-  tc->setRight(c);
-
-  mainLayout->addContainer(tc, IContainerBase::POSITION_CENTER);
-
-  mainLayout->draw();
+  // currentScene->renderScene();
+  lc = new ListContainer(8, {0, 20}, {240, 200}, supp::DEFAULT_BG_LIGHT_COLOR);
+  lc->addItem(new TextContainer("+", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_DARK_COLOR));
+  lc->draw();
 }
 
 void loop()
@@ -49,6 +48,6 @@ void loop()
   supp::Point p = TouchScreen::getInstance().getTouch();
   dbg::printPoint(p);
 
-  mainLayout->handleTouch(p);
+  // mainLayout->handleTouch(p);
 }
 

@@ -37,6 +37,12 @@ namespace UI
     const uint8_t DEFAULT_BAR_HEIGHT = 25;
 }
 
+namespace glass
+{
+    const uint16_t CAPACITY = 300;
+}
+
+
 }
 
 #endif // CONFIG_H

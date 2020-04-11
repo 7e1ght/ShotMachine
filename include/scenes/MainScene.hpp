@@ -15,7 +15,6 @@ public:
     MainScene();
 private:
     void initElements() noexcept;
-    void initCallbacks() noexcept;
     void addElements() noexcept;
 
     TripleContainer* upperBar;
