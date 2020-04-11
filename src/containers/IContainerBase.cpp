@@ -6,7 +6,8 @@ void IContainerBase::draw()
 {
     if(nullptr != mParent)
     {
-        mParent->addContainer(this, mPositionAlign);
+        // mParent->addContainer(this, mPositionAlign);
+        mParent->caclPositionSizeAlign(this, mPositionAlign);
     }
 
     baseDraw();
@@ -97,7 +98,6 @@ void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION p
     {
         container->mPositionAlign = positionAlign;
 
-
         switch (positionAlign)
         {
         case POSITION_TOP:
@@ -169,9 +169,8 @@ void IContainerBase::addContainer(IContainerBase* container, POSITION positionAl
     if(nullptr != container)
     {
         container->mParent = this;
+        container->mPositionAlign = positionAlign;
         
-        caclPositionSizeAlign(container, positionAlign);
-
         bool isExist = false;
         mContainers.for_each(
             [&isExist, container](const BaseVector::value_type vectorContainer)

@@ -16,29 +16,39 @@
 #include "containers/ListContainer.hpp"
 
 #include "scenes/MainScene.hpp"
+#include "support/Counter.hpp"
+
 
 IScene* currentScene;
 IScene::SCENE_ID currentSceneId;
 IScene::SCENE_ID prevSceneId;
 
-inline bool isSceneChanged()
-{
-  return prevSceneId != currentSceneId;
-}
+EmptyContainer* mainLayout;
+TripleContainer* tc;
+Counter* c;
+TextContainer* textC;
 
 void setup()
 {   
   Serial.begin(9600);
 
-  currentScene = new MainScene();
-  currentSceneId = IScene::SCENE_ID::MAIN;
-  prevSceneId = IScene::SCENE_ID::NO_SCENE;
+  mainLayout = new EmptyContainer({0, 0}, supp::FULLSCREEN, {255, 0, 0});
+
+  tc = new TripleContainer({0, 50}, {240, 25}, supp::DEFAULT_BG_LIGHT_COLOR);
+  tc->setLeft( new TextContainer("Vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mainLayout->getMainColor()) );
+  c = new Counter(10, {0, 100}, {80, 25}, tc->getMainColor());
+  tc->setRight(c);
+
+  mainLayout->addContainer(tc, IContainerBase::POSITION_CENTER);
+
+  mainLayout->draw();
 }
 
 void loop()
 {
-  supp::Point touchPoint = TouchScreen::getInstance().getTouch();
-  dbg::printPoint(touchPoint);
+  supp::Point p = TouchScreen::getInstance().getTouch();
+  dbg::printPoint(p);
 
+  mainLayout->handleTouch(p);
 }
 
