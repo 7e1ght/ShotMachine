@@ -15,15 +15,28 @@ public:
 
     void renderScene() const noexcept
     {
-        mainLayout->draw();
+        mMainLayout->draw();
     }
 
-    virtual SCENE_ID doLoop(supp::Point touchPoint) = 0;
+    virtual SCENE_ID doLoop(supp::Point touchPoint);
 
-    IScene();
+    IScene(SCENE_ID defaultSceneID);
     virtual ~IScene(){}
 protected:
-    EmptyContainer* mainLayout;
+    EmptyContainer* mMainLayout;
+    
+private:
+    void handleTouch( supp::Point touchPoint ) 
+    { 
+        if(supp::NO_TOUCH != touchPoint)
+        {
+            mMainLayout->handleTouch(touchPoint);    
+        }
+    }
+
+    virtual void specificStep() {};
+
+    SCENE_ID mReturnSceneId;
 };
 
 #endif // I_SCENE_HPP

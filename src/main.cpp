@@ -18,30 +18,27 @@
 #include "scenes/MainScene.hpp"
 
 IScene* currentScene;
+IScene::SCENE_ID currentSceneId;
+IScene::SCENE_ID prevSceneId;
 
-IScene::SCENE_ID prevSceneID;
-IScene::SCENE_ID sceneID;
+inline bool isSceneChanged()
+{
+  return prevSceneId != currentSceneId;
+}
 
 void setup()
-{
-    Serial.begin(9600);
+{   
+  Serial.begin(9600);
 
-    currentScene = new MainScene();
-
-    sceneID = IScene::SCENE_ID::MAIN;
-    prevSceneID = IScene::SCENE_ID::NO_SCENE;
+  currentScene = new MainScene();
+  currentSceneId = IScene::SCENE_ID::MAIN;
+  prevSceneId = IScene::SCENE_ID::NO_SCENE;
 }
 
 void loop()
 {
-    supp::Point p = TouchScreen::getInstance().getTouch();
-    dbg::printPoint(p);
+  supp::Point touchPoint = TouchScreen::getInstance().getTouch();
+  dbg::printPoint(touchPoint);
 
-    sceneID = currentScene->doLoop(p);
-
-    if(sceneID != prevSceneID)
-    {
-        prevSceneID = sceneID;
-        currentScene->renderScene();
-    }
 }
+
