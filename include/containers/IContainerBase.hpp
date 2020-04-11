@@ -41,7 +41,7 @@ public:
 
     void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION positionAlign) noexcept;
 
-    virtual ~IContainerBase() = 0;
+    virtual ~IContainerBase();
 
     const supp::Point getStartPosition() const { return mStartPosition; }
     virtual void setStartPosition(const supp::Point& newStartPosition) noexcept;
