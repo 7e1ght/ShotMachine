@@ -8,10 +8,12 @@ TripleContainer::TripleContainer(
             IContainerBase* parent = nullptr
             )
 : IContainerBase(point, size, color, parent)
-, mLeftBlock( new EmptyContainer(supp::NO_POSITION, supp::Size(size.width/3, size.height), color) ) 
-, mMiddleBlock( new EmptyContainer(supp::NO_POSITION, supp::Size(size.width/3, size.height), color) ) 
-, mRightBlock( new EmptyContainer(supp::NO_POSITION, supp::Size(size.width/3, size.height), color) )
-, defaultSize(true)
+, mLeftBlock( new EmptyContainer(supp::NO_POSITION, supp::NO_SIZE, color) ) 
+, mMiddleBlock( new EmptyContainer(supp::NO_POSITION, supp::NO_SIZE, color) ) 
+, mRightBlock( new EmptyContainer(supp::NO_POSITION, supp::NO_SIZE, color) )
+, mLeftBlockSize(supp::Size(size.width/3, size.height))
+, mMiddleBlockSize(supp::Size(size.width/3, size.height))
+, mRightBlockSize(supp::Size(size.width/3, size.height))
 {
     IContainerBase::addContainer( mLeftBlock, IContainerBase::POSITION_LEFT );
     IContainerBase::addContainer( mMiddleBlock, IContainerBase::POSITION_CENTER );
@@ -20,9 +22,8 @@ TripleContainer::TripleContainer(
 
 void TripleContainer::setSize( const supp::Size& newSize) noexcept
 {
-    resizeContent();
-
     IContainerBase::setSize(newSize);
+    // resizeContent();
 }
 
 void TripleContainer::setLeft(IContainerBase* left) const noexcept
@@ -41,11 +42,12 @@ void TripleContainer::setLeft(IContainerBase* left) const noexcept
 
 void TripleContainer::baseDraw() noexcept
 {
-    if(defaultSize)
-    {
-        resizeContent();
-    }
+    mLeftBlock->setSize( mLeftBlockSize );
+    mMiddleBlock->setSize( mMiddleBlockSize );
+    mRightBlock->setSize( mRightBlockSize );
 
+    dbg::printPoint(IContainerBase::getPosition());
+    
     IContainerBase::baseDraw();
 }
 
@@ -80,10 +82,8 @@ void TripleContainer::setRight(IContainerBase* right) const noexcept
 
 void TripleContainer::setMiddleWidth(const uint8_t newWidth) noexcept
 {
-    mMiddleBlock->setSize( {newWidth, IContainerBase::getSize().height} );
+    mMiddleBlockSize = {newWidth, IContainerBase::getSize().height} ;
 
-    mLeftBlock->setSize( {(cfg::display::SCREEN_WIDTH-newWidth)/2, IContainerBase::getSize().height} );
-    mRightBlock->setSize( {(cfg::display::SCREEN_WIDTH-newWidth)/2, IContainerBase::getSize().height} );
-
-    defaultSize = false;
+    mLeftBlockSize = {(IContainerBase::getSize().width-newWidth)/2, IContainerBase::getSize().height};
+    mRightBlockSize = {(IContainerBase::getSize().width-newWidth)/2, IContainerBase::getSize().height};
 }

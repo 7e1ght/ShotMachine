@@ -23,6 +23,8 @@ public:
 
     void scrollDown() noexcept;
     void scrollUp() noexcept;
+
+    const uint8_t getItemHeight() const noexcept { return mItemHeight; };
 private:
     supp::Vector<Item*> mItemContainer;
 

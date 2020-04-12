@@ -2,17 +2,19 @@
 #define TRIPLE_CONTAINER_HPP
 
 #include "support/support.hpp"
-#include "IContainerBase.hpp"
+#include "containers/EmptyContainer.hpp"
 
 class TripleContainer 
 : public IContainerBase
 {
 private:
-    IContainerBase* mLeftBlock;
-    IContainerBase* mMiddleBlock;
-    IContainerBase* mRightBlock;
+    EmptyContainer* mLeftBlock;
+    EmptyContainer* mMiddleBlock;
+    EmptyContainer* mRightBlock;
 
-    bool defaultSize;
+    supp::Size mLeftBlockSize;
+    supp::Size mMiddleBlockSize;
+    supp::Size mRightBlockSize;
 
 public:
     TripleContainer(
@@ -41,9 +43,9 @@ inline void TripleContainer::resizeContent() noexcept
 {
     supp::Size tSize = { IContainerBase::getSize().width/3, IContainerBase::getSize().height };
 
-    mLeftBlock->setSize( tSize );
-    mMiddleBlock->setSize( tSize );
-    mRightBlock->setSize( tSize );
+    mLeftBlockSize = tSize;
+    mMiddleBlockSize = tSize;
+    mRightBlockSize = tSize;
 }
 
 #endif // TRIPLE_CONTAINER_HPP

@@ -43,8 +43,9 @@ void ListContainer::addItem(IContainerBase* left, IContainerBase* middle, IConta
 {
     Item* tItem = new Item( 
             supp::NO_POSITION, 
-            supp::NO_SIZE,
-            IContainerBase::getMainColor()
+            { IContainerBase::getSize().width, mItemHeight},
+            IContainerBase::getMainColor(),
+            this
         );
     
     addItem(tItem);

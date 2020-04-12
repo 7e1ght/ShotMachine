@@ -10,6 +10,8 @@ public:
     enum class SCENE_ID
     {
         MAIN,
+        NEW_TEMPLATE,
+        
         NO_SCENE
     };
 
@@ -21,7 +23,7 @@ public:
     virtual SCENE_ID doLoop(supp::Point touchPoint);
 
     IScene(SCENE_ID defaultSceneID);
-    virtual ~IScene(){}
+    virtual ~IScene() {}
 protected:
     EmptyContainer* mMainLayout;
     

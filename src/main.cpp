@@ -16,29 +16,15 @@
 #include "containers/ListContainer.hpp"
 
 #include "scenes/MainScene.hpp"
-
-IScene* currentScene;
-IScene::SCENE_ID currentSceneId;
-IScene::SCENE_ID prevSceneId;
-
-inline bool isSceneChanged()
-{
-  return prevSceneId != currentSceneId;
-}
+#include "scenes/NewTemplate.hpp"
+#include "support/Counter.hpp"
 
 void setup()
 {   
   Serial.begin(9600);
 
-    ec4->addContainer(lc, IContainerBase::POSITION_RELATIVE);
-    ec4->addContainer(tc, IContainerBase::POSITION_TOP);
-    ec4->draw();
-}
-
 void loop()
 {
-  supp::Point touchPoint = TouchScreen::getInstance().getTouch();
-  dbg::printPoint(touchPoint);
-
+  supp::Point p = TouchScreen::getInstance().getTouch();
 }
 
