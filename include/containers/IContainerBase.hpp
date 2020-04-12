@@ -56,7 +56,7 @@ public:
     virtual void setMainColor(const supp::Color& newColor) noexcept;
 
     IContainerBase* getParent() const noexcept { return mParent; }
-    void setParent(IContainerBase* newParent) noexcept;
+    virtual void setParent(IContainerBase* newParent) noexcept;
 
     POSITION getPositionAlign() const noexcept { return mPositionAlign; }
 

@@ -212,11 +212,15 @@ namespace supp
     const Color NO_COLOR = {0, 0, 0};
     const Point NO_TOUCH = { -1, -1 };
     const Point NO_POSITION = { -1, -1 };
+    const Size NO_SIZE = { 0, 0 };
 
     const uint64_t DEFAULT_TAP_DELAY = 500;
     
     const uint8_t NO_DEG = 0;
 
     const Size FULLSCREEN = {cfg::display::SCREEN_WIDTH, cfg::display::SCREEN_HEIGHT};
+
+    const uint16_t DEFAULT_ELEMENT_HEIGHT = 25;
 }
+
 #endif // SUPPORT_H
