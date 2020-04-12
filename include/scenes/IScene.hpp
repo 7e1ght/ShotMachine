@@ -23,7 +23,7 @@ public:
     virtual SCENE_ID doLoop(supp::Point touchPoint);
 
     IScene(SCENE_ID defaultSceneID);
-    virtual ~IScene(){}
+    virtual ~IScene() {}
 protected:
     EmptyContainer* mMainLayout;
     

@@ -35,23 +35,18 @@ void setup()
 {   
   Serial.begin(9600);
 
-  currentScene = new NewTemplate();
+  currentScene = new MainScene();
 
   currentScene->renderScene();
-  // tc = new TripleContainer({0, 50}, {240, 25}, supp::DEFAULT_BG_LIGHT_COLOR);
-  // tc->setMiddleWidth(0);
-  // tc->setLeft(new TextContainer("vladdd", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_LIGHT_COLOR));
-  // tc->setRight(new TextContainer("vladdd", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_LIGHT_COLOR));
-
-  // tc->draw();
+  
 }
 
 void loop()
 {
   supp::Point p = TouchScreen::getInstance().getTouch();
-  dbg::printPoint(p);
+  // dbg::printPoint(p);
 
   // mainLayout->handleTouch(p);
-  currentScene->doLoop(p);
+  // currentScene->doLoop(p);
 }
 
