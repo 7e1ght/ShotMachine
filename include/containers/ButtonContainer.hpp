@@ -1,62 +1,62 @@
-#ifndef BUTTON_CONTAINER_HPP
-#define BUTTON_CONTAINER_HPP
+// #ifndef BUTTON_CONTAINER_HPP
+// #define BUTTON_CONTAINER_HPP
 
-#include "containers/IContainerBase.hpp"
-#include "containers/TextContainer.hpp"
-#include "support/support.hpp"
+// #include "containers/IContainerBase.hpp"
+// #include "containers/TextContainer.hpp"
+// #include "support/support.hpp"
 
-class ButtonContainer 
-    : public IContainerBase
-{
-private:
-    struct IInvoker
-    {
-        virtual void invoke() = 0;
-        virtual ~IInvoker() {}
-    };
+// class ButtonContainer 
+//     : public IContainerBase
+// {
+// private:
+//     struct IInvoker
+//     {
+//         virtual void invoke() = 0;
+//         virtual ~IInvoker() {}
+//     };
 
-    template<typename FunctionType>
-    class InvokerRelease
-        : public IInvoker
-    {
-    private:
-        FunctionType mFunction;
-        void invoke() { mFunction(); }
-    public:
-        InvokerRelease(FunctionType function) : mFunction(function) {}
-    };
+//     template<typename FunctionType>
+//     class InvokerRelease
+//         : public IInvoker
+//     {
+//     private:
+//         FunctionType mFunction;
+//         void invoke() { mFunction(); }
+//     public:
+//         InvokerRelease(FunctionType function) : mFunction(function) {}
+//     };
 
-    void baseDraw() noexcept override;
+//     void baseDraw() noexcept override;
 
-    IInvoker* mInvoker;
+//     IInvoker* mInvoker;
 
-    TextContainer mText;
-    mutable uint64_t mTimer;
-public: 
-    void handleTouch(const supp::Point&) const override;
+//     TextContainer mText;
+//     mutable uint64_t mTimer;
+// public: 
+//     void handleTouch(const supp::Point&) const override;
 
-    TextContainer& getText() {return mText; }
+//     TextContainer& getText() {return mText; }
 
-    template<typename FunctionType>
-    ButtonContainer(const String& text, FunctionType function, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
+//     template<typename FunctionType>
+//     ButtonContainer(const String& text, FunctionType function, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
 
-    ~ButtonContainer() { delete mInvoker; }
-};
+//     ~ButtonContainer() { delete mInvoker; }
+// };
 
-template<typename FunctionType>
-ButtonContainer::ButtonContainer(const String& text, 
-            FunctionType function, 
-            const supp::Point& position, 
-            const supp::Size& size, 
-            const supp::Color& color, 
-            IContainerBase* parent
-        ) 
-    : IContainerBase(position, size, color, parent)
-    , mText(text, supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, color, this)
-    , mTimer(0)
-{
-    IContainerBase::addContainer(&mText, IContainerBase::POSITION_CENTER);
-    mInvoker = new InvokerRelease<FunctionType>(function);
-}
+// template<typename FunctionType>
+// ButtonContainer::ButtonContainer(const String& text, 
+//             FunctionType function, 
+//             const supp::Point& position, 
+//             const supp::Size& size, 
+//             const supp::Color& color, 
+//             IContainerBase* parent
+//         ) 
+//     : IContainerBase(position, size, color, parent)
+//     , mText(text, supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, color, this)
+//     , mTimer(0)
+// {
+//     IContainerBase::addContainer(&mText, IContainerBase::POSITION_CENTER);
+//     mInvoker = new InvokerRelease<FunctionType>(function);
+// }
 
-#endif // BUTTON_CONTAINER_HPP
+// #endif // BUTTON_CONTAINER_HPP

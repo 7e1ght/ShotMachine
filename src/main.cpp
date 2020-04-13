@@ -20,8 +20,7 @@
 
 #include "support/Counter.hpp"
 
-IScene* mainScene;
-IScene* newTemplate;
+#include "support/Wrapper.hpp"
 
 int freeRam () {
   extern int __heap_start, *__brkval; 
@@ -29,20 +28,29 @@ int freeRam () {
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
+EmptyContainer* ec;
+TextContainer* tc;
+
 void setup()
 {
   Serial.begin(9600);
 
-  mainScene = new MainScene();
-  newTemplate = new NewTemplate();
+  ec = new EmptyContainer({0, 50}, {240, 25}, supp::DEFAULT_BG_LIGHT_COLOR);
+  tc = new TextContainer("vlad", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::NO_COLOR);
+
+  ec->addContainer( tc, IContainerBase::POSITION_CENTER );
+
+  ec->draw();
+
+  Serial.println(freeRam());
+
+  delay(2000);
+
+  delete ec;
 
   Serial.println(freeRam());
 }
 
 void loop()
 {
-  // mainScene->renderScene();
-  // delay(2000);
-  // newTemplate->renderScene();
-  // delay(2000);
 }

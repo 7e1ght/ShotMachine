@@ -9,14 +9,15 @@
 
 class IContainerBase
 {
-protected:
-    virtual void baseDraw() noexcept;
-    
 private:
-    using BaseVector = supp::Vector<IContainerBase*>;
-
     IContainerBase* mParent;
+
 public:
+
+    IContainerBase(const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
+
+    virtual ~IContainerBase();
+
     enum POSITION
     {
         POSITION_TOP, 
@@ -28,20 +29,8 @@ public:
         POSITION_ABSOLUTE
     };
 
-    IContainerBase(const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr)
-    : mPosition(position)
-    , mStartPosition(position)
-    , mSize(size)
-    , mMainColor(color)
-    , mParent(parent)
-    , mPositionAlign(POSITION_ABSOLUTE)
-    {}
-
-    void addContainer(IContainerBase* container, POSITION alingType = POSITION_RELATIVE);
-
-    void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION positionAlign) noexcept;
-
-    virtual ~IContainerBase();
+    POSITION getPositionAlign() const noexcept { return mPositionAlign; }
+    void setPositionAlign(const POSITION newPositionAlign) noexcept;
 
     const supp::Point getStartPosition() const { return mStartPosition; }
     virtual void setStartPosition(const supp::Point& newStartPosition) noexcept;
@@ -58,21 +47,20 @@ public:
     IContainerBase* getParent() const noexcept { return mParent; }
     virtual void setParent(IContainerBase* newParent) noexcept;
 
-    POSITION getPositionAlign() const noexcept { return mPositionAlign; }
 
     bool isInside(const supp::Point& point) const noexcept
     {
         return ( mPosition <= point && point <= mPosition + mSize );  
     }
 
-    void setPositionAlign(const POSITION newPositionAlign) noexcept;
 
-    void clear() noexcept;
+    void draw() noexcept;
 
-    void draw();
-    virtual void handleTouch(const supp::Point& touchPoint) const;
-private:
-    void overlapThis() const noexcept 
+    void caclPositionSizeAlign() noexcept;
+
+    virtual void handleTouch(const supp::Point& touchPoint) noexcept {}
+protected:
+    void overlapThis() const noexcept
     {
         supp::overlap(
             mPosition,
@@ -81,13 +69,15 @@ private:
         );
     }
 
+private:
+    virtual void drawElement() noexcept = 0;
+    
+    POSITION mPositionAlign;
     supp::Point mRelativePosition;
     supp::Point mPosition;
     supp::Point mStartPosition;
     supp::Size mSize;
     supp::Color mMainColor;
-    POSITION mPositionAlign;
-    BaseVector mContainers; 
 };
 
 #endif // I_CONTAINER_BASE_H

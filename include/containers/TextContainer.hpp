@@ -25,11 +25,10 @@ public:
     , mFontStyle(fontStyle)
     {
     }
-    
-    void handleTouch(const supp::Point& point) const noexcept override;
 
     void setText(const String& text) noexcept;
     const String& getText() const noexcept { return mText; }
+
 
     const supp::Color& getSecondaryColor() { return mSecondaryColor; }
     void setSecondaryColor(const supp::Color& secondaryColor) { mSecondaryColor = secondaryColor; }
@@ -46,10 +45,9 @@ public:
     void setFont(supp::FONT newFontStyle) noexcept;
 
     static const supp::Size calcTextSize(const String& text, supp::FONT fontStyle);
-private:
-    using IContainerBase::addContainer;
 
-    void baseDraw() noexcept override;
+private:
+    void drawElement() noexcept override;
 
     String mText;
     supp::Color mSecondaryColor;

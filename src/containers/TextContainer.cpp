@@ -3,11 +3,7 @@
 #include "support/debug.hpp"
 #include "support/Screen.hpp"
 
-void TextContainer::handleTouch(const supp::Point& point) const noexcept
-{  
-}
-
-void TextContainer::baseDraw() noexcept
+void TextContainer::drawElement() noexcept
 {
     Screen::getInstance().print(
             mText, 

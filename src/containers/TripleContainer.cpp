@@ -15,9 +15,9 @@ TripleContainer::TripleContainer(
 , mMiddleBlockSize(supp::Size(size.width/3, size.height))
 , mRightBlockSize(supp::Size(size.width/3, size.height))
 {
-    IContainerBase::addContainer( mLeftBlock, IContainerBase::POSITION_LEFT );
-    IContainerBase::addContainer( mMiddleBlock, IContainerBase::POSITION_CENTER );
-    IContainerBase::addContainer( mRightBlock, IContainerBase::POSITION_RIGHT );
+    // IContainerBase::addContainer( mLeftBlock, IContainerBase::POSITION_LEFT );
+    // IContainerBase::addContainer( mMiddleBlock, IContainerBase::POSITION_CENTER );
+    // IContainerBase::addContainer( mRightBlock, IContainerBase::POSITION_RIGHT );
 }
 
 void TripleContainer::setSize( const supp::Size& newSize) noexcept
@@ -46,7 +46,7 @@ void TripleContainer::baseDraw() noexcept
     mMiddleBlock->setSize( mMiddleBlockSize );
     mRightBlock->setSize( mRightBlockSize );
     
-    IContainerBase::baseDraw();
+    // IContainerBase::baseDraw();
 }
 
 void TripleContainer::setMiddle(IContainerBase* middle) const noexcept

@@ -1,46 +1,46 @@
-#ifndef MAIN_SCENE_HPP
-#define MAIN_SCENE_HPP
+// #ifndef MAIN_SCENE_HPP
+// #define MAIN_SCENE_HPP
 
-#include "IScene.hpp"
+// #include "IScene.hpp"
 
-#include "containers/EmptyContainer.hpp"
-#include "containers/TripleContainer.hpp"
-#include "containers/ListContainer.hpp"
-#include "containers/ButtonContainer.hpp"
+// #include "containers/EmptyContainer.hpp"
+// #include "containers/TripleContainer.hpp"
+// #include "containers/ListContainer.hpp"
+// #include "containers/ButtonContainer.hpp"
 
-class MainScene
-: public IScene
-{
-public:
-    MainScene();
-private:
-    void initElements() noexcept;
-    void addElements() noexcept;
+// class MainScene
+// : public IScene
+// {
+// public:
+//     MainScene();
+// private:
+//     void initElements() noexcept;
+//     void addElements() noexcept;
 
-    TripleContainer* upperBar;
-    TripleContainer* lowerBar;
+//     TripleContainer* upperBar;
+//     TripleContainer* lowerBar;
 
-    EmptyContainer* contentLayout;
+//     EmptyContainer* contentLayout;
 
-    ListContainer* cocktailContent;
+//     ListContainer* cocktailContent;
 
-    EmptyContainer* buttonLayout;
+//     EmptyContainer* buttonLayout;
  
-    ButtonContainer* createTemplate;
-    ButtonContainer* toQueu;
-    ButtonContainer* coock;
+//     ButtonContainer* createTemplate;
+//     ButtonContainer* toQueu;
+//     ButtonContainer* coock;
 
-    ~MainScene()
-    {
-        delete upperBar;
-        delete lowerBar;
-        delete contentLayout;
-        delete cocktailContent;
-        delete buttonLayout;
-        delete createTemplate;
-        delete toQueu;
-        delete coock;
-    }
-};
+//     ~MainScene()
+//     {
+//         delete upperBar;
+//         delete lowerBar;
+//         delete contentLayout;
+//         delete cocktailContent;
+//         delete buttonLayout;
+//         delete createTemplate;
+//         delete toQueu;
+//         delete coock;
+//     }
+// };
 
-#endif // MAIN_SCENE_HPP
+// #endif // MAIN_SCENE_HPP
