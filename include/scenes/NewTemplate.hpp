@@ -43,6 +43,7 @@ inline void NewTemplate::initElements() noexcept
     mMaxGlassCapacity = new TextContainer( String("Glass capacity: ") + String(cfg::glass::CAPACITY) + String("ml"), supp::NO_POSITION, {255, 0, 0}, mMainLayout->getMainColor(), nullptr, supp::FONT::SMALL );
 
     mLiquidList = new ListContainer(8, supp::NO_POSITION, {cfg::display::SCREEN_WIDTH, 200}, mMainLayout->getMainColor());
+    
     ListContainer::Item* item1 = new ListContainer::Item(supp::NO_POSITION, {mLiquidList->getSize().width, mLiquidList->getItemHeight()}, mLiquidList->getMainColor());
     item1->setMiddleWidth(15);
     item1->setLeft(new TextContainer("Water", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mUpperBar->getMainColor()));
@@ -61,13 +62,11 @@ inline void NewTemplate::initElements() noexcept
     item3->setRight(new Counter(10, supp::NO_POSITION, {90, mLiquidList->getItemHeight()}, mLiquidList->getMainColor()));
     mLiquidList->addItem(item3);
 
-
     ListContainer::Item* item4 = new ListContainer::Item(supp::NO_POSITION, {mLiquidList->getSize().width, mLiquidList->getItemHeight()}, mLiquidList->getMainColor());
     item4->setMiddleWidth(15);
     item4->setLeft(new TextContainer("Water", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mUpperBar->getMainColor()));
     item4->setRight(new Counter(10, supp::NO_POSITION, {90, mLiquidList->getItemHeight()}, mLiquidList->getMainColor()));
     mLiquidList->addItem(item4);
-
 
     ListContainer::Item* item5 = new ListContainer::Item(supp::NO_POSITION, {mLiquidList->getSize().width, mLiquidList->getItemHeight()}, mLiquidList->getMainColor());
     item5->setMiddleWidth(15);
@@ -75,13 +74,11 @@ inline void NewTemplate::initElements() noexcept
     item5->setRight(new Counter(10, supp::NO_POSITION, {90, mLiquidList->getItemHeight()}, mLiquidList->getMainColor()));
     mLiquidList->addItem(item5);
 
-
     ListContainer::Item* item6 = new ListContainer::Item(supp::NO_POSITION, {mLiquidList->getSize().width, mLiquidList->getItemHeight()}, mLiquidList->getMainColor());
     item6->setMiddleWidth(15);
     item6->setLeft(new TextContainer("Water", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mUpperBar->getMainColor()));
     item6->setRight(new Counter(10, supp::NO_POSITION, {90, mLiquidList->getItemHeight()}, mLiquidList->getMainColor()));
     mLiquidList->addItem(item6);
-
 
     ListContainer::Item* item7 = new ListContainer::Item(supp::NO_POSITION, {mLiquidList->getSize().width, mLiquidList->getItemHeight()}, mLiquidList->getMainColor());
     item7->setMiddleWidth(15);
@@ -91,9 +88,12 @@ inline void NewTemplate::initElements() noexcept
 
     ListContainer::Item* item8 = new ListContainer::Item(supp::NO_POSITION, {mLiquidList->getSize().width, mLiquidList->getItemHeight()}, mLiquidList->getMainColor());
     item8->setMiddleWidth(15);
-    item8->setLeft(new TextContainer("Water", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mUpperBar->getMainColor()));
-    item8->setRight(new Counter(10, supp::NO_POSITION, {90, mLiquidList->getItemHeight()}, mLiquidList->getMainColor()));
-    mLiquidList->addItem(item8);
+    TextContainer* tc = new TextContainer("Water", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mUpperBar->getMainColor());
+    // item8->setLeft(tc);
+    // // Counter* c = new Counter(10, supp::NO_POSITION, {90, mLiquidList->getItemHeight()}, mLiquidList->getMainColor());
+    // // item8->setRight(new TextContainer("Water", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mUpperBar->getMainColor()));
+    // mLiquidList->addItem(item8);
+
 
     mViewButton = new ButtonContainer("Old Templates", [](){ Serial.println("View"); }, supp::NO_POSITION, {80, supp::DEFAULT_ELEMENT_HEIGHT}, supp::DEFAULT_BG_DARK_COLOR);
     mOkButton = new ButtonContainer("OK", [](){ Serial.println("OK"); }, supp::NO_POSITION, {80, supp::DEFAULT_ELEMENT_HEIGHT}, supp::DEFAULT_BG_DARK_COLOR);

@@ -11,14 +11,14 @@ class EmptyContainer
 private:
     void baseDraw() noexcept override;
 public:
-    EmptyContainer(
-        const supp::Point& point, 
-        const supp::Size& size,
-        const supp::Color& color, 
-        IContainerBase* parent = nullptr
-        )
-    : IContainerBase(point, size, color, parent)
-    {}
+EmptyContainer(
+    const supp::Point& point, 
+    const supp::Size& size,
+    const supp::Color& color, 
+    IContainerBase* parent = nullptr
+    )
+: IContainerBase(point, size, color, parent)
+{}
 };
 
 #endif // EMPTY_CONTAINER_HPP

@@ -37,6 +37,24 @@ public:
     void setLeftWidth(const uint8_t newWidth) noexcept;
     void setMiddleWidth(const uint8_t newWidth) noexcept;
     void setRightWidth(const uint8_t newWidth) noexcept;
+
+    // ~TripleContainer()
+    // {
+    //     if(nullptr != mLeftBlock)
+    //     {
+    //         delete mLeftBlock;
+    //     }
+
+    //     if(nullptr != mMiddleBlock)
+    //     {
+    //         delete mMiddleBlock;
+    //     }
+
+    //     if(nullptr != mRightBlock)
+    //     {
+    //         delete mRightBlock;
+    //     }
+    // }
 };
 
 inline void TripleContainer::resizeContent() noexcept

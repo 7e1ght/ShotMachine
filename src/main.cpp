@@ -17,15 +17,32 @@
 
 #include "scenes/MainScene.hpp"
 #include "scenes/NewTemplate.hpp"
+
 #include "support/Counter.hpp"
 
+IScene* mainScene;
+IScene* newTemplate;
+
+int freeRam () {
+  extern int __heap_start, *__brkval; 
+  int v; 
+  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
+}
+
 void setup()
-{   
+{
   Serial.begin(9600);
+
+  mainScene = new MainScene();
+  newTemplate = new NewTemplate();
+
+  Serial.println(freeRam());
 }
 
 void loop()
 {
-  supp::Point p = TouchScreen::getInstance().getTouch();
+  // mainScene->renderScene();
+  // delay(2000);
+  // newTemplate->renderScene();
+  // delay(2000);
 }
-

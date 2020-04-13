@@ -7,6 +7,7 @@ ListContainer::ListContainer(const uint8_t drawItemCount,
                             const supp::Color& color, 
                             IContainerBase* parent)
 : IContainerBase(position, size, color, parent)
+, mItemContainer(drawItemCount)
 , mDrawItemCount(drawItemCount)
 , mItemHeight(size.height / mDrawItemCount)
 , mLowerIndex(0)
@@ -30,7 +31,6 @@ void ListContainer::addItem(Item* newItem) noexcept
 {
     newItem->setParent(this);
     newItem->setSize( { IContainerBase::getSize().width, mItemHeight} );
-    dbg::printColor( IContainerBase::getMainColor() );
     newItem->setMainColor( IContainerBase::getMainColor() );
 
     newItem->setStartPosition( {0, mItemContainer.size() * mItemHeight} );

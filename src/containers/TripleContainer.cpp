@@ -45,8 +45,6 @@ void TripleContainer::baseDraw() noexcept
     mLeftBlock->setSize( mLeftBlockSize );
     mMiddleBlock->setSize( mMiddleBlockSize );
     mRightBlock->setSize( mRightBlockSize );
-
-    dbg::printPoint(IContainerBase::getPosition());
     
     IContainerBase::baseDraw();
 }
