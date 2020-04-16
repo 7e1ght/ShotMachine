@@ -23,21 +23,21 @@ TripleContainer::TripleContainer(
 void TripleContainer::setSize( const supp::Size& newSize) noexcept
 {
     IContainerBase::setSize(newSize);
-    // resizeContent();
 }
 
-void TripleContainer::setLeft(IContainerBase* left) const noexcept
+void TripleContainer::setLeft(IContainerBase* left, IContainerBase::POSITION pos) const noexcept
 {
     if(nullptr != mLeftBlock && nullptr != left)
     {
         mLeftBlock->clear();
-        mLeftBlock->addContainer(left, IContainerBase::POSITION_CENTER);
+        mLeftBlock->addContainer(left, pos);
         left->setParent(mLeftBlock);
     }
-    else
-    {
-        Serial.println("TripleContainer::setLeft(): nullptr");
-    }
+}
+
+void TripleContainer::clear() noexcept
+{
+    mContainers.clear();
 }
 
 void TripleContainer::baseDraw() noexcept
@@ -49,32 +49,23 @@ void TripleContainer::baseDraw() noexcept
     IContainerBase::baseDraw();
 }
 
-void TripleContainer::setMiddle(IContainerBase* middle) const noexcept
+void TripleContainer::setMiddle(IContainerBase* middle, IContainerBase::POSITION pos) const noexcept
 {
     if(nullptr != mMiddleBlock && nullptr != middle)
     {
         mMiddleBlock->clear();
-        mMiddleBlock->addContainer(middle, IContainerBase::POSITION_CENTER);
+        mMiddleBlock->addContainer(middle, pos);
         middle->setParent(mMiddleBlock);
     }
-    else
-    {
-        Serial.println("TripleContainer::setMiddle(): nullptr");
-    }
-    
 }
 
-void TripleContainer::setRight(IContainerBase* right) const noexcept
+void TripleContainer::setRight(IContainerBase* right, IContainerBase::POSITION pos) const noexcept
 {
     if(nullptr != mRightBlock && nullptr != right)
     {
         mRightBlock->clear();
-        mRightBlock->addContainer(right, IContainerBase::POSITION_CENTER);
+        mRightBlock->addContainer(right, pos);
         right->setParent(mRightBlock);
-    }
-    else
-    {
-        Serial.println("TripleContainer::setRight(): nullptr");
     }
 }
 

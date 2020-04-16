@@ -7,7 +7,6 @@ ListContainer::ListContainer(const uint8_t drawItemCount,
                             const supp::Color& color, 
                             IContainerBase* parent)
 : IContainerBase(position, size, color, parent)
-, mItemContainer(drawItemCount)
 , mDrawItemCount(drawItemCount)
 , mItemHeight(size.height / mDrawItemCount)
 , mLowerIndex(0)
@@ -17,11 +16,11 @@ ListContainer::ListContainer(const uint8_t drawItemCount,
 
 void ListContainer::baseDraw() noexcept
 {
-    for(uint8_t i = mLowerIndex; i < mHighIndex && i < mItemContainer.size(); ++i)
+    for(uint8_t i = mLowerIndex; i < mHighIndex && i < mContainers.size(); ++i)
     {
-        if(nullptr != mItemContainer[i])
+        if(nullptr != mContainers[i])
         {
-            mItemContainer[i]->draw();
+            mContainers[i]->draw();
         }
     }
 }
@@ -33,9 +32,8 @@ void ListContainer::addItem(Item* newItem) noexcept
     newItem->setSize( { IContainerBase::getSize().width, mItemHeight} );
     newItem->setMainColor( IContainerBase::getMainColor() );
 
-    newItem->setStartPosition( {0, mItemContainer.size() * mItemHeight} );
+    newItem->setStartPosition( {0, mContainers.size() * mItemHeight} );
 
-    mItemContainer.push_back(newItem);
     IContainerBase::addContainer(newItem, IContainerBase::POSITION_RELATIVE);
 }
 
@@ -57,7 +55,7 @@ void ListContainer::addItem(IContainerBase* left, IContainerBase* middle, IConta
 
 void ListContainer::moveRangeDown() noexcept
 {
-    if(mItemContainer.size() > mHighIndex)
+    if(mContainers.size() > mHighIndex)
     {
         ++mLowerIndex;
         ++mHighIndex;
@@ -79,22 +77,27 @@ void ListContainer::moveRangeUp() noexcept
 
 void ListContainer::scrollUp() noexcept
 {   
-    for (int8_t i = mItemContainer.size()-1; 0 <= i; --i)
+    for (int8_t i = mContainers.size()-1; 0 <= i; --i)
     {
-        if(nullptr != mItemContainer[i])
+        if(nullptr != mContainers[i])
         {
-            mItemContainer[i]->setStartPosition( {0,  mItemContainer[i]->getStartPosition().y + mItemHeight} );
+            mContainers[i]->setStartPosition( {0,  mContainers[i]->getStartPosition().y + mItemHeight} );
         }
     }
 }
 
 void ListContainer::scrollDown() noexcept
 {
-    for (uint8_t i = 0; i < mItemContainer.size(); ++i)
+    for (uint8_t i = 0; i < mContainers.size(); ++i)
     {
-        if(nullptr != mItemContainer[i])
+        if(nullptr != mContainers[i])
         {
-            mItemContainer[i]->setStartPosition( {0,  mItemContainer[i]->getStartPosition().y - mItemHeight} );
+            mContainers[i]->setStartPosition( {0,  mContainers[i]->getStartPosition().y - mItemHeight} );
         }
     }
+}
+
+ListContainer::~ListContainer()
+{
+
 }

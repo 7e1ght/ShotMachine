@@ -17,6 +17,8 @@ void TextContainer::baseDraw() noexcept
             mDeg,
             mFontStyle
         );
+
+    mText = "";
 }
 
 void TextContainer::setFont(supp::FONT newFontStyle)
@@ -27,7 +29,7 @@ void TextContainer::setFont(supp::FONT newFontStyle)
 }
 
 void TextContainer::setText(const String& text) noexcept
-{
+{   
     mText = text;
 
     IContainerBase::setSize( calcTextSize(mText, mFontStyle) );

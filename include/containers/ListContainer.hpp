@@ -14,6 +14,7 @@ public:
     using Item = TripleContainer;
 
     ListContainer(const uint8_t drawItemCount, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
+    ~ListContainer();
 
     void addItem(Item* newItem) noexcept;
     void addItem(IContainerBase* left, IContainerBase* middle = nullptr, IContainerBase* right = nullptr);
@@ -26,8 +27,6 @@ public:
 
     const uint8_t getItemHeight() const noexcept { return mItemHeight; };
 private:
-    supp::Vector<Item*> mItemContainer;
-
     void baseDraw() noexcept override;
 
     const uint8_t mDrawItemCount;

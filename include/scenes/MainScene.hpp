@@ -17,6 +17,8 @@ private:
     void initElements() noexcept;
     void addElements() noexcept;
 
+    void addItem(const String& leftSide, const String& rightSide) noexcept;
+
     TripleContainer* upperBar;
     TripleContainer* lowerBar;
 
@@ -32,14 +34,7 @@ private:
 
     ~MainScene()
     {
-        delete upperBar;
-        delete lowerBar;
-        delete contentLayout;
-        delete cocktailContent;
-        delete buttonLayout;
-        delete createTemplate;
-        delete toQueu;
-        delete coock;
+        delete mMainLayout;
     }
 };
 

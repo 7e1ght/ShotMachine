@@ -30,31 +30,15 @@ public:
 
     void resizeContent() noexcept;
 
-    void setLeft(IContainerBase* left) const noexcept;
-    void setMiddle(IContainerBase* middle) const noexcept;
-    void setRight(IContainerBase* right) const noexcept;
+    void clear() noexcept;
+
+    void setLeft(IContainerBase* left, IContainerBase::POSITION pos = IContainerBase::POSITION_CENTER) const noexcept;
+    void setMiddle(IContainerBase* middle, IContainerBase::POSITION pos = IContainerBase::POSITION_CENTER) const noexcept;
+    void setRight(IContainerBase* right, IContainerBase::POSITION pos = IContainerBase::POSITION_CENTER) const noexcept;
 
     void setLeftWidth(const uint8_t newWidth) noexcept;
     void setMiddleWidth(const uint8_t newWidth) noexcept;
     void setRightWidth(const uint8_t newWidth) noexcept;
-
-    // ~TripleContainer()
-    // {
-    //     if(nullptr != mLeftBlock)
-    //     {
-    //         delete mLeftBlock;
-    //     }
-
-    //     if(nullptr != mMiddleBlock)
-    //     {
-    //         delete mMiddleBlock;
-    //     }
-
-    //     if(nullptr != mRightBlock)
-    //     {
-    //         delete mRightBlock;
-    //     }
-    // }
 };
 
 inline void TripleContainer::resizeContent() noexcept

@@ -154,7 +154,7 @@ void IContainerBase::caclPositionSizeAlign(IContainerBase* container, POSITION p
             );
             break;
         default:
-            Serial.print("IContainerBase: no such position align.");
+            break;
         }
     }
 }
@@ -191,4 +191,7 @@ void IContainerBase::addContainer(IContainerBase* container, POSITION positionAl
     }
 }
 
-IContainerBase::~IContainerBase() {}
+IContainerBase::~IContainerBase() 
+{
+    overlapThis();
+}

@@ -58,10 +58,6 @@ void Vector<T>::resize()
 
         mItemArray = newItemArray;
     }
-    else
-    {
-        Serial.println("Vector<T>::resize(): new array = nullptr.");   
-    }
 }
 
 template<typename T>
@@ -78,10 +74,6 @@ void Vector<T>::push_back(T item)
 
         mSize++;
     } 
-    else
-    {
-        Serial.println("Vector<T>::push_back(): new array = nullptr.");   
-    }
 }
 
 template<typename T>
@@ -176,10 +168,6 @@ void Vector<T*>::resize()
 
         mItemArray = newItemArray;
     }
-    else
-    {
-        Serial.println("Vector<T>::resize(): new array = nullptr.");   
-    }
 }
 
 template<typename T>
@@ -196,10 +184,6 @@ void Vector<T*>::push_back(T* item)
 
         mSize++;
     } 
-    else
-    {
-        Serial.println("Vector<T>::push_back(): new array = nullptr.");   
-    }
 }
 
 template<typename T>

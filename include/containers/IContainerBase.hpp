@@ -71,7 +71,7 @@ public:
 
     void draw();
     virtual void handleTouch(const supp::Point& touchPoint) const;
-private:
+protected:
     void overlapThis() const noexcept 
     {
         supp::overlap(
@@ -81,13 +81,15 @@ private:
         );
     }
 
+    BaseVector mContainers; 
+private:
+
     supp::Point mRelativePosition;
     supp::Point mPosition;
     supp::Point mStartPosition;
     supp::Size mSize;
     supp::Color mMainColor;
     POSITION mPositionAlign;
-    BaseVector mContainers; 
 };
 
 #endif // I_CONTAINER_BASE_H

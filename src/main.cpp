@@ -23,6 +23,8 @@
 IScene* mainScene;
 IScene* newTemplate;
 
+ListContainer* tc;
+
 int freeRam () {
   extern int __heap_start, *__brkval; 
   int v; 
@@ -34,15 +36,11 @@ void setup()
   Serial.begin(9600);
 
   mainScene = new MainScene();
-  newTemplate = new NewTemplate();
+  mainScene->renderScene();
 
   Serial.println(freeRam());
 }
 
 void loop()
 {
-  // mainScene->renderScene();
-  // delay(2000);
-  // newTemplate->renderScene();
-  // delay(2000);
 }
