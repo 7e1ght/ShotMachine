@@ -41,6 +41,20 @@ public:
     void push_back(T item);
     uint8_t size() const noexcept { return mSize; }
     uint8_t capacity() const noexcept { return mCapacity; }
+
+    const value_type operator[](const uint8_t index) const
+    {
+        return mItemArray[index];
+    }
+
+    value_type operator[](const uint8_t index)
+    {
+        return 
+            static_cast<value_type>
+            (
+                const_cast<const Vector<value_type>*>(this)->operator[](index)
+            );
+    }
 };
 
 template<typename T>
