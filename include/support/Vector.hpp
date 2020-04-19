@@ -33,6 +33,9 @@ public:
         , mItemArray(new T[mCapacity])
     {}
 
+    Vector( const Vector& other );
+    Vector operator=(const Vector& other) noexcept;
+
     ~Vector();
 
     template<typename F>
@@ -58,9 +61,39 @@ public:
 };
 
 template<typename T>
+Vector<T>::Vector(const Vector<T>& other)
+: mCapacity(other.mCapacity)
+, mSize(other.mSize)
+, mItemArray(new T[other.mCapacity])
+{
+    for(int i = 0; other.size() > i; ++i)
+    {
+        mItemArray[i] = other[i];
+    }
+}
+
+template<typename T>
+Vector<T> Vector<T>::operator=(const Vector<T>& other) noexcept
+{
+    mCapacity = other.mCapacity;
+    mSize = other.mSize;
+
+    delete[] mItemArray;
+
+    mItemArray = new T[mCapacity];
+
+    for(int i = 0; other.size() > i; ++i)
+    {
+        mItemArray[i] = other[i];
+    }
+
+    return *this;
+}
+
+template<typename T>
 void Vector<T>::resize()
 {
-    mCapacity = static_cast<uint8_t>(mCapacity * 1.5f);
+    mCapacity = static_cast<uint8_t>(mCapacity * 2);
 
     T* newItemArray = new T[mCapacity];
 

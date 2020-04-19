@@ -14,7 +14,7 @@ private:
 public:
     void makeCocktail() noexcept;
 
-    const supp::Vector<supp::Pair<uint16_t, Bottle>>& getRecipe() const noexcept { return mRecipe; }
+    const supp::Vector<supp::Pair<uint16_t, Bottle>> getRecipe() const noexcept { return mRecipe; }
 
     void addStep(uint16_t capacity, const Bottle& bottle) noexcept
     {

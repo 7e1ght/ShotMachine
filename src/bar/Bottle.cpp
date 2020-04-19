@@ -1,10 +1,9 @@
 #include "bar/Bottle.hpp"
 
-void Bottle::pour(uint16_t size) noexcept
+void Bottle::pour(uint16_t size) const noexcept
 {
     if(0 < mCapacity)
     {
-        pinMode(mPin, OUTPUT);
         digitalWrite(mPin, LOW);
 
         unsigned long timeStart = millis();
@@ -16,4 +15,13 @@ void Bottle::pour(uint16_t size) noexcept
 
         mCapacity -= size;
     }
+}
+
+Bottle::Bottle(uint16_t pin, Liquid::Type type)
+: mLiquid(type)
+, mCapacity(supp::DEFAULT_BOTTLE_CAPACITY)
+, mPin(pin)
+{
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, HIGH);
 }

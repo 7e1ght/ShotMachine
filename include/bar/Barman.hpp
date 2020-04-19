@@ -7,6 +7,19 @@
 #include "bar/Glass.hpp"
 #include "bar/Cocktail.hpp"
 
+namespace supp
+{
+  struct t
+  {
+    int i;
+  };
+  
+
+  static Vector<Glass> allGlass;
+  static Vector<Cocktail> shotMap;
+  static Vector<t> intV;
+}
+
 class Barman
 {
 private:

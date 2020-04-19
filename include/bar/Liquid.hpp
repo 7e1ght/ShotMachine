@@ -11,7 +11,7 @@ struct Liquid
         VODA
     };
 
-    String getName(Type type) const noexcept 
+    static String getName(Type type) noexcept 
     {
         String name;
         

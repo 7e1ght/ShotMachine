@@ -3,56 +3,79 @@
 #include "config/config.hpp"
 #include "support/Vector.hpp"
 
-#include "containers/EmptyContainer.hpp"
-#include "containers/TextContainer.hpp"
-#include "containers/ButtonContainer.hpp"
-
-#include "support/Screen.hpp"
-#include "support/TouchScreen.hpp"
-
-#include "support/debug.hpp"
-
-#include "containers/TripleContainer.hpp"
-#include "containers/ListContainer.hpp"
-
-#include "scenes/MainScene.hpp"
-#include "scenes/NewTemplate.hpp"
-
-#include "support/Counter.hpp"
 #include "bar/Glass.hpp"
 #include "bar/Bottle.hpp"
+#include "bar/Cocktail.hpp"
+#include "bar/Liquid.hpp"
 
-IScene* mainScene;
-IScene* newTemplate;
+#include "bar/Barman.hpp"
 
-ListContainer* tc;
+void initShotMap()
+{
+  Cocktail water("Water");
 
-int freeRam () {
+  water.addStep(20, Bottle(35, Liquid::VODA));
+  water.addStep(100, Bottle(37, Liquid::VODA));
+  water.addStep(30, Bottle(39, Liquid::VODA));
+  water.addStep(50, Bottle(41, Liquid::NO_LIQUID));
+  water.addStep(10, Bottle(43, Liquid::NO_LIQUID));
+
+  supp::shotMap.push_back(water);
+
+  Cocktail water2("Vlad");
+
+  water2.addStep(20, Bottle(49, Liquid::VODA));
+  water2.addStep(100, Bottle(47, Liquid::VODA));
+  water2.addStep(30, Bottle(45, Liquid::VODA));
+  water2.addStep(50, Bottle(43, Liquid::NO_LIQUID));
+  water2.addStep(10, Bottle(41, Liquid::NO_LIQUID));
+
+  supp::shotMap.push_back(water2);
+}
+
+int freeRam () 
+{
   extern int __heap_start, *__brkval; 
   int v; 
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
-const int trig = 46;
-const int echo = 47;
+struct T
+{
+  supp::Vector<Bottle> vb1;
+
+  const supp::Vector<Bottle>& get() 
+  {
+    return vb1;
+  }
+
+};
+
 
 void setup()
 {
   Serial.begin(9600);
 
-  // mainScene = new MainScene();
-  // mainScene->renderScene();
+  initShotMap();
 
-  Serial.println(freeRam());
-
-  Bottle b(47, Liquid::NO_LIQUID);
-
-  b.pour(100);
+  for(int i = 0; supp::shotMap.size() > i; ++i)
+  {
+    Serial.println( supp::shotMap[i].getName() );
+    supp::shotMap[i].makeCocktail();
+  }
+  
+  Serial.println( freeRam() );
 }
 
 void loop()
 {
+  // digitalWrite(15, LOW);
+  // delay(2);
+  // digitalWrite(15, HIGH);
+  // delay(100);
+  // digitalWrite(15, LOW);
 
+  // int d = pulseIn(14, HIGH);
 
-
+  // Serial.println(d);
 }

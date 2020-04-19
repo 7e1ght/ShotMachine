@@ -21,7 +21,7 @@ public:
     }
 
     void update() noexcept;
-    const supp::Vector<Glass> getAvaiableGlass() const noexcept
+    const supp::Vector<Glass>& getAvaiableGlass() const noexcept
     { return mAvaiableGlass; }
 };
 
