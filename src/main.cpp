@@ -40,18 +40,6 @@ int freeRam ()
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
-struct T
-{
-  supp::Vector<Bottle> vb1;
-
-  const supp::Vector<Bottle>& get() 
-  {
-    return vb1;
-  }
-
-};
-
-
 void setup()
 {
   Serial.begin(9600);
