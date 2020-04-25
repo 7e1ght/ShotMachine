@@ -10,7 +10,9 @@
 
 #include "bar/Barman.hpp"
 
-void initShotMap()
+#include "bar/GlassScanner.hpp"
+
+inline void water() noexcept
 {
   Cocktail water("Water");
 
@@ -21,7 +23,10 @@ void initShotMap()
   water.addStep(10, Bottle(43, Liquid::NO_LIQUID));
 
   supp::shotMap.push_back(water);
+}
 
+inline void vlad() noexcept
+{
   Cocktail water2("Vlad");
 
   water2.addStep(20, Bottle(49, Liquid::VODA));
@@ -31,6 +36,19 @@ void initShotMap()
   water2.addStep(10, Bottle(41, Liquid::NO_LIQUID));
 
   supp::shotMap.push_back(water2);
+}
+
+void initShotMap() noexcept
+{
+  water();
+  vlad();
+}
+
+void initGlass() noexcept
+{
+  supp::allGlass.push_back( Glass(15, 14) );
+  supp::allGlass.push_back( Glass(17, 16) );
+  supp::allGlass.push_back( Glass(19, 18) );
 }
 
 int freeRam () 
@@ -45,25 +63,29 @@ void setup()
   Serial.begin(9600);
 
   initShotMap();
+  initGlass();
 
-  for(int i = 0; supp::shotMap.size() > i; ++i)
-  {
-    Serial.println( supp::shotMap[i].getName() );
-    supp::shotMap[i].makeCocktail();
-  }
+  // for(int i = 0; i < supp::allGlass.size(); ++i)
+  // {
+  //   supp::allGlass[i].update();
+  // }
+
+  // for(int i = 0; i < supp::allGlass.size(); ++i)
+  // {
+  //   Serial.println( supp::allGlass[i].getAvaiable() );
+  // }
+
+  GlassScanner::update();
+
+  Barman::getInstance().addOrder(supp::allGlass[0], supp::shotMap[0]);
+  Barman::getInstance().addOrder(supp::allGlass[0], supp::shotMap[1]);
+  Barman::getInstance().addOrder(supp::allGlass[1], supp::shotMap[1]);
+  
+  Barman::getInstance().executeOrder();
   
   Serial.println( freeRam() );
 }
 
 void loop()
 {
-  // digitalWrite(15, LOW);
-  // delay(2);
-  // digitalWrite(15, HIGH);
-  // delay(100);
-  // digitalWrite(15, LOW);
-
-  // int d = pulseIn(14, HIGH);
-
-  // Serial.println(d);
 }

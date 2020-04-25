@@ -6,17 +6,29 @@
 class Glass
 {
 private:
-    uint16_t mPin;
+    uint8_t mId;
+
+    uint16_t mTrigPin;
+    uint16_t mEchoPin;
+
+    bool mIsAvailable;
+
+    static uint8_t idCounter;
+
 public:
-    uint16_t getPin() const noexcept { return mPin; }
+    void update() noexcept;
 
-    Glass operator=(const Glass& other)
-    {
-        mPin = other.mPin;
-    }
+    bool getAvaiable() const noexcept { return mIsAvailable; }
 
-    Glass(const uint16_t pin) : mPin(pin) {}
-    Glass() : mPin(0) {}
+    uint8_t getId() const noexcept { return mId; }
+
+    uint16_t getTrimPin() const noexcept { return mTrigPin; }
+    uint16_t getEchoPin() const noexcept { return mEchoPin; }
+
+    bool operator==(const Glass& other) const;
+
+    Glass(const uint16_t trigPin, const uint16_t echoPin);
+    Glass() : mTrigPin(0), mEchoPin(0), mIsAvailable(false), mId(0) {}
 };
 
 #endif // GLASS_HPP
