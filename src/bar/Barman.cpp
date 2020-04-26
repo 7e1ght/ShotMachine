@@ -1,5 +1,8 @@
 #include "bar/Barman.hpp"
 
+supp::Vector<Glass> Barman::allGlass;
+supp::Vector<Cocktail> Barman::shotMap;
+
 Barman& Barman::getInstance() noexcept
 {
    static Barman barman;

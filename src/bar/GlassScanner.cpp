@@ -1,9 +1,11 @@
 #include "bar/GlassScanner.hpp"
 
+#include "bar/Barman.hpp"
+
 void GlassScanner::update() noexcept
 {
-    for(uint8_t i = 0; i < supp::allGlass.size(); ++i)
+    for(uint8_t i = 0; i < Barman::allGlass.size(); ++i)
     {
-        supp::allGlass[i].update();
+        Barman::allGlass[i].update();
     }
 }

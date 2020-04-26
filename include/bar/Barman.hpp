@@ -7,12 +7,6 @@
 #include "bar/Glass.hpp"
 #include "bar/Cocktail.hpp"
 
-namespace supp
-{
-  static Vector<Glass> allGlass;
-  static Vector<Cocktail> shotMap;
-}
-
 class Barman
 {
 private:
@@ -30,6 +24,9 @@ public:
   bool isContains(const Glass& glass) const noexcept;
   
   static Barman& getInstance() noexcept;
+
+  static supp::Vector<Glass> allGlass;
+  static supp::Vector<Cocktail> shotMap;
 };
 
 #endif // BARMAN_HPP

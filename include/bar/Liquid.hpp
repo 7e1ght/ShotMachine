@@ -8,7 +8,8 @@ struct Liquid
     enum Type
     {
         NO_LIQUID,
-        VODA
+        VODA,
+        VODKA
     };
 
     static String getName(Type type) noexcept 
@@ -19,6 +20,9 @@ struct Liquid
         {
         case VODA:
             name = "Voda";
+            break;
+        case VODKA:
+            name = "Vodka";
             break;
         
         default:

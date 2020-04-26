@@ -3,10 +3,21 @@
 
 void ButtonContainer::handleTouch(const supp::Point&) const
 {
-    if(millis() - mTimer >= supp::DEFAULT_TAP_DELAY)
+    if(millis() - mTimer >= supp::DEFAULT_TAP_DELAY && mIsAvailable)
     {
         mTimer = millis();
         mInvoker->invoke();
+    }
+}
+
+void ButtonContainer::setAvailable(bool available) noexcept
+{
+    if(available != mIsAvailable)
+    {
+        mIsAvailable = available;
+
+        mText.setMainColor(true == mIsAvailable ? supp::DEFAULT_TEXT_COLOR : supp::Color{255, 0, 0});
+        mText.draw();
     }
 }
 

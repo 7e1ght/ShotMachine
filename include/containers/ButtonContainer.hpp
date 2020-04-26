@@ -31,11 +31,14 @@ private:
     IInvoker* mInvoker;
 
     TextContainer mText;
+    bool mIsAvailable;
     mutable uint64_t mTimer;
 public: 
     void handleTouch(const supp::Point&) const override;
 
     TextContainer& getText() {return mText; }
+
+    void setAvailable(bool available) noexcept;
 
     template<typename FunctionType>
     ButtonContainer(const String& text, FunctionType function, const supp::Point& position, const supp::Size& size, const supp::Color& color, IContainerBase* parent = nullptr);
@@ -54,6 +57,7 @@ ButtonContainer::ButtonContainer(const String& text,
     : IContainerBase(position, size, color, parent)
     , mText(text, supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, color, this)
     , mTimer(0)
+    , mIsAvailable(true)
 {
     IContainerBase::addContainer(&mText, IContainerBase::POSITION_CENTER);
     mInvoker = new InvokerRelease<FunctionType>(function);

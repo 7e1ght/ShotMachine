@@ -18,7 +18,7 @@ void TextContainer::baseDraw() noexcept
             mFontStyle
         );
 
-    mText = "";
+    // mText = "";
 }
 
 void TextContainer::setFont(supp::FONT newFontStyle)

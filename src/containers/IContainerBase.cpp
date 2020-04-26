@@ -6,7 +6,6 @@ void IContainerBase::draw()
 {
     if(nullptr != mParent)
     {
-        // mParent->addContainer(this, mPositionAlign);
         mParent->caclPositionSizeAlign(this, mPositionAlign);
     }
 

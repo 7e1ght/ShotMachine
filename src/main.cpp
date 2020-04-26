@@ -12,6 +12,10 @@
 
 #include "bar/GlassScanner.hpp"
 
+#include "scenes/MainScene.hpp"
+
+#include "support/TouchScreen.hpp"
+
 inline void water() noexcept
 {
   Cocktail water("Water");
@@ -19,36 +23,50 @@ inline void water() noexcept
   water.addStep(20, Bottle(35, Liquid::VODA));
   water.addStep(100, Bottle(37, Liquid::VODA));
   water.addStep(30, Bottle(39, Liquid::VODA));
-  water.addStep(50, Bottle(41, Liquid::NO_LIQUID));
-  water.addStep(10, Bottle(43, Liquid::NO_LIQUID));
+  water.addStep(50, Bottle(41, Liquid::VODKA));
+  water.addStep(10, Bottle(43, Liquid::VODKA));
 
-  supp::shotMap.push_back(water);
+  Barman::shotMap.push_back(water);
 }
 
 inline void vlad() noexcept
 {
   Cocktail water2("Vlad");
 
-  water2.addStep(20, Bottle(49, Liquid::VODA));
-  water2.addStep(100, Bottle(47, Liquid::VODA));
-  water2.addStep(30, Bottle(45, Liquid::VODA));
-  water2.addStep(50, Bottle(43, Liquid::NO_LIQUID));
-  water2.addStep(10, Bottle(41, Liquid::NO_LIQUID));
+  water2.addStep(30, Bottle(49, Liquid::VODA));
+  water2.addStep(110, Bottle(47, Liquid::VODA));
+  water2.addStep(40, Bottle(45, Liquid::VODA));
+  water2.addStep(60, Bottle(43, Liquid::VODKA));
+  water2.addStep(20, Bottle(41, Liquid::VODKA));
 
-  supp::shotMap.push_back(water2);
+  Barman::shotMap.push_back(water2);
+}
+
+inline void die() noexcept
+{
+  Cocktail d("Die");
+
+  d.addStep(999, Bottle(49, Liquid::VODKA));
+  d.addStep(999, Bottle(47, Liquid::VODKA));
+  d.addStep(999, Bottle(45, Liquid::VODKA));
+  d.addStep(999, Bottle(43, Liquid::VODKA));
+  d.addStep(999, Bottle(41, Liquid::VODKA));
+
+  Barman::shotMap.push_back(d);
 }
 
 void initShotMap() noexcept
 {
   water();
   vlad();
+  die();
 }
 
 void initGlass() noexcept
 {
-  supp::allGlass.push_back( Glass(15, 14) );
-  supp::allGlass.push_back( Glass(17, 16) );
-  supp::allGlass.push_back( Glass(19, 18) );
+  Barman::allGlass.push_back( Glass(15, 14) );
+  Barman::allGlass.push_back( Glass(17, 16) );
+  Barman::allGlass.push_back( Glass(19, 18) );
 }
 
 int freeRam () 
@@ -58,12 +76,14 @@ int freeRam ()
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
+MainScene* mainScene;
+
 void setup()
 {
   Serial.begin(9600);
 
   initShotMap();
-  initGlass();
+  // initGlass();
 
   // for(int i = 0; i < supp::allGlass.size(); ++i)
   // {
@@ -75,17 +95,26 @@ void setup()
   //   Serial.println( supp::allGlass[i].getAvaiable() );
   // }
 
-  GlassScanner::update();
+  // GlassScanner::update();
 
-  Barman::getInstance().addOrder(supp::allGlass[0], supp::shotMap[0]);
-  Barman::getInstance().addOrder(supp::allGlass[0], supp::shotMap[1]);
-  Barman::getInstance().addOrder(supp::allGlass[1], supp::shotMap[1]);
+  // Barman::getInstance().addOrder(supp::allGlass[0], supp::shotMap[0]);
+  // Barman::getInstance().addOrder(supp::allGlass[0], supp::shotMap[1]);
+  // Barman::getInstance().addOrder(supp::allGlass[1], supp::shotMap[1]);
   
-  Barman::getInstance().executeOrder();
+  // Barman::getInstance().executeOrder();
+
+  mainScene = new MainScene;
+  mainScene->renderScene();
   
+  Serial.println( Barman::shotMap[0].getName() );
+
   Serial.println( freeRam() );
 }
 
 void loop()
 {
+  supp::Point p = TouchScreen::getInstance().getTouch();
+  dbg::printPoint(p);
+
+  mainScene->doLoop( p );
 }

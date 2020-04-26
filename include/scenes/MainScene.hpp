@@ -8,34 +8,53 @@
 #include "containers/ListContainer.hpp"
 #include "containers/ButtonContainer.hpp"
 
+#include "bar/Bottle.hpp"
+
 class MainScene
 : public IScene
 {
 public:
-    MainScene();
+   MainScene();
 private:
-    void initElements() noexcept;
-    void addElements() noexcept;
+   enum DIRECTION 
+   { 
+      DIR_NONE,
+      DIR_LEFT, 
+      DIR_RIGHT 
+   };
 
-    void addItem(const String& leftSide, const String& rightSide) noexcept;
+   void initElements() noexcept;
+   void addElements() noexcept;
 
-    TripleContainer* upperBar;
-    TripleContainer* lowerBar;
+   void addItem(const Bottle& leftSide, const uint16_t rightSide) noexcept;
 
-    EmptyContainer* contentLayout;
+   void changeGlass(DIRECTION d) noexcept;
+   void changeCocktail(DIRECTION d) noexcept;
+   void fillRecipe() noexcept;
 
-    ListContainer* cocktailContent;
+   TripleContainer* upperBar;
+   TripleContainer* lowerBar;
 
-    EmptyContainer* buttonLayout;
- 
-    ButtonContainer* createTemplate;
-    ButtonContainer* toQueu;
-    ButtonContainer* coock;
+   EmptyContainer* contentLayout;
 
-    ~MainScene()
-    {
-        delete mMainLayout;
-    }
+   ListContainer* cocktailContent;
+
+   EmptyContainer* buttonLayout;
+
+   ButtonContainer* createTemplate;
+   ButtonContainer* toQueu;
+   ButtonContainer* coock;
+
+   TextContainer* mCocktailName;
+   TextContainer* mGlassNumber;
+
+   uint8_t mGlassIndex;
+   uint8_t mCocktailIndex;
+
+   ~MainScene()
+   {
+      delete mMainLayout;
+   }
 };
 
 #endif // MAIN_SCENE_HPP

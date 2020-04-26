@@ -2,7 +2,6 @@
 #define GLASS_SCANNER_HPP
 
 #include "support/Vector.hpp"
-#include "bar/Barman.hpp"
 
 class GlassScanner
 {
