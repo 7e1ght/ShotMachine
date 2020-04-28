@@ -11,14 +11,12 @@ private:
     uint16_t mTrigPin;
     uint16_t mEchoPin;
 
-    bool mIsAvailable;
-
     static uint8_t idCounter;
 
+    bool update() const noexcept;
 public:
-    void update() noexcept;
 
-    bool getAvaiable() const noexcept { return mIsAvailable; }
+    bool isAvailable() const noexcept { return update(); }
 
     uint8_t getId() const noexcept { return mId; }
 
@@ -28,7 +26,7 @@ public:
     bool operator==(const Glass& other) const;
 
     Glass(const uint16_t trigPin, const uint16_t echoPin);
-    Glass() : mTrigPin(0), mEchoPin(0), mIsAvailable(false), mId(0) {}
+    Glass() : mTrigPin(0), mEchoPin(0), mId(0) {}
 };
 
 #endif // GLASS_HPP

@@ -157,8 +157,6 @@ public:
         , mItemArray(new value_type[mCapacity])
     {}
 
-    Vector( const Vector<value_type>& other ) = delete;
-
     ~Vector();
 
     template<typename F>
@@ -166,7 +164,7 @@ public:
     void clear() noexcept;
 
     void push_back(value_type item);
-    uint8_t size() { return mSize; }
+    uint8_t size() const noexcept { return mSize; }
     uint8_t capacity() { return mCapacity; }
 
     const value_type operator[](const uint8_t index) const
@@ -183,7 +181,8 @@ public:
             );
     }
 
-    Vector<value_type> operator=(const Vector<value_type>& other) = delete;
+    Vector operator=(const Vector& other);
+    Vector(const Vector& other);
 private:
     uint8_t mCapacity;
     uint8_t mSize;
@@ -256,6 +255,36 @@ Vector<T*>::~Vector()
 {
     clear();
     delete mItemArray;
+}
+
+template<typename T>
+Vector<T*>::Vector(const Vector<T*>& other)
+: mCapacity(other.mCapacity)
+, mSize(other.mSize)
+, mItemArray(new T*[other.mCapacity])
+{
+    for(int i = 0; other.size() > i; ++i)
+    {
+        mItemArray[i] = other[i];
+    }
+}
+
+template<typename T>
+Vector<T*> Vector<T*>::operator=(const Vector<T*>& other) noexcept
+{
+    mCapacity = other.mCapacity;
+    mSize = other.mSize;
+
+    delete[] mItemArray;
+
+    mItemArray = new T*[mCapacity];
+
+    for(int i = 0; other.size() > i; ++i)
+    {
+        mItemArray[i] = other[i];
+    }
+
+    return *this;
 }
 
 }

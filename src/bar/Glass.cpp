@@ -2,7 +2,7 @@
 
 uint8_t Glass::idCounter = 1;
 
-Glass::Glass(const uint16_t trigPin, const uint16_t echoPin) : mTrigPin(trigPin), mEchoPin(echoPin), mIsAvailable(false)  
+Glass::Glass(const uint16_t trigPin, const uint16_t echoPin) : mTrigPin(trigPin), mEchoPin(echoPin)
 {
    pinMode(trigPin, OUTPUT);
    pinMode(echoPin, INPUT);
@@ -10,7 +10,7 @@ Glass::Glass(const uint16_t trigPin, const uint16_t echoPin) : mTrigPin(trigPin)
    mId = idCounter++;
 }
 
-void Glass::update() noexcept
+bool Glass::update() const noexcept
 {
    digitalWrite(mTrigPin, LOW);
    delay(2);
@@ -20,14 +20,14 @@ void Glass::update() noexcept
 
    digitalWrite(mTrigPin, LOW);
 
-   int distance = pulseIn(mEchoPin, HIGH);
-
-   mIsAvailable = (distance <= 300);
+   uint16_t distance = pulseIn(mEchoPin, HIGH);
 
    Serial.println( distance );
+
+   return distance <= 300 && 100 <= distance;
 }
 
 bool Glass::operator==(const Glass& other) const
 {
-   return ( (other.mId == mId) && (other.mTrigPin == mTrigPin) && (other.mEchoPin == mEchoPin) && (other.mIsAvailable == mIsAvailable));
+   return ( (other.mId == mId) && (other.mTrigPin == mTrigPin) && (other.mEchoPin == mEchoPin) );
 }

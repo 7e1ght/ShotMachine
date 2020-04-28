@@ -4,11 +4,11 @@ void Bottle::pour(uint16_t size) const noexcept
 {
     if(0 < mCapacity)
     {
-        digitalWrite(mPin, LOW);
-
         unsigned long timeStart = millis();
+
         double time = static_cast<double>(size)/supp::DEFAULT_COEF;
 
+        digitalWrite(mPin, LOW);
         while( (millis()-timeStart)/1000.0 <= time );
         
         digitalWrite(mPin, HIGH);

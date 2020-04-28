@@ -187,6 +187,22 @@ namespace supp
         {
             return mValue;
         }
+
+        Pair(const Pair& other)
+        : mKey(other.mKey)
+        , mValue(new Value(*other.mValue)) {}
+
+        Pair operator=(const Pair& other)
+        {
+            mKey = other.mKey;
+
+            delete mValue;
+
+            mValue = new Value(*other.mValue);
+
+            return *this;
+        }
+
     private:
         Key mKey;
         Value* mValue;

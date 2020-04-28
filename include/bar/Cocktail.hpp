@@ -9,16 +9,15 @@ class Cocktail
 {
 private:
     String mName;
-    supp::Vector<supp::Pair<uint16_t, Bottle>> mRecipe;
+    supp::Vector<supp::Pair<uint16_t, Liquid::Type>> mRecipe;
 
 public:
-    void makeCocktail() noexcept;
 
-    const supp::Vector<supp::Pair<uint16_t, Bottle>>& getRecipe() const noexcept { return mRecipe; }
+    const supp::Vector<supp::Pair<uint16_t, Liquid::Type>>& getRecipe() const noexcept { return mRecipe; }
 
-    void addStep(uint16_t capacity, const Bottle& bottle) noexcept
+    void addStep(uint16_t capacity, Liquid::Type liquid) noexcept
     {
-        mRecipe.push_back(supp::Pair<uint16_t, Bottle>(capacity, bottle));
+        mRecipe.push_back(supp::Pair<uint16_t, Liquid::Type>(capacity, liquid));
     }
 
     const String& getName() noexcept

@@ -4,8 +4,8 @@
 
 void GlassScanner::update() noexcept
 {
-    for(uint8_t i = 0; i < Barman::allGlass.size(); ++i)
-    {
-        Barman::allGlass[i].update();
-    }
+    // for(uint8_t i = 0; i < Barman::allGlass.size(); ++i)
+    // {
+    //     // Barman::allGlass[i].update();
+    // }
 }

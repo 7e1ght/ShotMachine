@@ -1,8 +1,5 @@
 #include "bar/Barman.hpp"
 
-supp::Vector<Glass> Barman::allGlass;
-supp::Vector<Cocktail> Barman::shotMap;
-
 Barman& Barman::getInstance() noexcept
 {
    static Barman barman;
@@ -10,18 +7,18 @@ Barman& Barman::getInstance() noexcept
    return barman;
 }
 
-void Barman::moveHandToGlass(const Glass& glass) const noexcept
+void Barman::moveHandToGlass(const GlassId id) const noexcept
 {
-   Serial.println(String("Move hand to ") + glass.getId() );
+   Serial.println(String("Move hand to ") + id );
 }
 
-int8_t Barman::getOrderByGlass(const Glass& glass) const noexcept
+int8_t Barman::getOrderByGlassId(const GlassId id) const noexcept
 {
    int8_t idx = -1;
 
-   for (int i = 0; i < mCocktail.size(); ++i)
+   for (int i = 0; i < mOrder.size(); ++i)
    {
-      if( glass == mCocktail[i].getKey())
+      if( id == mOrder[i].getKey())
       {
          idx = i;
          break;
@@ -31,25 +28,73 @@ int8_t Barman::getOrderByGlass(const Glass& glass) const noexcept
    return idx;
 }
 
-void Barman::executeOrder() noexcept
+void Barman::makeCocktail(const CocktailIdx index) const noexcept
 {
-   for(uint8_t i = 0; i < mCocktail.size(); ++i)
+   auto recipe = mShotMap[index].getRecipe();
+
+   for(uint8_t i = 0; i < recipe.size(); ++i)
    {
-      moveHandToGlass(mCocktail[i].getKey());
-      mCocktail[i].getValue().makeCocktail();
+      getBottleByLiquid(recipe[i].getValue()).pour(recipe[i].getKey());
    }
 }
 
-void Barman::addOrder(const Glass& glass, const Cocktail& cocktail) noexcept
+void Barman::executeOrder() noexcept
 {
-   int8_t idx = getOrderByGlass(glass);
+   for(uint8_t i = 0; i < mOrder.size(); ++i)
+   {
+      moveHandToGlass(mOrder[i].getKey());
+      makeCocktail(mOrder[i].getValue());
+   }
+}
+
+void Barman::addOrder(const GlassId id, const CocktailIdx index) noexcept
+{
+   int8_t idx = getOrderByGlassId(id);
 
    if( -1 != idx )
    {
-      mCocktail[idx].setValue(cocktail);
+      mOrder[idx].setValue(index);
    }
    else
    {
-      mCocktail.push_back( supp::Pair<Glass, Cocktail>(glass, cocktail) );
+      mOrder.push_back( supp::Pair<GlassId, CocktailIdx>(id, index) );
    }
+}
+
+const Bottle& Barman::getBottleByLiquid(const Liquid::Type liquid) const noexcept
+{
+   for(uint8_t i = 0; i < mBottleShelf.size(); ++i)
+   {
+      if(liquid == mBottleShelf[i].getLiquid())
+      {
+         return mBottleShelf[i];
+      }
+   }
+}
+
+Barman::GlassId Barman::getNextAvailableGlassId() const noexcept
+{
+   GlassId id = 0;
+
+   for(uint8_t i = mLastGivenGlassIndex+1; i <= mGlasses.size() && mLastGivenGlassIndex != i; ++i)
+   {
+      if(mGlasses[i%mGlasses.size()].isAvailable())
+      {
+         mLastGivenGlassIndex = i;
+         id = mGlasses[i].getId();
+      }
+   }
+
+   return id;
+}
+
+Barman::Barman()
+: mBottleShelf(8)
+, mShotMap()
+, mGlasses(8)
+, mLastGivenGlassIndex(-1)
+{
+   initGlass();
+   initBottleShelf();
+   initShotMap();
 }
