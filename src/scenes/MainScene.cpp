@@ -19,61 +19,64 @@ void MainScene::fillRecipe() noexcept
 
    bool isAvailableCocktail = true;
 
-   // for(uint8_t i = 0; i < Barman::shotMap[mCocktailIndex].getRecipe().size(); ++i)
-   // {
-   //    const Bottle* bottle = Barman::shotMap[mCocktailIndex].getRecipe()[i].getValue();
-   //    uint16_t value = Barman::shotMap[mCocktailIndex].getRecipe()[i].getKey();
+   for(uint8_t i = 0; i < Barman::getInstance().getCocktailByIndex(mCocktailIndex).getRecipe().size(); ++i)
+   {
+      Liquid::Type bottle = Barman::getInstance().getCocktailByIndex(mCocktailIndex).getRecipe()[i].getValue();
+      uint16_t value = Barman::getInstance().getCocktailByIndex(mCocktailIndex).getRecipe()[i].getKey();
 
-   //    isAvailableCocktail = isAvailableCocktail && ( bottle->getCapacity() >= value );
+      // isAvailableCocktail = isAvailableCocktail && ( bottle->getCapacity() >= value );
 
-   //    addItem(
-   //       bottle, 
-   //       value
-   //       );
-   // }
+      // addItem(
+      //    bottle, 
+      //    value
+      //    );
+   }
 
    toQueu->setAvailable( isAvailableCocktail );
 }
 void MainScene::changeCocktail(DIRECTION d) noexcept
 {
-   // switch (d)
-   // {
-   // case DIR_LEFT:
-   //    if(0 > mCocktailIndex-1)
-   //    {
-   //       mCocktailIndex = Barman::shotMap.size()-1;
-   //    }
-   //    else
-   //    {
-   //       mCocktailIndex--;
-   //    }
-   //    break;
-   // case DIR_RIGHT:
-   //    if(Barman::shotMap.size()-1 < mCocktailIndex+1)
-   //    {
-   //       mCocktailIndex = 0;
-   //    }
-   //    else
-   //    {
-   //       mCocktailIndex++;
-   //    }
-   //    break;
-   // default:
-   //    break;
-   // }
+   switch (d)
+   {
+   case DIR_LEFT:
+      if(0 > mCocktailIndex-1)
+      {
+         mCocktailIndex = Barman::getInstance().getShotMap().size()-1;
+      }
+      else
+      {
+         mCocktailIndex--;
+      }
+      break;
+   case DIR_RIGHT:
+      if(Barman::getInstance().getShotMap().size()-1 < mCocktailIndex+1)
+      {
+         mCocktailIndex = 0;
+      }
+      else
+      {
+         mCocktailIndex++;
+      }
+      break;
+   default:
+      break;
+   }
 
-   // Serial.println( String("Index: ") + mCocktailIndex );
-   // Serial.println( String("Name: ") + Barman::shotMap[mCocktailIndex].getName() );
-   // mCocktailName->setText(Barman::shotMap[mCocktailIndex].getName());
-   // fillRecipe();
+   Serial.println( String("Index: ") + mCocktailIndex );
+   Serial.println( String("Name: ") + Barman::getInstance().getCocktailByIndex(mCocktailIndex).getName() );
+   mCocktailName->setText(Barman::getInstance().getCocktailByIndex(mCocktailIndex).getName());
+   fillRecipe();
 }
 
-void MainScene::addItem(const Bottle* leftSide, const uint16_t rightSide) noexcept
+void MainScene::addItem(const Liquid::Type liquid, const uint16_t value, const bool isRed) noexcept
 {
    TripleContainer* item = new TripleContainer(supp::NO_POSITION, {cocktailContent->getSize().width, 1}, mMainLayout->getMainColor());
    item->setMiddleWidth(1);
-   item->setLeft( new TextContainer( Liquid::getName( leftSide->getLiquid() ), supp::NO_POSITION, rightSide > leftSide->getCapacity() ? supp::Color{255, 0, 0} : supp::DEFAULT_TEXT_COLOR, mMainLayout->getMainColor()), IContainerBase::POSITION_LEFT);
-   item->setRight( new TextContainer( String(rightSide), supp::NO_POSITION, rightSide > leftSide->getCapacity() ? supp::Color{255, 0, 0} : supp::DEFAULT_TEXT_COLOR, mMainLayout->getMainColor()), IContainerBase::POSITION_RIGHT);
+
+   supp::Color color = isRed ? supp::Color{255, 0, 0} : supp::DEFAULT_TEXT_COLOR;
+
+   item->setLeft( new TextContainer( Liquid::getName( liquid ), supp::NO_POSITION, color, mMainLayout->getMainColor()), IContainerBase::POSITION_LEFT);
+   item->setRight( new TextContainer( String(value), supp::NO_POSITION, color, mMainLayout->getMainColor()), IContainerBase::POSITION_RIGHT);
 
    cocktailContent->addItem(item);
 }   

@@ -7,20 +7,17 @@
 
 class Cocktail
 {
-private:
-    String mName;
-    supp::Vector<supp::Pair<uint16_t, Liquid::Type>> mRecipe;
-
 public:
+    using RecipeVector = supp::Vector<supp::Pair<uint16_t, Liquid::Type>>;
 
-    const supp::Vector<supp::Pair<uint16_t, Liquid::Type>>& getRecipe() const noexcept { return mRecipe; }
+    const RecipeVector& getRecipe() const noexcept { return mRecipe; }
 
     void addStep(uint16_t capacity, Liquid::Type liquid) noexcept
     {
         mRecipe.push_back(supp::Pair<uint16_t, Liquid::Type>(capacity, liquid));
     }
 
-    const String& getName() noexcept
+    const String& getName() const noexcept
     {
         return mName;
     }
@@ -30,6 +27,9 @@ public:
     }
     
     Cocktail() : mRecipe(8) {}
+private:
+    String mName;
+    RecipeVector mRecipe;
 };
 
 #endif // COCKTAIL_HPP

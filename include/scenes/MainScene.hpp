@@ -26,7 +26,7 @@ private:
    void initElements() noexcept;
    void addElements() noexcept;
 
-   void addItem(const Bottle* leftSide, const uint16_t rightSide) noexcept;
+   void addItem(const Liquid::Type liquid, const uint16_t value, const bool isRed = false) noexcept;
 
    void changeGlass(DIRECTION d) noexcept;
    void changeCocktail(DIRECTION d) noexcept;

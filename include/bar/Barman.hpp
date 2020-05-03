@@ -25,9 +25,16 @@ public:
    const Cocktail& getCocktailByIndex(const CocktailIdx index) const noexcept;
    const Bottle& getBottleByLiquid(const Liquid::Type liquid) const noexcept;
 
-   supp::Vector<Bottle>& get() { return mBottleShelf; }
+   supp::Vector<Glass>& get() { return mGlasses; }
 
    static Barman& getInstance() noexcept;
+
+   const supp::Vector<Bottle>& getBottleShelf() const noexcept;
+   const supp::Vector<Glass>& getGlasses() const noexcept;
+   const supp::Vector<Cocktail>& getShotMap() const noexcept;
+
+   const bool isLiquidEnough( const Liquid::Type liquid, const uint16_t value ) const noexcept;
+
 private:
    supp::Vector<supp::Pair<GlassId, CocktailIdx>> mOrder;
 
@@ -51,6 +58,21 @@ private:
    void vlad() noexcept;
    void die() noexcept;
 };
+
+inline const supp::Vector<Bottle>& Barman::getBottleShelf() const noexcept
+{
+   return mBottleShelf;
+}
+
+inline const supp::Vector<Glass>& Barman::getGlasses() const noexcept
+{
+   return mGlasses;
+}
+
+inline const supp::Vector<Cocktail>& Barman::getShotMap() const noexcept
+{
+   return mShotMap;
+}
 
 inline void Barman::initGlass() noexcept
 {
@@ -79,10 +101,10 @@ inline void Barman::vlad() noexcept
   Cocktail water2("Vlad");
 
   water2.addStep(30, Liquid::VODA);
-  water2.addStep(110, Liquid::VODA);
-  water2.addStep(40, Liquid::VODA);
-  water2.addStep(60, Liquid::VODKA);
-  water2.addStep(20, Liquid::VODKA);
+  water2.addStep(30, Liquid::VODKA);
+  water2.addStep(30, Liquid::VODA);
+  water2.addStep(30, Liquid::VODKA);
+  water2.addStep(30, Liquid::VODA);
 
   mShotMap.push_back(water2);
 }
@@ -91,10 +113,6 @@ inline void Barman::die() noexcept
 {
   Cocktail d("Die");
 
-  d.addStep(999, Liquid::VODKA);
-  d.addStep(999, Liquid::VODKA);
-  d.addStep(999, Liquid::VODKA);
-  d.addStep(999, Liquid::VODKA);
   d.addStep(999, Liquid::VODKA);
 
   mShotMap.push_back(d);

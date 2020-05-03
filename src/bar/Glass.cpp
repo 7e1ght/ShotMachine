@@ -16,13 +16,13 @@ bool Glass::update() const noexcept
    delay(2);
 
    digitalWrite(mTrigPin, HIGH);
-   delay(150);
+   delay(100);
 
    digitalWrite(mTrigPin, LOW);
 
    uint16_t distance = pulseIn(mEchoPin, HIGH);
 
-   Serial.println( distance );
+   Serial.println( String("Distance = ") + distance );
 
    return distance <= 300 && 100 <= distance;
 }

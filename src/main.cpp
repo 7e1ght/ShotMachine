@@ -27,9 +27,9 @@ void setup()
 {
   Serial.begin(9600);
 
-  Barman::getInstance().addOrder(0, 0);
+  Barman::getInstance().addOrder(1, 0);
 
-  Barman::getInstance().executeOrder();
+  Serial.println( Barman::getInstance().isLiquidEnough(Liquid::VODKA, 10) );
 
   Serial.println( freeRam() );
 }
