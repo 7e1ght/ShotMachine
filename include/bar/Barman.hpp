@@ -21,7 +21,9 @@ public:
 
    bool isAnyAvailableGlass() const noexcept;
 
-   GlassId getNextAvailableGlassId() const noexcept;
+   GlassId getPreviousGlassId() noexcept;
+   GlassId getNextGlassId() noexcept;
+
    const Cocktail& getCocktailByIndex(const CocktailIdx index) const noexcept;
    const Bottle& getBottleByLiquid(const Liquid::Type liquid) const noexcept;
 
@@ -46,7 +48,7 @@ private:
    supp::Vector<Glass> mGlasses;
    supp::Vector<Cocktail> mShotMap;
 
-   mutable int8_t mLastGivenGlassIndex; 
+   int8_t mLastGivenGlassIndex; 
 
    void initGlass() noexcept;
    void initShotMap() noexcept;
@@ -100,11 +102,8 @@ inline void Barman::vlad() noexcept
 {
   Cocktail water2("Vlad");
 
-  water2.addStep(30, Liquid::VODA);
-  water2.addStep(30, Liquid::VODKA);
-  water2.addStep(30, Liquid::VODA);
-  water2.addStep(30, Liquid::VODKA);
-  water2.addStep(30, Liquid::VODA);
+  water2.addStep(200, Liquid::VODA);
+  water2.addStep(200, Liquid::VODKA);
 
   mShotMap.push_back(water2);
 }

@@ -1,40 +1,48 @@
 #include "scenes/MainScene.hpp"
 
-#include "bar/Barman.hpp"
-
 MainScene::MainScene()
 : IScene(IScene::SCENE_ID::MAIN)
-, mGlassIndex( 0 )
+, mCurrentGlassId( 0 )
 , mCocktailIndex( 0 )
+, mIsCocktailEnable( true )
+, mIsGlassEnable (true)
 {
    initElements();
    addElements();
 
    changeCocktail(DIR_NONE);
+   changeGlass(DIR_RIGHT);
 }
 
 void MainScene::fillRecipe() noexcept
 {
-   cocktailContent->clear();
+   mCocktailContent->clear();
 
-   bool isAvailableCocktail = true;
+   mIsCocktailEnable = true;
 
    for(uint8_t i = 0; i < Barman::getInstance().getCocktailByIndex(mCocktailIndex).getRecipe().size(); ++i)
    {
       Liquid::Type bottle = Barman::getInstance().getCocktailByIndex(mCocktailIndex).getRecipe()[i].getValue();
       uint16_t value = Barman::getInstance().getCocktailByIndex(mCocktailIndex).getRecipe()[i].getKey();
 
-      // isAvailableCocktail = isAvailableCocktail && ( bottle->getCapacity() >= value );
+      bool liquidEnough = Barman::getInstance().isLiquidEnough(bottle, value);
 
-      // addItem(
-      //    bottle, 
-      //    value
-      //    );
+      mIsCocktailEnable = mIsCocktailEnable && liquidEnough;
+
+      addItem(
+         bottle, 
+         value,
+         !liquidEnough
+         );
    }
 
-   toQueu->setAvailable( isAvailableCocktail );
+   checkQueu();
+
+   mCocktailName->draw();
+   mCocktailContent->draw();
 }
-void MainScene::changeCocktail(DIRECTION d) noexcept
+
+void MainScene::changeCocktail(DIRECTION d) noexcept  
 {
    switch (d)
    {
@@ -70,7 +78,7 @@ void MainScene::changeCocktail(DIRECTION d) noexcept
 
 void MainScene::addItem(const Liquid::Type liquid, const uint16_t value, const bool isRed) noexcept
 {
-   TripleContainer* item = new TripleContainer(supp::NO_POSITION, {cocktailContent->getSize().width, 1}, mMainLayout->getMainColor());
+   TripleContainer* item = new TripleContainer(supp::NO_POSITION, {mCocktailContent->getSize().width, 1}, mMainLayout->getMainColor());
    item->setMiddleWidth(1);
 
    supp::Color color = isRed ? supp::Color{255, 0, 0} : supp::DEFAULT_TEXT_COLOR;
@@ -78,72 +86,121 @@ void MainScene::addItem(const Liquid::Type liquid, const uint16_t value, const b
    item->setLeft( new TextContainer( Liquid::getName( liquid ), supp::NO_POSITION, color, mMainLayout->getMainColor()), IContainerBase::POSITION_LEFT);
    item->setRight( new TextContainer( String(value), supp::NO_POSITION, color, mMainLayout->getMainColor()), IContainerBase::POSITION_RIGHT);
 
-   cocktailContent->addItem(item);
+   mCocktailContent->addItem(item);
 }   
+
+void MainScene::changeGlass(DIRECTION d) noexcept
+{
+   switch (d)
+   {
+   case DIR_RIGHT:
+      mCurrentGlassId = Barman::getInstance().getNextGlassId();
+      Serial.println( String("GlassID: ") + mCurrentGlassId );
+      break;
+   case DIR_LEFT:
+      mCurrentGlassId = Barman::getInstance().getPreviousGlassId();
+      break;
+   default:
+      break;
+   }
+
+   if(0 == mCurrentGlassId)
+   {
+      mGlassNumber->setText("No glass"); 
+      mGlassNumber->draw();
+
+      mIsGlassEnable = false;
+   }
+   else
+   {
+      mGlassNumber->setText( String("Glass ") + mCurrentGlassId ); 
+      mGlassNumber->draw();
+
+      mIsGlassEnable = true;
+   }
+
+   checkQueu();
+}
+
+void MainScene::checkQueu() noexcept
+{
+   mToQueu->setAvailable( mIsGlassEnable && mIsCocktailEnable );
+   Serial.println( String("__________") + int(mIsGlassEnable && mIsCocktailEnable) + String("__________") );
+}
 
 void MainScene::initElements() noexcept
 {
    auto leftGlass = 
-   []()
+   [this]()
    {
-      Serial.println("Glass left");
+      changeGlass(DIR_LEFT);
+
+      Serial.println("left");
    };
 
    auto rightGlass = 
-   []()
+   [this]()
    {
-      Serial.println("Glass right");
+      changeGlass(DIR_RIGHT);
+
+      Serial.println("right");
    };
 
    auto leftCocktail = 
    [this]()
    {
       changeCocktail(DIR_LEFT);
-      mCocktailName->draw();
-      cocktailContent->draw();
    };
 
    auto rightCocktail = 
    [this]()
    {
       changeCocktail(DIR_RIGHT);
-      mCocktailName->draw();
-      cocktailContent->draw();
    };
 
-   mCocktailName = new TextContainer("", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, lowerBar->getMainColor());
-   mGlassNumber = new TextContainer("GlassNumber", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, upperBar->getMainColor());
+   auto toQueu =
+   [this]()
+   {
+      Serial.println( String("GlassId: ") + mCurrentGlassId );
+      Serial.println( String("CocktailIdx: ") + mCocktailIndex );
+      Barman::getInstance().addOrder(mCurrentGlassId, mCocktailIndex);
 
-   upperBar = new TripleContainer(supp::NO_POSITION, {cfg::display::SCREEN_WIDTH, supp::DEFAULT_ELEMENT_HEIGHT}, supp::DEFAULT_BG_DARK_COLOR);
-   upperBar->setMiddleWidth(185);
-   upperBar->setLeft( new ButtonContainer("<", leftGlass, supp::NO_POSITION, {upperBar->getSize().height, 25}, upperBar->getMainColor()) );
-   upperBar->setMiddle( mGlassNumber );
-   upperBar->setRight( new ButtonContainer(">", rightGlass, supp::NO_POSITION, {upperBar->getSize().height, 25}, upperBar->getMainColor()) );
+      fillRecipe();
+   };
 
-   lowerBar = new TripleContainer(supp::NO_POSITION, {cfg::display::SCREEN_WIDTH, supp::DEFAULT_ELEMENT_HEIGHT}, supp::DEFAULT_BG_DARK_COLOR);
-   lowerBar->setMiddleWidth(185);
-   lowerBar->setLeft( new ButtonContainer("<", leftCocktail, supp::NO_POSITION, {lowerBar->getSize().height, 25}, lowerBar->getMainColor()) );
-   lowerBar->setMiddle( mCocktailName );
-   lowerBar->setRight( new ButtonContainer(">", rightCocktail, supp::NO_POSITION, {lowerBar->getSize().height, 25}, lowerBar->getMainColor()) );
+   mCocktailName = new TextContainer("", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mLowerBar->getMainColor());
+   mGlassNumber = new TextContainer("", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, mUpperBar->getMainColor());
 
-   contentLayout = new EmptyContainer({0, 25}, {220, cfg::display::SCREEN_HEIGHT-70}, mMainLayout->getMainColor() );
+   mUpperBar = new TripleContainer(supp::NO_POSITION, {cfg::display::SCREEN_WIDTH, supp::DEFAULT_ELEMENT_HEIGHT}, supp::DEFAULT_BG_DARK_COLOR);
+   mUpperBar->setMiddleWidth(185);
+   mUpperBar->setLeft( new ButtonContainer("<", leftGlass, supp::NO_POSITION, {mUpperBar->getSize().height, 25}, mUpperBar->getMainColor()) );
+   mUpperBar->setMiddle( mGlassNumber );
+   mUpperBar->setRight( new ButtonContainer(">", rightGlass, supp::NO_POSITION, {mUpperBar->getSize().height, 25}, mUpperBar->getMainColor()) );
 
-   cocktailContent = new ListContainer(8, supp::NO_POSITION, {220, 190}, mMainLayout->getMainColor());
+   mLowerBar = new TripleContainer(supp::NO_POSITION, {cfg::display::SCREEN_WIDTH, supp::DEFAULT_ELEMENT_HEIGHT}, supp::DEFAULT_BG_DARK_COLOR);
+   mLowerBar->setMiddleWidth(185);
+   mLowerBar->setLeft( new ButtonContainer("<", leftCocktail, supp::NO_POSITION, {mLowerBar->getSize().height, 25}, mLowerBar->getMainColor()) );
+   mLowerBar->setMiddle( mCocktailName );
+   mLowerBar->setRight( new ButtonContainer(">", rightCocktail, supp::NO_POSITION, {mLowerBar->getSize().height, 25}, mLowerBar->getMainColor()) );
 
-   buttonLayout = new EmptyContainer(supp::NO_POSITION, {220, 60}, mMainLayout->getMainColor());
-   toQueu = new ButtonContainer("To queu", [](){ Serial.println("To queu"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
-   coock = new ButtonContainer("Coock", [](){ Serial.println("Coock"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
+   mContentLayout = new EmptyContainer({0, 25}, {220, cfg::display::SCREEN_HEIGHT-70}, mMainLayout->getMainColor() );
+
+   mCocktailContent = new ListContainer(8, supp::NO_POSITION, {220, 190}, mMainLayout->getMainColor());
+
+   mButtonLayout = new EmptyContainer(supp::NO_POSITION, {220, 60}, mMainLayout->getMainColor());
+   mToQueu = new ButtonContainer("To queu", toQueu, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
+   mCoock = new ButtonContainer("mCoock", [](){ Serial.println("mCoock"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
 }
 
 void MainScene::addElements() noexcept
 {
-   buttonLayout->addContainer(toQueu, IContainerBase::POSITION_TOP);
-   buttonLayout->addContainer(coock, IContainerBase::POSITION_BOTTOM);
+   mButtonLayout->addContainer(mToQueu, IContainerBase::POSITION_TOP);
+   mButtonLayout->addContainer(mCoock, IContainerBase::POSITION_BOTTOM);
 
-   contentLayout->addContainer(buttonLayout, IContainerBase::POSITION_BOTTOM);
-   contentLayout->addContainer(cocktailContent, IContainerBase::POSITION_TOP);
+   mContentLayout->addContainer(mButtonLayout, IContainerBase::POSITION_BOTTOM);
+   mContentLayout->addContainer(mCocktailContent, IContainerBase::POSITION_TOP);
 
-   mMainLayout->addContainer(upperBar, IContainerBase::POSITION_TOP);
-   mMainLayout->addContainer(contentLayout, IContainerBase::POSITION_CENTER);
-   mMainLayout->addContainer(lowerBar, IContainerBase::POSITION_BOTTOM);
+   mMainLayout->addContainer(mUpperBar, IContainerBase::POSITION_TOP);
+   mMainLayout->addContainer(mContentLayout, IContainerBase::POSITION_CENTER);
+   mMainLayout->addContainer(mLowerBar, IContainerBase::POSITION_BOTTOM);
 }

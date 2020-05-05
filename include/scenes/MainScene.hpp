@@ -10,12 +10,20 @@
 
 #include "bar/Bottle.hpp"
 
+#include "bar/Barman.hpp"
+
 class MainScene
 : public IScene
 {
 public:
    MainScene();
 private:
+   bool mIsCocktailEnable;
+   bool mIsGlassEnable;
+
+   void checkQueu() noexcept;
+
+
    enum DIRECTION 
    { 
       DIR_NONE,
@@ -32,24 +40,24 @@ private:
    void changeCocktail(DIRECTION d) noexcept;
    void fillRecipe() noexcept;
 
-   TripleContainer* upperBar;
-   TripleContainer* lowerBar;
+   TripleContainer* mUpperBar;
+   TripleContainer* mLowerBar;
 
-   EmptyContainer* contentLayout;
+   EmptyContainer* mContentLayout;
 
-   ListContainer* cocktailContent;
+   ListContainer* mCocktailContent;
 
-   EmptyContainer* buttonLayout;
+   EmptyContainer* mButtonLayout;
 
-   ButtonContainer* createTemplate;
-   ButtonContainer* toQueu;
-   ButtonContainer* coock;
+   ButtonContainer* mCreateTemplate;
+   ButtonContainer* mToQueu;
+   ButtonContainer* mCoock;
 
    TextContainer* mCocktailName;
    TextContainer* mGlassNumber;
 
-   uint8_t mGlassIndex;
-   uint8_t mCocktailIndex;
+   Barman::GlassId mCurrentGlassId;
+   Barman::CocktailIdx mCocktailIndex;
 
    ~MainScene()
    {

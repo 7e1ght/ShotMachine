@@ -67,6 +67,7 @@ void Barman::addOrder(const GlassId id, const CocktailIdx index) noexcept
    }
    else
    {
+      Serial.println("------- Add new order ------");
       Serial.println( mShotMap[index].getName() );
       mOrder.push_back( supp::Pair<GlassId, CocktailIdx>(id, index) );
    }
@@ -83,22 +84,48 @@ const Bottle& Barman::getBottleByLiquid(const Liquid::Type liquid) const noexcep
    }
 }
 
-Barman::GlassId Barman::getNextAvailableGlassId() const noexcept
+Barman::GlassId Barman::getNextGlassId() noexcept
 {
    GlassId id = 0;
 
-   for(uint8_t i = 0, startIndex = mLastGivenGlassIndex; i < mGlasses.size(); ++i, ++startIndex)
+   for(uint8_t i = 0, startIndex = mLastGivenGlassIndex+1; i < mGlasses.size(); ++i, ++startIndex)
    {
+      if( mGlasses.size()-1 < startIndex )
+      {
+         startIndex = 0;
+      }
+
       if(true == mGlasses[startIndex].isAvailable())
       {
-         id = mGlasses[i].getId();
+         id = mGlasses[startIndex].getId();
+         mLastGivenGlassIndex = startIndex;
+         break;
+      }
+   }
+
+   return id;
+}
+
+Barman::GlassId Barman::getPreviousGlassId() noexcept
+{
+   GlassId id = 0;
+
+   for(int8_t i = 0, startIndex = mLastGivenGlassIndex-1; i < mGlasses.size(); ++i, --startIndex)
+   {
+      if( 0 > startIndex )
+      {
+         startIndex = mGlasses.size() - 1;
+      }
+
+      Serial.println( String("Start index ") + startIndex );
+
+      if(true == mGlasses[startIndex].isAvailable())
+      {
+         id = mGlasses[startIndex].getId();
+         mLastGivenGlassIndex = startIndex;
          break;
       }
 
-      if( mGlasses.size()-1 == startIndex )
-      {
-         mLastGivenGlassIndex = 0;
-      }
    }
 
    return id;
@@ -123,7 +150,7 @@ const bool Barman::isLiquidEnough( const Liquid::Type liquid, const uint16_t val
 
    } ingredient{liquid, value};
 
-   Ingredient sum{liquid, 0};
+   Ingredient sum{liquid, value};
    
    for(uint8_t i = 0; i < mOrder.size(); ++i)
    {
@@ -148,7 +175,7 @@ Barman::Barman()
 : mBottleShelf(8)
 , mShotMap()
 , mGlasses(8)
-, mLastGivenGlassIndex(0)
+, mLastGivenGlassIndex(-1)
 {
    initGlass();
    initBottleShelf();
