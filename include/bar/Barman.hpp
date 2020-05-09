@@ -9,17 +9,16 @@
 
 class Barman
 {
-
 public:
-   using GlassId = uint8_t;
-   using CocktailIdx = uint8_t;
+   using GlassId = int8_t;
+   using CocktailIdx = int8_t;
 
    void executeOrder() noexcept;
    void addOrder(const GlassId glass, const CocktailIdx cocktail) noexcept;
 
-   bool isContains(const Glass& glass) const noexcept;
-
-   bool isAnyAvailableGlass() const noexcept;
+   bool isOrderContains(const GlassId glass, const CocktailIdx cocktail) const noexcept;
+   bool isContainsGlass(const GlassId id) const noexcept;
+   bool isPossibleChange(const GlassId id, const CocktailIdx newCocktail) const noexcept;
 
    GlassId getPreviousGlassId() noexcept;
    GlassId getNextGlassId() noexcept;
@@ -38,10 +37,12 @@ public:
    const bool isLiquidEnough( const Liquid::Type liquid, const uint16_t value ) const noexcept;
 
 private:
+   int8_t NO_VALID_COCKTAIL_INDEX = -1;
+
    supp::Vector<supp::Pair<GlassId, CocktailIdx>> mOrder;
 
-   void moveHandToGlass(const GlassId id) const noexcept;
    int8_t getOrderByGlassId(const GlassId glass) const noexcept;
+   void moveHandToGlass(const GlassId id) const noexcept;
    void makeCocktail(const CocktailIdx index) const noexcept;
 
    supp::Vector<Bottle> mBottleShelf;
@@ -93,7 +94,7 @@ inline void Barman::water() noexcept
   Cocktail water("Water");
 
   water.addStep(100, Liquid::VODA);
-  water.addStep(200, Liquid::VODKA);
+  water.addStep(100, Liquid::VODKA);
 
   mShotMap.push_back(water);
 }

@@ -26,7 +26,7 @@ public:
     { 
     }
     
-    Cocktail() : mRecipe(8) {}
+    Cocktail() : mName("NO_VALID"), mRecipe(8) {}
 private:
     String mName;
     RecipeVector mRecipe;

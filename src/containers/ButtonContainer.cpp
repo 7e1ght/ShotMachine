@@ -17,7 +17,6 @@ void ButtonContainer::setAvailable(bool available) noexcept
         mIsAvailable = available;
 
         mText.setMainColor(true == mIsAvailable ? supp::DEFAULT_TEXT_COLOR : supp::Color{255, 0, 0});
-        mText.draw();
     }
 }
 

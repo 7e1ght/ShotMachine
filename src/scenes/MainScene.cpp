@@ -120,12 +120,28 @@ void MainScene::changeGlass(DIRECTION d) noexcept
    }
 
    checkQueu();
+   
 }
 
 void MainScene::checkQueu() noexcept
 {
-   mToQueu->setAvailable( mIsGlassEnable && mIsCocktailEnable );
-   Serial.println( String("__________") + int(mIsGlassEnable && mIsCocktailEnable) + String("__________") );
+   if(Barman::getInstance().isOrderContains(mCurrentGlassId, mCocktailIndex))
+   {
+      mToQueu->getText().setText("Delete");
+      mToQueu->setAvailable( true );
+   }
+   else if(Barman::getInstance().isContainsGlass(mCurrentGlassId))
+   {
+      mToQueu->setAvailable( mIsGlassEnable && mIsCocktailEnable );
+      mToQueu->getText().setText("Change");
+   }
+   else
+   {
+      mToQueu->setAvailable( mIsGlassEnable && mIsCocktailEnable );
+      mToQueu->getText().setText("To queu");
+   }
+
+   mToQueu->draw();
 }
 
 void MainScene::initElements() noexcept
@@ -134,16 +150,12 @@ void MainScene::initElements() noexcept
    [this]()
    {
       changeGlass(DIR_LEFT);
-
-      Serial.println("left");
    };
 
    auto rightGlass = 
    [this]()
    {
       changeGlass(DIR_RIGHT);
-
-      Serial.println("right");
    };
 
    auto leftCocktail = 
@@ -161,8 +173,6 @@ void MainScene::initElements() noexcept
    auto toQueu =
    [this]()
    {
-      Serial.println( String("GlassId: ") + mCurrentGlassId );
-      Serial.println( String("CocktailIdx: ") + mCocktailIndex );
       Barman::getInstance().addOrder(mCurrentGlassId, mCocktailIndex);
 
       fillRecipe();
@@ -189,7 +199,7 @@ void MainScene::initElements() noexcept
 
    mButtonLayout = new EmptyContainer(supp::NO_POSITION, {220, 60}, mMainLayout->getMainColor());
    mToQueu = new ButtonContainer("To queu", toQueu, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
-   mCoock = new ButtonContainer("mCoock", [](){ Serial.println("mCoock"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
+   mCoock = new ButtonContainer("Coock", [](){ Barman::getInstance().executeOrder(); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
 }
 
 void MainScene::addElements() noexcept

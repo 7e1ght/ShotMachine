@@ -42,23 +42,52 @@ void Barman::executeOrder() noexcept
 {
    for(uint8_t i = 0; i < mOrder.size(); ++i)
    {
-      moveHandToGlass(mOrder[i].getKey());
-      Serial.println( mShotMap[mOrder[i].getValue()].getName() );
-      makeCocktail(mOrder[i].getValue());
+      if(mGlasses[mOrder[i].getKey()].isAvailable() && mOrder[i].getValue() != NO_VALID_COCKTAIL_INDEX)
+      {
+         moveHandToGlass(mOrder[i].getKey());
+         Serial.println( mShotMap[mOrder[i].getValue()].getName() );
+         makeCocktail(mOrder[i].getValue());
+      }
    }
+}
+
+bool Barman::isOrderContains(const Barman::GlassId glass, const Barman::CocktailIdx cocktail) const noexcept
+{
+   int8_t idx =  getOrderByGlassId(glass);
+
+   return (mOrder[idx].getKey() == glass && mOrder[idx].getValue() == cocktail);
+}
+
+bool Barman::isContainsGlass(Barman::GlassId id) const noexcept
+{
+   bool returnValue = false;
+
+   int8_t idx = getOrderByGlassId(id);
+
+   if(-1 != idx)
+   {
+      returnValue = mOrder[idx].getValue() != NO_VALID_COCKTAIL_INDEX;
+   }
+
+   return returnValue;
 }
 
 void Barman::addOrder(const GlassId id, const CocktailIdx index) noexcept
 {
-   if(!id)
+   if(!id || index < 0)
    {
-      Serial.println("Barman::addOrder GlassId == 0");
+      Serial.println("Barman::addOrder invalid order");
       return;
    }
 
    int8_t idx = getOrderByGlassId(id);
 
-   if( -1 != idx )
+   if( isOrderContains(id, index) )
+   {
+      Serial.println("Delete ");
+      mOrder[idx].setValue(NO_VALID_COCKTAIL_INDEX);
+   }
+   else if( -1 != idx )
    {
       Serial.println(String("Add new idx = ") + idx);
       mOrder[idx].setValue(index);
@@ -71,6 +100,7 @@ void Barman::addOrder(const GlassId id, const CocktailIdx index) noexcept
       Serial.println( mShotMap[index].getName() );
       mOrder.push_back( supp::Pair<GlassId, CocktailIdx>(id, index) );
    }
+
 }
 
 const Bottle& Barman::getBottleByLiquid(const Liquid::Type liquid) const noexcept
@@ -133,42 +163,25 @@ Barman::GlassId Barman::getPreviousGlassId() noexcept
 
 const bool Barman::isLiquidEnough( const Liquid::Type liquid, const uint16_t value) const noexcept
 {
-   struct Ingredient
-   {
-      Liquid::Type mLiquid;
-      uint16_t mValue;
+   uint16_t sum = 0;
 
-      Ingredient operator+(const Ingredient& other) const noexcept
-      {
-         return Ingredient{ mLiquid,  mValue + other.mValue};
-      }
-
-      bool operator==(const Ingredient& other) const noexcept
-      {
-         return mLiquid == other.mLiquid;
-      }
-
-   } ingredient{liquid, value};
-
-   Ingredient sum{liquid, value};
-   
    for(uint8_t i = 0; i < mOrder.size(); ++i)
    {
-      Cocktail::RecipeVector recipe = mShotMap[mOrder[i].getValue()].getRecipe();
+      Cocktail::RecipeVector recipe = getCocktailByIndex(mOrder[i].getValue()).getRecipe();
 
       for(uint8_t j = 0; j < recipe.size(); ++j)
       {
-         Ingredient tempIngredient{ recipe[i].getValue(), recipe[i].getKey() };
-
-         if(tempIngredient == ingredient)
+         if(recipe[j].getValue() == liquid)
          {
-            sum = sum + tempIngredient;
+            sum += recipe[j].getKey();
          }
-
       }
    }
 
-   return sum.mValue <= getBottleByLiquid(liquid).getCapacity();
+   Serial.println( String("Liquid: ") + Liquid::getName(liquid) );
+   Serial.println( String("sum = " ) + String(sum) );
+
+   return (sum + value) <= getBottleByLiquid(liquid).getCapacity();
 }
 
 Barman::Barman()
