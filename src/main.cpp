@@ -16,6 +16,10 @@
 
 #include "support/TouchScreen.hpp"
 
+#include <Stepper.h>
+
+#include "support/Hand.hpp"
+
 int freeRam () 
 {
   extern int __heap_start, *__brkval; 
@@ -29,17 +33,34 @@ void setup()
 {
   Serial.begin(9600);
 
-  mainScene = new MainScene();
+  // Hand::getInstance().moveHandTo(Barman::getInstance().getGlasses()[1]);
 
-  mainScene->renderScene();
+
+  // pinMode(cfg::hand::ENABLE_DISABLE_PIN, OUTPUT);
+  // digitalWrite(cfg::hand::ENABLE_DISABLE_PIN, HIGH);
+
+  // delay(5000);
+
+  // Glass glass = Barman::getInstanrce().getGlasses()[1];
+
+  // Serial.println(glass.getId());
+
+  // Hand::getInstance().moveHandTo(glass);
+
+  // mainScene = new MainScene();
+
+  // mainScene->renderScene();
+
 
   Serial.println( freeRam() );
 }
 
 void loop()
 {
-  supp::Point p = TouchScreen::getInstance().getTouch();
-  dbg::printPoint(p);
+  Serial.println( Barman::getInstance().getNextGlassId() );
 
-  mainScene->doLoop( p );
+  // supp::Point p = TouchScreen::getInstance().getTouch();
+  // dbg::printPoint(p);
+
+  // mainScene->doLoop( p );
 }

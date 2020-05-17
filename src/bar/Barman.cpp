@@ -1,5 +1,7 @@
 #include "bar/Barman.hpp"
 
+#include "support/Hand.hpp"
+
 Barman& Barman::getInstance() noexcept
 {
    static Barman barman;
@@ -9,7 +11,7 @@ Barman& Barman::getInstance() noexcept
 
 void Barman::moveHandToGlass(const GlassId id) const noexcept
 {
-   Serial.println(String("Move hand to ") + id );
+   Hand::getInstance().moveHandTo(id);
 }
 
 int8_t Barman::getOrderByGlassId(const GlassId id) const noexcept
@@ -49,6 +51,8 @@ void Barman::executeOrder() noexcept
          makeCocktail(mOrder[i].getValue());
       }
    }
+
+   Hand::getInstance().resetPosition();
 }
 
 bool Barman::isOrderContains(const Barman::GlassId glass, const Barman::CocktailIdx cocktail) const noexcept

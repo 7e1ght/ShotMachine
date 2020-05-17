@@ -60,6 +60,7 @@ private:
    void water() noexcept;
    void vlad() noexcept;
    void die() noexcept;
+   void fast() noexcept;
 };
 
 inline const supp::Vector<Bottle>& Barman::getBottleShelf() const noexcept
@@ -87,6 +88,16 @@ inline void Barman::initGlass() noexcept
    mGlasses.push_back(Glass(A11, A10));
    mGlasses.push_back(Glass(A13, A12));
    mGlasses.push_back(Glass(A15, A14));
+}
+
+inline void Barman::fast() noexcept
+{
+   Cocktail c("fast");
+
+   c.addStep(50, Liquid::VODA);
+   c.addStep(50, Liquid::VODKA);
+
+   mShotMap.push_back(c);
 }
 
 inline void Barman::water() noexcept
@@ -123,6 +134,7 @@ inline void Barman::initShotMap() noexcept
    water();
    vlad();
    die();
+   fast();
 }
 
 inline void Barman::initBottleShelf() noexcept

@@ -16,7 +16,7 @@ bool Glass::update() const noexcept
    delay(2);
 
    digitalWrite(mTrigPin, HIGH);
-   delay(100);
+   delay(5);
 
    digitalWrite(mTrigPin, LOW);
 

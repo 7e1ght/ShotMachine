@@ -18,8 +18,7 @@ public:
 
     bool isAvailable() const noexcept 
     { 
-        // return update();
-        return true; 
+        return update();
     }
 
     uint8_t getId() const noexcept { return mId; }

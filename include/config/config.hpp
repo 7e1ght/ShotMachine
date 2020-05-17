@@ -42,7 +42,6 @@ namespace glass
     const uint16_t CAPACITY = 300;
 }
 
-
 }
 
 #endif // CONFIG_H
