@@ -50,6 +50,15 @@ public:
         return mItemArray[index];
     }
 
+    void clear() noexcept
+    {
+        delete[] mItemArray;
+
+        mItemArray = new T[mCapacity];
+
+        mSize = 0;
+    }
+
     value_type& operator[](const uint8_t index)
     {
         return 

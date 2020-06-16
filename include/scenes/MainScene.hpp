@@ -19,7 +19,6 @@ public:
    MainScene();
 private:
    bool mIsCocktailEnable;
-   bool mIsGlassEnable;
 
    void checkQueu() noexcept;
 
@@ -40,8 +39,7 @@ private:
    void changeCocktail(DIRECTION d) noexcept;
    void fillRecipe() noexcept;
 
-   TripleContainer* mUpperBar;
-   TripleContainer* mLowerBar;
+   TripleContainer* mBar;
 
    EmptyContainer* mContentLayout;
 
@@ -56,7 +54,6 @@ private:
    TextContainer* mCocktailName;
    TextContainer* mGlassNumber;
 
-   Barman::GlassId mCurrentGlassId;
    Barman::CocktailIdx mCocktailIndex;
 
    ~MainScene()

@@ -8,23 +8,46 @@ struct Liquid
     enum Type
     {
         NO_LIQUID,
-        VODA,
-        VODKA
+        VODKA,
+        ORANGE_JUICE,
+        LIQUOR_COCONUT,
+        SYRUP_RASPBERRY,
+        MARTINI,
+        LEMON_JUICE,
+        SPRITE,
+        CURACAO
     };
 
     static String getName(Type type) noexcept 
     {
-        String name;
+        String name = "ERROR";
         
         switch (type)
         {
-        case VODA:
-            name = "Voda";
-            break;
         case VODKA:
             name = "Vodka";
             break;
-        
+        case ORANGE_JUICE:
+            name = "Orange juice";
+            break;
+        case LIQUOR_COCONUT:
+            name = "Liquor coconut";
+            break;
+        case SYRUP_RASPBERRY: 
+            name = "Syrup raspberry";
+            break;
+        case MARTINI:
+            name = "Martini";
+            break;
+        case LEMON_JUICE:
+            name = "Lemon juice";
+            break;
+        case SPRITE:
+            name = "Sprite";
+            break;
+        case CURACAO:
+            name = "Curacao";
+            break;
         default:
             break;
         }

@@ -231,11 +231,11 @@ namespace supp
     const Size NO_SIZE = { 0, 0 };
 
     const uint64_t DEFAULT_TAP_DELAY = 500;
-    const uint16_t DEFAULT_BOTTLE_CAPACITY = 500;
+    const uint16_t DEFAULT_BOTTLE_CAPACITY = 1700;
 
-    const uint8_t MIN_DISTANCE_TO_ON = 255;
+    const uint8_t ONE_GLASS_PLATFORM_STEPS = 100; 
 
-    const uint8_t DEFAULT_COEF = 10;
+    const uint8_t GRAM_PER_SECOND = 10;
     
     const uint8_t NO_DEG = 0;
 

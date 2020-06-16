@@ -1,13 +1,9 @@
 #include "bar/Glass.hpp"
 
-uint8_t Glass::idCounter = 1;
-
 Glass::Glass(const uint16_t trigPin, const uint16_t echoPin) : mTrigPin(trigPin), mEchoPin(echoPin)
 {
    pinMode(trigPin, OUTPUT);
    pinMode(echoPin, INPUT);
-
-   mId = idCounter++;
 }
 
 bool Glass::update() const noexcept
@@ -29,5 +25,5 @@ bool Glass::update() const noexcept
 
 bool Glass::operator==(const Glass& other) const
 {
-   return ( (other.mId == mId) && (other.mTrigPin == mTrigPin) && (other.mEchoPin == mEchoPin) );
+   return ( (other.mTrigPin == mTrigPin) && (other.mEchoPin == mEchoPin) );
 }

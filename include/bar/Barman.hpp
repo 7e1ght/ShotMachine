@@ -10,148 +10,157 @@
 class Barman
 {
 public:
-   using GlassId = int8_t;
-   using CocktailIdx = int8_t;
+	using CocktailIdx = int8_t;
 
-   void executeOrder() noexcept;
-   void addOrder(const GlassId glass, const CocktailIdx cocktail) noexcept;
+	void executeOrder() noexcept;
+	void addOrder(const CocktailIdx cocktail) noexcept;
 
-   bool isOrderContains(const GlassId glass, const CocktailIdx cocktail) const noexcept;
-   bool isContainsGlass(const GlassId id) const noexcept;
-   bool isPossibleChange(const GlassId id, const CocktailIdx newCocktail) const noexcept;
+	bool isOrderContains(const CocktailIdx cocktail) const noexcept;
 
-   GlassId getPreviousGlassId() noexcept;
-   GlassId getNextGlassId() noexcept;
+	const Cocktail& getCocktailByIndex(const CocktailIdx index) const noexcept;
+	const Bottle& getBottleByLiquid(const Liquid::Type liquid) const noexcept;
 
-   const Cocktail& getCocktailByIndex(const CocktailIdx index) const noexcept;
-   const Bottle& getBottleByLiquid(const Liquid::Type liquid) const noexcept;
+	static Barman& getInstance() noexcept;
 
-   supp::Vector<Glass>& get() { return mGlasses; }
+	const supp::Vector<Bottle>& getBottleShelf() const noexcept;
+	const supp::Vector<Glass>& getGlasses() const noexcept;
+	const supp::Vector<Cocktail>& getShotMap() const noexcept;
 
-   static Barman& getInstance() noexcept;
+	const bool isLiquidEnough( const Liquid::Type liquid, const uint16_t value ) const noexcept;
 
-   const supp::Vector<Bottle>& getBottleShelf() const noexcept;
-   const supp::Vector<Glass>& getGlasses() const noexcept;
-   const supp::Vector<Cocktail>& getShotMap() const noexcept;
-
-   const bool isLiquidEnough( const Liquid::Type liquid, const uint16_t value ) const noexcept;
+	Glass& getGlass() noexcept;
 
 private:
-   int8_t NO_VALID_COCKTAIL_INDEX = -1;
+	Glass mGlass;
 
-   supp::Vector<supp::Pair<GlassId, CocktailIdx>> mOrder;
+	int8_t NO_VALID_COCKTAIL_INDEX = -1;
 
-   int8_t getOrderByGlassId(const GlassId glass) const noexcept;
-   void moveHandToGlass(const GlassId id) const noexcept;
-   void makeCocktail(const CocktailIdx index) const noexcept;
+	supp::Vector<CocktailIdx> mOrder;
 
-   supp::Vector<Bottle> mBottleShelf;
-   supp::Vector<Glass> mGlasses;
-   supp::Vector<Cocktail> mShotMap;
+	void makeCocktail(const CocktailIdx index) const noexcept;
 
-   int8_t mLastGivenGlassIndex; 
+	supp::Vector<Bottle> mBottleShelf;
+	supp::Vector<Cocktail> mShotMap;
 
-   void initGlass() noexcept;
-   void initShotMap() noexcept;
-   void initBottleShelf() noexcept;
+	int8_t mLastGivenGlassIndex; 
 
-   Barman();
+	void initShotMap() noexcept;
+	void initBottleShelf() noexcept;
 
-   void water() noexcept;
-   void vlad() noexcept;
-   void die() noexcept;
-   void fast() noexcept;
+	Barman();
+
+	void Screwdriver() noexcept;
+	void Jaguar() noexcept;
+	void Rollshot() noexcept;
+	void MartiniWithVodka() noexcept;
+	void SunnyLagoon() noexcept;
+	void BlueLagoon() noexcept;
 };
 
 inline const supp::Vector<Bottle>& Barman::getBottleShelf() const noexcept
 {
-   return mBottleShelf;
-}
-
-inline const supp::Vector<Glass>& Barman::getGlasses() const noexcept
-{
-   return mGlasses;
+	return mBottleShelf;
 }
 
 inline const supp::Vector<Cocktail>& Barman::getShotMap() const noexcept
 {
-   return mShotMap;
+	return mShotMap;
 }
 
-inline void Barman::initGlass() noexcept
+inline Glass& Barman::getGlass() noexcept
 {
-   mGlasses.push_back(Glass(A1, A0));
-   mGlasses.push_back(Glass(A3, A2));
-   mGlasses.push_back(Glass(A5, A4));
-   mGlasses.push_back(Glass(A7, A6));
-   mGlasses.push_back(Glass(A9, A8));
-   mGlasses.push_back(Glass(A11, A10));
-   mGlasses.push_back(Glass(A13, A12));
-   mGlasses.push_back(Glass(A15, A14));
+	return mGlass;
 }
 
-inline void Barman::fast() noexcept
+inline void Barman::Screwdriver() noexcept
 {
-   Cocktail c("fast");
+	Cocktail cocktail("Screwdriver");
 
-   c.addStep(50, Liquid::VODA);
-   c.addStep(50, Liquid::VODKA);
+	cocktail.addStep(50, Liquid::VODKA);
+	cocktail.addStep(150, Liquid::ORANGE_JUICE);
 
-   mShotMap.push_back(c);
+	mShotMap.push_back(cocktail);
 }
 
-inline void Barman::water() noexcept
+inline void Barman::Jaguar() noexcept
 {
-  Cocktail water("Water");
+  Cocktail cocktail("Jaguar");
 
-  water.addStep(100, Liquid::VODA);
-  water.addStep(100, Liquid::VODKA);
+  cocktail.addStep(50, Liquid::VODKA);
+  cocktail.addStep(50, Liquid::LIQUOR_COCONUT);
+  cocktail.addStep(150, Liquid::SPRITE);
 
-  mShotMap.push_back(water);
+  mShotMap.push_back(cocktail);
 }
 
-inline void Barman::vlad() noexcept
+inline void Barman::Rollshot() noexcept
 {
-  Cocktail water2("Vlad");
+  Cocktail cocktail("Roll Shot");
 
-  water2.addStep(200, Liquid::VODA);
-  water2.addStep(200, Liquid::VODKA);
+  cocktail.addStep(20, Liquid::VODKA);
+  cocktail.addStep(20, Liquid::SYRUP_RASPBERRY);
 
-  mShotMap.push_back(water2);
+  mShotMap.push_back(cocktail);
 }
 
-inline void Barman::die() noexcept
+inline void Barman::MartiniWithVodka() noexcept
 {
-  Cocktail d("Die");
+  Cocktail cocktail("Martini-Vodka");
 
-  d.addStep(999, Liquid::VODKA);
+  cocktail.addStep(70, Liquid::VODKA);
+  cocktail.addStep(20, Liquid::MARTINI);
 
-  mShotMap.push_back(d);
+  mShotMap.push_back(cocktail);
+}
+
+inline void Barman::SunnyLagoon() noexcept
+{
+  Cocktail cocktail("Sunny lagoon");
+  
+  cocktail.addStep(25, Liquid::LEMON_JUICE);
+  cocktail.addStep(100, Liquid::SPRITE);
+  cocktail.addStep(50, Liquid::VODKA);
+
+  mShotMap.push_back(cocktail);
+}
+
+inline void Barman::BlueLagoon() noexcept
+{
+  Cocktail cocktail("Blue lagoon");
+
+  cocktail.addStep(25, Liquid::LEMON_JUICE);
+  cocktail.addStep(100, Liquid::SPRITE);
+  cocktail.addStep(30, Liquid::VODKA);
+  cocktail.addStep(30, Liquid::CURACAO);
+
+  mShotMap.push_back(cocktail);
 }
 
 inline void Barman::initShotMap() noexcept
 {
-   water();
-   vlad();
-   die();
-   fast();
+	Screwdriver();
+	Jaguar();
+	Rollshot();
+	MartiniWithVodka();
+	SunnyLagoon();
+	BlueLagoon();
 }
 
 inline void Barman::initBottleShelf() noexcept
 {
-   mBottleShelf.push_back(Bottle(14, Liquid::VODA));
-   mBottleShelf.push_back(Bottle(15, Liquid::VODKA));
-   mBottleShelf.push_back(Bottle(16, Liquid::NO_LIQUID));
-   mBottleShelf.push_back(Bottle(17, Liquid::NO_LIQUID));
-   mBottleShelf.push_back(Bottle(18, Liquid::NO_LIQUID));
-   mBottleShelf.push_back(Bottle(19, Liquid::NO_LIQUID));
-   mBottleShelf.push_back(Bottle(20, Liquid::NO_LIQUID));
-   mBottleShelf.push_back(Bottle(21, Liquid::NO_LIQUID));
+	mBottleShelf.push_back(Bottle(14, Liquid::VODKA));
+	mBottleShelf.push_back(Bottle(15, Liquid::ORANGE_JUICE));
+	mBottleShelf.push_back(Bottle(16, Liquid::LIQUOR_COCONUT));
+	mBottleShelf.push_back(Bottle(18, Liquid::SYRUP_RASPBERRY));
+	mBottleShelf.push_back(Bottle(19, Liquid::MARTINI));
+	mBottleShelf.push_back(Bottle(20, Liquid::LEMON_JUICE));
+	mBottleShelf.push_back(Bottle(21, Liquid::SPRITE));
+	mBottleShelf.push_back(Bottle(21, Liquid::CURACAO));
 }
 
 inline const Cocktail& Barman::getCocktailByIndex(const CocktailIdx index) const noexcept
 {
-   return mShotMap[index];
+	return mShotMap[index];
 }
 
 #endif // BARMAN_HPP

@@ -6,7 +6,7 @@ void Bottle::pour(uint16_t size) const noexcept
     {
         unsigned long timeStart = millis();
 
-        double time = static_cast<double>(size)/supp::DEFAULT_COEF;
+        double time = static_cast<double>(size)/supp::GRAM_PER_SECOND;
 
         digitalWrite(mPin, LOW);
         while( (millis()-timeStart)/1000.0 <= time );
