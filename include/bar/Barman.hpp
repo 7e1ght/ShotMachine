@@ -49,12 +49,14 @@ private:
 
 	Barman();
 
-	void Screwdriver() noexcept;
-	void Jaguar() noexcept;
-	void Rollshot() noexcept;
-	void MartiniWithVodka() noexcept;
-	void SunnyLagoon() noexcept;
-	void BlueLagoon() noexcept;
+	void Mojito() noexcept;
+	void CubaLibre() noexcept;
+	void Gilligan() noexcept;
+	void RumOrangeJuice() noexcept;
+	void PinaСolada() noexcept;
+	void ElPresident() noexcept;
+	void Daiquiri() noexcept;
+	void Knickerbocker() noexcept;
 };
 
 inline const supp::Vector<Bottle>& Barman::getBottleShelf() const noexcept
@@ -72,90 +74,113 @@ inline Glass& Barman::getGlass() noexcept
 	return mGlass;
 }
 
-inline void Barman::Screwdriver() noexcept
+inline void Barman::Mojito() noexcept
 {
-	Cocktail cocktail("Screwdriver");
+	Cocktail cocktail("Mojito");
 
-	cocktail.addStep(50, Liquid::VODKA);
-	cocktail.addStep(150, Liquid::ORANGE_JUICE);
+	cocktail.addStep(100, Liquid::RUM);
+	cocktail.addStep(50, Liquid::SPRITE);
 
 	mShotMap.push_back(cocktail);
 }
 
-inline void Barman::Jaguar() noexcept
+inline void Barman::CubaLibre() noexcept
 {
-  Cocktail cocktail("Jaguar");
+  Cocktail cocktail("Cuba libre");
 
-  cocktail.addStep(50, Liquid::VODKA);
-  cocktail.addStep(50, Liquid::LIQUOR_COCONUT);
-  cocktail.addStep(150, Liquid::SPRITE);
+  cocktail.addStep(100, Liquid::RUM);
+  cocktail.addStep(50, Liquid::COLA);
 
   mShotMap.push_back(cocktail);
 }
 
-inline void Barman::Rollshot() noexcept
+inline void Barman::Gilligan() noexcept
 {
-  Cocktail cocktail("Roll Shot");
+  Cocktail cocktail("Gilligan");
 
-  cocktail.addStep(20, Liquid::VODKA);
-  cocktail.addStep(20, Liquid::SYRUP_RASPBERRY);
+  cocktail.addStep(60, Liquid::RUM);
+  cocktail.addStep(30, Liquid::PINEAPPLE_JUICE);
+  cocktail.addStep(30, Liquid::SPRITE);
 
   mShotMap.push_back(cocktail);
 }
 
-inline void Barman::MartiniWithVodka() noexcept
+inline void Barman::RumOrangeJuice() noexcept
 {
-  Cocktail cocktail("Martini-Vodka");
+  Cocktail cocktail("RumOrangeJuice");
 
-  cocktail.addStep(70, Liquid::VODKA);
-  cocktail.addStep(20, Liquid::MARTINI);
+  cocktail.addStep(50, Liquid::RUM);
+  cocktail.addStep(150, Liquid::ORANGE_JUICE);
 
   mShotMap.push_back(cocktail);
 }
 
-inline void Barman::SunnyLagoon() noexcept
+inline void Barman::PinaСolada() noexcept
 {
-  Cocktail cocktail("Sunny lagoon");
+  Cocktail cocktail("PinaСolada");
   
-  cocktail.addStep(25, Liquid::LEMON_JUICE);
-  cocktail.addStep(100, Liquid::SPRITE);
-  cocktail.addStep(50, Liquid::VODKA);
+  cocktail.addStep(50, Liquid::RUM);
+  cocktail.addStep(50, Liquid::PINEAPPLE_JUICE);
+  cocktail.addStep(50, Liquid::SYRUP_COCONUT);
 
   mShotMap.push_back(cocktail);
 }
 
-inline void Barman::BlueLagoon() noexcept
+inline void Barman::ElPresident() noexcept
 {
-  Cocktail cocktail("Blue lagoon");
+  Cocktail cocktail("ElPresident");
 
-  cocktail.addStep(25, Liquid::LEMON_JUICE);
-  cocktail.addStep(100, Liquid::SPRITE);
-  cocktail.addStep(30, Liquid::VODKA);
-  cocktail.addStep(30, Liquid::CURACAO);
+  cocktail.addStep(50, Liquid::RUM);
+  cocktail.addStep(50, Liquid::MARTINI);
+  cocktail.addStep(50, Liquid::SPRITE);
+
+  mShotMap.push_back(cocktail);
+}
+
+inline void Barman::Daiquiri() noexcept
+{
+  Cocktail cocktail("Вaiquiri");
+
+  cocktail.addStep(60, Liquid::RUM);
+  cocktail.addStep(40, Liquid::SPRITE);
+
+  mShotMap.push_back(cocktail);
+}
+
+inline void Barman::Knickerbocker() noexcept
+{
+  Cocktail cocktail("Knickerbocker");
+
+  cocktail.addStep(50, Liquid::RUM);
+  cocktail.addStep(50, Liquid::LIQUOR_CHERRY);
+  cocktail.addStep(50, Liquid::SPRITE);
+  cocktail.addStep(50, Liquid::ORANGE_JUICE);
 
   mShotMap.push_back(cocktail);
 }
 
 inline void Barman::initShotMap() noexcept
 {
-	Screwdriver();
-	Jaguar();
-	Rollshot();
-	MartiniWithVodka();
-	SunnyLagoon();
-	BlueLagoon();
+	Mojito();
+	CubaLibre();
+	Gilligan();
+	RumOrangeJuice();
+	PinaСolada();
+	ElPresident();
+	Daiquiri();
+	Knickerbocker();
 }
 
 inline void Barman::initBottleShelf() noexcept
 {
-	mBottleShelf.push_back(Bottle(14, Liquid::VODKA));
+	mBottleShelf.push_back(Bottle(14, Liquid::COLA));
 	mBottleShelf.push_back(Bottle(15, Liquid::ORANGE_JUICE));
-	mBottleShelf.push_back(Bottle(16, Liquid::LIQUOR_COCONUT));
-	mBottleShelf.push_back(Bottle(18, Liquid::SYRUP_RASPBERRY));
+	mBottleShelf.push_back(Bottle(16, Liquid::SYRUP_COCONUT));
+	mBottleShelf.push_back(Bottle(17, Liquid::PINEAPPLE_JUICE));
+	mBottleShelf.push_back(Bottle(18, Liquid::RUM));
 	mBottleShelf.push_back(Bottle(19, Liquid::MARTINI));
-	mBottleShelf.push_back(Bottle(20, Liquid::LEMON_JUICE));
+	mBottleShelf.push_back(Bottle(20, Liquid::LIQUOR_CHERRY));
 	mBottleShelf.push_back(Bottle(21, Liquid::SPRITE));
-	mBottleShelf.push_back(Bottle(21, Liquid::CURACAO));
 }
 
 inline const Cocktail& Barman::getCocktailByIndex(const CocktailIdx index) const noexcept

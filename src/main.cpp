@@ -27,23 +27,29 @@ int freeRam ()
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
-MainScene* mainScene;
+// MainScene* mainScene;
 
 void setup()
 {
   Serial.begin(9600);
 
-  mainScene = new MainScene();
+  // mainScene = new MainScene();
 
-  mainScene->renderScene();
+  // mainScene->renderScene();
 
   Serial.println( freeRam() );
 }
 
 void loop()
 {
-  supp::Point p = TouchScreen::getInstance().getTouch();
-  dbg::printPoint(p);
+  // supp::Point p = TouchScreen::getInstance().getTouch();
+  // dbg::printPoint(p);
 
-  mainScene->doLoop( p );
+  // mainScene->doLoop( p );
+
+  // for(int i = 0; i < Barman::getInstance().getBottleShelf().size(); ++i )
+  // {
+  //   Barman::getInstance().getBottleShelf()[i].pour(50);
+  // }
+
 }
