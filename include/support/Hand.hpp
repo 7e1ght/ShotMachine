@@ -16,6 +16,7 @@ namespace cfg
 
         const uint8_t DIRECTION_PIN = 9;
         const uint8_t STEP_PIN = 8;
+        const uint8_t ENABLE_DISABLE_PIN = 11;
     }
 }
 
@@ -24,15 +25,31 @@ class Hand
 {
 private:
     Hand();
-
+    uint16_t mStepped;
 public:
     static Hand& getInstance() noexcept;
-    void makeSteps(uint8_t steps) noexcept;
+
+    void makeSteps(int16_t steps) noexcept;
+    uint16_t getStepped() noexcept;
+    void resetStepped() noexcept;
 };
 
-inline void Hand::makeSteps(uint8_t steps) noexcept
+inline uint16_t Hand::getStepped() noexcept
 {
+    return mStepped;
+}
+
+inline void Hand::makeSteps(int16_t steps) noexcept
+{
+    digitalWrite(cfg::hand::ENABLE_DISABLE_PIN, HIGH);
     Stepper::step(steps);
+    mStepped += steps;
+    digitalWrite(cfg::hand::ENABLE_DISABLE_PIN, LOW);
+}
+
+inline void Hand::resetStepped() noexcept
+{
+    mStepped = 0;
 }
 
 #endif // HAND_H

@@ -3,7 +3,9 @@
 Hand::Hand()
 : Stepper(cfg::hand::FULL_ROTATE_STEPS, cfg::hand::DIRECTION_PIN, cfg::hand::STEP_PIN)
 {
-    Stepper::setSpeed(60);
+    pinMode(cfg::hand::ENABLE_DISABLE_PIN, OUTPUT);
+    digitalWrite(cfg::hand::ENABLE_DISABLE_PIN, LOW);
+    Stepper::setSpeed(20);
 }
 
 Hand& Hand::getInstance() noexcept

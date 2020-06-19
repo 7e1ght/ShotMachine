@@ -4,6 +4,20 @@
 #include "Liquid.hpp"
 #include "support/support.hpp"
 
+namespace cfg
+{
+    namespace bottle
+    {
+        const double RUM_DELAY = 2.0; // sec
+        const double MARTINI_DELAY = 2.0; 
+        const double SYRUP_COCONUT_DELAY = 4.5;
+        const double COLA_DELAY = 2.0;
+        const double PINEAPPLE_JUICE_DELAY = 1.0;
+        const double ORANGE_JUICE_DELAY = 1.0; 
+    }
+}
+
+
 class Bottle
 {
 private:

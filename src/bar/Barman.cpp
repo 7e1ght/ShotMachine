@@ -26,17 +26,40 @@ void Barman::makeCocktail(const CocktailIdx index) const noexcept
 
 void Barman::executeOrder() noexcept
 {
-   for(uint8_t i = 0; i < mOrder.size(); ++i)
+   Serial.print("mOrder size = ");
+   Serial.println(mOrder.size());
+
+   for(uint8_t i = 0; i < mOrder.size() && isNextGlassFound(); ++i)
    {
-      Hand::getInstance().makeSteps(supp::ONE_GLASS_PLATFORM_STEPS);
-      if(true )
+      if(mGlass.isAvailable())
       {
-         
          makeCocktail(mOrder[i]);
+         delay(3000);
+         Hand::getInstance().makeSteps(135);
       }
    }
 
    mOrder.clear();
+   Hand::getInstance().resetStepped();
+}
+
+bool Barman::isNextGlassFound() noexcept
+{
+   bool returnValue = false;
+
+   for(int i = Hand::getInstance().getStepped(); i < cfg::hand::FULL_ROTATE_STEPS; i += 20)
+   {
+      Hand::getInstance().makeSteps(20);
+
+      returnValue = mGlass.isAvailable();
+
+      if(returnValue)
+      {
+         return returnValue;
+      }
+   }
+
+   return returnValue;
 }
 
 void Barman::addOrder(const CocktailIdx index) noexcept

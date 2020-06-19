@@ -117,7 +117,7 @@ void MainScene::initElements() noexcept
       fillRecipe();
    };
 
-   mCocktailName = new TextContainer("", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_DARK_COLOR);
+   mCocktailName = new TextContainer("", supp::NO_POSITION, supp::DEFAULT_TEXT_COLOR, supp::DEFAULT_BG_DARK_COLOR, nullptr, supp::FONT::SMALL);
 
    mBar = new TripleContainer(supp::NO_POSITION, {cfg::display::SCREEN_WIDTH, supp::DEFAULT_ELEMENT_HEIGHT}, supp::DEFAULT_BG_DARK_COLOR);
    mBar->setMiddleWidth(200);
@@ -131,7 +131,7 @@ void MainScene::initElements() noexcept
 
    mButtonLayout = new EmptyContainer(supp::NO_POSITION, {220, 60}, mMainLayout->getMainColor());
    mToQueu = new ButtonContainer("To queu", toQueu, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
-   mCoock = new ButtonContainer("Coock", [](){ Barman::getInstance().executeOrder(); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
+   mCoock = new ButtonContainer("Coock", [](){ Barman::getInstance().executeOrder(); Serial.println("Coock"); }, supp::NO_POSITION, {220, 25}, supp::DEFAULT_BG_DARK_COLOR);
 }
 
 void MainScene::addElements() noexcept

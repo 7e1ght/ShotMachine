@@ -20,7 +20,7 @@ bool Glass::update() const noexcept
 
    Serial.println( String("Distance = ") + distance );
 
-   return distance <= 300 && 100 <= distance;
+   return distance >= 200 && 240 >= distance;
 }
 
 bool Glass::operator==(const Glass& other) const
